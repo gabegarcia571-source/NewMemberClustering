@@ -500,8 +500,7 @@ function App() {
               </div>
               <div className="mt-5 space-y-4 text-sm text-slate-200">
                 <PanelMetric label="Member Count" value={String(selectedCluster.memberCount)} />
-                <PanelMetric label="Common Ground" value={selectedCluster.commonGround.join(', ') || 'None'} />
-                <PanelMetric label="Top Activities" value={selectedCluster.topClusterActivities.join(', ')} />
+                <PanelMetric label="Common Ground" value={selectedCluster.topClusterActivities.join(', ')} />
                 <div>
                   <p className="mb-2 text-xs uppercase tracking-[0.2em] text-slate-400">Members</p>
                   <div className="max-h-[34vh] space-y-2 overflow-auto pr-1">
