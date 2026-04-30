@@ -194,7 +194,7 @@ function App() {
         )}
 
         <main className="relative flex-1">
-          {viewport.isMobile && (
+          {viewport.isMobile && !selectedAnalyst && (
             <>
               <div className="fixed left-4 right-4 z-40" style={{ top: viewport.topInset }}>
                 <div className="flex items-start justify-between gap-3">
@@ -279,7 +279,7 @@ function App() {
             <ListView analysts={sortedTableRows} isMobile={viewport.isMobile} setSortKey={setSortKey} viewport={viewport} />
           )}
 
-          {selectedCluster && (
+          {selectedCluster && (!viewport.isMobile || !selectedAnalyst) && (
             <div
               className={`absolute z-30 border-white/10 bg-slate-950/85 backdrop-blur ${
                 viewport.isMobile
@@ -657,7 +657,7 @@ function ProfileCard({
   viewport: ViewportProfile
 }) {
   return (
-    <div className="absolute inset-0 z-50 overflow-y-auto bg-slate-950/55 p-4" onClick={onClose}>
+    <div className="absolute inset-0 z-[70] overflow-y-auto bg-slate-950/80 p-4 backdrop-blur-sm" onClick={onClose}>
       <div
         className="mx-auto my-4 flex w-full max-w-2xl flex-col overflow-hidden rounded-[2rem] border border-white/10 bg-[#06111c]/95 shadow-2xl backdrop-blur"
         style={{ maxHeight: viewport.popupMaxHeight }}
@@ -768,10 +768,10 @@ function GalaxyScene({
         }}
       >
         <color attach="background" args={['#020408']} />
-        <fog attach="fog" args={['#020408', isMobile ? 55 : 80, viewport.galaxyFogFar]} />
-        <ambientLight intensity={isMobile ? (viewport.isCompactMobile ? 1.68 : 1.56) : 1.22} />
-        <pointLight position={[20, 20, 25]} intensity={isMobile ? (viewport.isCompactMobile ? 102 : 96) : 78} color="#c6ebff" />
-        <Stars radius={150} depth={75} count={isMobile ? 3600 : 3000} factor={isMobile ? (viewport.isCompactMobile ? 6 : 5.5) : 4.4} fade speed={0.38} />
+        <fog attach="fog" args={['#020408', isMobile ? 55 : 72, viewport.galaxyFogFar]} />
+        <ambientLight intensity={isMobile ? (viewport.isCompactMobile ? 1.68 : 1.56) : 1.34} />
+        <pointLight position={[20, 20, 25]} intensity={isMobile ? (viewport.isCompactMobile ? 102 : 96) : 90} color="#c6ebff" />
+        <Stars radius={150} depth={75} count={isMobile ? 3600 : 3200} factor={isMobile ? (viewport.isCompactMobile ? 6 : 5.5) : 4.9} fade speed={0.36} />
         <FocusController
           clusterCenters={clusterCenters}
           controlsRef={controlsRef}
@@ -796,11 +796,11 @@ function GalaxyScene({
             <group key={cluster.id}>
               <mesh position={center} onClick={() => onSelectCluster(cluster.id)}>
                 <sphereGeometry args={[radius, 32, 32]} />
-                <meshBasicMaterial color={color} transparent opacity={selectedClusterId === cluster.id ? (isMobile ? 0.22 : 0.14) : isMobile ? 0.15 : 0.08} wireframe />
+                <meshBasicMaterial color={color} transparent opacity={selectedClusterId === cluster.id ? (isMobile ? 0.22 : 0.18) : isMobile ? 0.15 : 0.12} wireframe />
               </mesh>
               <mesh position={center}>
                 <torusGeometry args={[radius + 1.4, 0.12, 12, 80]} />
-                <meshBasicMaterial color={color} transparent opacity={isMobile ? 0.62 : 0.42} />
+                <meshBasicMaterial color={color} transparent opacity={isMobile ? 0.62 : 0.52} />
               </mesh>
             </group>
           )
@@ -824,8 +824,8 @@ function GalaxyScene({
               <meshStandardMaterial
                 color={color}
                 emissive={new THREE.Color(color)}
-                emissiveIntensity={isSelected ? 3.2 : isVisible ? (isMobile ? 2.15 : 1.6) : isMobile ? 0.48 : 0.28}
-                opacity={isVisible ? 1 : isMobile ? 0.32 : 0.18}
+                emissiveIntensity={isSelected ? 3.2 : isVisible ? (isMobile ? 2.15 : 1.9) : isMobile ? 0.48 : 0.42}
+                opacity={isVisible ? 1 : isMobile ? 0.32 : 0.28}
                 transparent
               />
             </Sphere>
