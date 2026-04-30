@@ -8,6 +8,44 @@ import type { Analyst, Cluster, NetworkMap } from './types'
 
 const CLUSTER_COLORS = ['#4FC3F7', '#81C784', '#FFB74D', '#F06292', '#CE93D8', '#4DB6AC', '#FFF176', '#FF8A65', '#90CAF9', '#A5D6A7']
 
+interface ViewportProfile {
+  width: number
+  height: number
+  isMobile: boolean
+  isCompactMobile: boolean
+  topInset: string
+  bottomInset: string
+  mobileOverlayMaxHeight: string
+  mobileDrawerMaxHeight: string
+  popupMaxHeight: string
+  popupBodyMaxHeight: string
+  listMinWidth: number
+  galaxyFov: number
+  galaxyFogFar: number
+}
+
+function createViewportProfile(width: number, height: number): ViewportProfile {
+  const safeWidth = Math.max(width || 390, 320)
+  const safeHeight = Math.max(height || 844, 568)
+  const isMobile = safeWidth < 1024
+  const isCompactMobile = safeWidth < 420 || safeHeight < 760
+  return {
+    width: safeWidth,
+    height: safeHeight,
+    isMobile,
+    isCompactMobile,
+    topInset: 'calc(env(safe-area-inset-top, 0px) + 1rem)',
+    bottomInset: 'calc(env(safe-area-inset-bottom, 0px) + 1rem)',
+    mobileOverlayMaxHeight: `min(${Math.round(safeHeight * 0.64)}px, calc(100dvh - env(safe-area-inset-top, 0px) - 5rem))`,
+    mobileDrawerMaxHeight: `min(${Math.round(safeHeight * 0.78)}px, calc(100dvh - env(safe-area-inset-top, 0px) - 2rem))`,
+    popupMaxHeight: 'calc(100dvh - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px) - 2rem)',
+    popupBodyMaxHeight: `min(${Math.round(safeHeight * 0.7)}px, calc(100dvh - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px) - 9rem))`,
+    listMinWidth: Math.max(980, Math.round(safeWidth * 1.95)),
+    galaxyFov: isMobile ? (safeWidth < 380 ? 70 : safeWidth < 460 ? 66 : 62) : 55,
+    galaxyFogFar: isMobile ? 260 : 220,
+  }
+}
+
 function App() {
   const {
     analysts,
@@ -32,7 +70,9 @@ function App() {
 
   const [sortKey, setSortKey] = useState<'name' | 'cluster' | 'persona'>('name')
   const [cameraResetToken, setCameraResetToken] = useState(0)
-  const [isMobile, setIsMobile] = useState(() => (typeof window !== 'undefined' ? window.innerWidth < 1024 : false))
+  const [viewport, setViewport] = useState<ViewportProfile>(() =>
+    typeof window !== 'undefined' ? createViewportProfile(window.innerWidth, window.innerHeight) : createViewportProfile(1440, 900),
+  )
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false)
 
   useEffect(() => {
@@ -67,18 +107,21 @@ function App() {
 
   useEffect(() => {
     if (typeof window === 'undefined') return
-    const mediaQuery = window.matchMedia('(max-width: 1023px)')
-    const update = () => setIsMobile(mediaQuery.matches)
+    const update = () => setViewport(createViewportProfile(window.innerWidth, window.innerHeight))
     update()
-    mediaQuery.addEventListener('change', update)
-    return () => mediaQuery.removeEventListener('change', update)
+    window.addEventListener('resize', update)
+    window.addEventListener('orientationchange', update)
+    return () => {
+      window.removeEventListener('resize', update)
+      window.removeEventListener('orientationchange', update)
+    }
   }, [])
 
   useEffect(() => {
-    if (!isMobile) {
+    if (!viewport.isMobile) {
       setMobileFiltersOpen(false)
     }
-  }, [isMobile])
+  }, [viewport.isMobile])
 
   const analystMap = useMemo(() => new Map(analysts.map((analyst) => [analyst.id, analyst])), [analysts])
   const clusterMap = useMemo(() => new Map(clusters.map((cluster) => [cluster.id, cluster])), [clusters])
@@ -119,14 +162,14 @@ function App() {
 
   const handleSelectCluster = (clusterId: number | null) => {
     setSelectedClusterId(clusterId)
-    if (isMobile && clusterId !== null) {
+    if (viewport.isMobile && clusterId !== null) {
       setMobileFiltersOpen(false)
     }
   }
 
   const handleSelectAnalyst = (analystId: number | null) => {
     setSelectedAnalystId(analystId)
-    if (isMobile && analystId !== null) {
+    if (viewport.isMobile && analystId !== null) {
       setMobileFiltersOpen(false)
     }
   }
@@ -134,7 +177,7 @@ function App() {
   return (
     <div className="min-h-screen">
       <div className="mx-auto flex min-h-screen max-w-[1800px] flex-col lg:flex-row">
-        {!isMobile && (
+        {!viewport.isMobile && (
           <aside className="border-b border-white/10 bg-white/5 p-4 backdrop-blur lg:w-[320px] lg:border-b-0 lg:border-r">
             <SidebarHeader viewMode={viewMode} setViewMode={setViewMode} />
             <FilterControls
@@ -151,9 +194,9 @@ function App() {
         )}
 
         <main className="relative flex-1">
-          {isMobile && (
+          {viewport.isMobile && (
             <>
-              <div className="fixed left-4 right-4 top-4 z-40 flex items-start justify-between gap-3">
+              <div className="fixed left-4 right-4 z-40 flex items-start justify-between gap-3" style={{ top: viewport.topInset }}>
                 <div className="rounded-2xl border border-white/10 bg-slate-950/75 px-4 py-3 backdrop-blur">
                   <p className="font-orbitron text-sm uppercase tracking-[0.35em] text-sky-200">Rosslyn Analyst Network</p>
                   <p className="mt-1 text-xs text-slate-300">{filteredAnalysts.length} visible analysts</p>
@@ -174,7 +217,7 @@ function App() {
                 </div>
               </div>
 
-              <div className="fixed bottom-4 left-4 z-40">
+              <div className="fixed left-4 z-40" style={{ bottom: viewport.bottomInset }}>
                 <button
                   className="rounded-full border border-white/15 bg-slate-950/75 px-4 py-2 text-xs uppercase tracking-[0.2em] text-slate-100 backdrop-blur transition hover:border-sky-300 hover:text-white"
                   onClick={resetOverview}
@@ -185,7 +228,7 @@ function App() {
             </>
           )}
 
-          {!isMobile && (
+          {!viewport.isMobile && (
             <>
               <div className="absolute left-4 top-4 z-10 rounded-2xl border border-white/10 bg-slate-950/70 px-4 py-3 backdrop-blur">
                 <p className="text-xs uppercase tracking-[0.25em] text-slate-400">Visible Analysts</p>
@@ -211,7 +254,7 @@ function App() {
               analysts={analysts}
               clusters={clusters}
               filteredIds={filteredIds}
-              isMobile={isMobile}
+              viewport={viewport}
               onSelectAnalyst={handleSelectAnalyst}
               onSelectCluster={handleSelectCluster}
               selectedClusterId={selectedClusterId}
@@ -219,16 +262,24 @@ function App() {
               cameraResetToken={cameraResetToken}
             />
           ) : (
-            <ListView analysts={sortedTableRows} isMobile={isMobile} setSortKey={setSortKey} />
+            <ListView analysts={sortedTableRows} isMobile={viewport.isMobile} setSortKey={setSortKey} viewport={viewport} />
           )}
 
           {selectedCluster && (
             <div
               className={`absolute z-30 border-white/10 bg-slate-950/85 backdrop-blur ${
-                isMobile
+                viewport.isMobile
                   ? 'inset-x-0 bottom-0 max-h-[62vh] rounded-t-[2rem] border-t p-5'
                   : 'right-0 top-0 h-full w-full max-w-[360px] border-l p-5'
               }`}
+              style={
+                viewport.isMobile
+                  ? {
+                      maxHeight: viewport.mobileOverlayMaxHeight,
+                      paddingBottom: 'calc(env(safe-area-inset-bottom, 0px) + 1.25rem)',
+                    }
+                  : undefined
+              }
             >
               <div className="flex items-start justify-between gap-3">
                 <div>
@@ -266,12 +317,24 @@ function App() {
             </div>
           )}
 
-          {selectedAnalyst && <ProfileCard analyst={selectedAnalyst} analystsById={analystMap} onClose={() => handleSelectAnalyst(null)} onSelectAnalyst={handleSelectAnalyst} />}
+          {selectedAnalyst && (
+            <ProfileCard
+              analyst={selectedAnalyst}
+              analystsById={analystMap}
+              onClose={() => handleSelectAnalyst(null)}
+              onSelectAnalyst={handleSelectAnalyst}
+              viewport={viewport}
+            />
+          )}
 
-          {isMobile && mobileFiltersOpen && (
+          {viewport.isMobile && mobileFiltersOpen && (
             <div className="absolute inset-0 z-40 bg-slate-950/60 backdrop-blur-sm" onClick={() => setMobileFiltersOpen(false)}>
               <div
                 className="absolute inset-x-0 bottom-0 max-h-[78vh] overflow-auto rounded-t-[2rem] border-t border-white/10 bg-[#06111c]/97 p-5"
+                style={{
+                  maxHeight: viewport.mobileDrawerMaxHeight,
+                  paddingBottom: 'calc(env(safe-area-inset-bottom, 0px) + 1.25rem)',
+                }}
                 onClick={(event) => event.stopPropagation()}
               >
                 <div className="mx-auto mb-4 h-1.5 w-14 rounded-full bg-white/20" />
@@ -446,12 +509,22 @@ function PanelMetric({ label, value }: { label: string; value: string }) {
   )
 }
 
-function ListView({ analysts, isMobile, setSortKey }: { analysts: Analyst[]; isMobile: boolean; setSortKey: (value: 'name' | 'cluster' | 'persona') => void }) {
+function ListView({
+  analysts,
+  isMobile,
+  setSortKey,
+  viewport,
+}: {
+  analysts: Analyst[]
+  isMobile: boolean
+  setSortKey: (value: 'name' | 'cluster' | 'persona') => void
+  viewport: ViewportProfile
+}) {
   return (
     <div className={`h-screen overflow-auto p-4 ${isMobile ? 'pt-28 pb-24' : 'pt-20'}`}>
       <div className="overflow-hidden rounded-[2rem] border border-white/10 bg-slate-950/75 backdrop-blur">
         <div className="overflow-x-auto">
-          <table className={`min-w-full text-left text-sm ${isMobile ? 'min-w-[1120px]' : ''}`}>
+          <table className="min-w-full text-left text-sm" style={isMobile ? { minWidth: `${viewport.listMinWidth}px` } : undefined}>
             <thead className="sticky top-0 bg-slate-950/95 text-slate-300">
               <tr>
                 <HeaderButton title="Name" onClick={() => setSortKey('name')} />
@@ -529,17 +602,19 @@ function ProfileCard({
   analystsById,
   onClose,
   onSelectAnalyst,
+  viewport,
 }: {
   analyst: Analyst
   analystsById: Map<number, Analyst>
   onClose: () => void
   onSelectAnalyst: (id: number | null) => void
+  viewport: ViewportProfile
 }) {
   return (
     <div className="absolute inset-0 z-50 overflow-y-auto bg-slate-950/55 p-4" onClick={onClose}>
       <div
         className="mx-auto my-4 flex w-full max-w-2xl flex-col overflow-hidden rounded-[2rem] border border-white/10 bg-[#06111c]/95 shadow-2xl backdrop-blur"
-        style={{ maxHeight: 'calc(100dvh - 2rem)' }}
+        style={{ maxHeight: viewport.popupMaxHeight }}
         onClick={(event) => event.stopPropagation()}
       >
         <div className="sticky top-0 z-10 border-b border-white/10 bg-[#06111c]/98 px-5 pb-4 pt-5 md:px-6 md:pt-6">
@@ -555,7 +630,7 @@ function ProfileCard({
             </button>
           </div>
         </div>
-        <div className="overflow-y-auto px-5 pb-5 pt-5 pr-4 md:px-6 md:pb-6 md:pt-6 md:pr-5">
+        <div className="overflow-y-auto px-5 pb-5 pt-5 pr-4 md:px-6 md:pb-6 md:pt-6 md:pr-5" style={{ maxHeight: viewport.popupBodyMaxHeight }}>
           <div className="grid gap-5 text-sm text-slate-200 md:grid-cols-2">
             <div className="space-y-3">
               <PanelMetric label="Pod" value={analyst.podName} />
@@ -603,7 +678,7 @@ function GalaxyScene({
   analysts,
   clusters,
   filteredIds,
-  isMobile,
+  viewport,
   onSelectAnalyst,
   onSelectCluster,
   selectedClusterId,
@@ -613,7 +688,7 @@ function GalaxyScene({
   analysts: Analyst[]
   clusters: Cluster[]
   filteredIds: Set<number>
-  isMobile: boolean
+  viewport: ViewportProfile
   onSelectAnalyst: (id: number | null) => void
   onSelectCluster: (id: number | null) => void
   selectedClusterId: number | null
@@ -621,6 +696,7 @@ function GalaxyScene({
   cameraResetToken: number
 }) {
   const controlsRef = useRef<any>(null)
+  const isMobile = viewport.isMobile
   const clusterCenters = useMemo(() => {
     const entries = new Map<number, THREE.Vector3>()
     clusters.forEach((cluster) => {
@@ -635,25 +711,32 @@ function GalaxyScene({
   return (
     <div className="h-screen w-full">
       <Canvas
-        camera={{ position: [0, 0, 150], fov: isMobile ? 62 : 55 }}
+        camera={{ position: [0, 0, 150], fov: viewport.galaxyFov }}
         onPointerMissed={() => {
           onSelectAnalyst(null)
           onSelectCluster(null)
         }}
       >
         <color attach="background" args={['#020408']} />
-        <fog attach="fog" args={['#020408', isMobile ? 55 : 80, isMobile ? 255 : 220]} />
-        <ambientLight intensity={isMobile ? 1.35 : 1.15} />
-        <pointLight position={[20, 20, 25]} intensity={isMobile ? 82 : 70} color="#b8e5ff" />
-        <Stars radius={150} depth={75} count={isMobile ? 3600 : 3000} factor={isMobile ? 5 : 4} fade speed={0.4} />
+        <fog attach="fog" args={['#020408', isMobile ? 55 : 80, viewport.galaxyFogFar]} />
+        <ambientLight intensity={isMobile ? (viewport.isCompactMobile ? 1.42 : 1.35) : 1.15} />
+        <pointLight position={[20, 20, 25]} intensity={isMobile ? (viewport.isCompactMobile ? 88 : 82) : 70} color="#b8e5ff" />
+        <Stars radius={150} depth={75} count={isMobile ? 3600 : 3000} factor={isMobile ? (viewport.isCompactMobile ? 5.4 : 5) : 4} fade speed={0.4} />
         <FocusController
           clusterCenters={clusterCenters}
           controlsRef={controlsRef}
           selectedClusterId={selectedClusterId}
-          isMobile={isMobile}
+          isMobile={viewport.isMobile}
           cameraResetToken={cameraResetToken}
         />
-        <OrbitControls ref={controlsRef} enablePan={!isMobile} enableDamping dampingFactor={0.08} minDistance={35} maxDistance={220} />
+        <OrbitControls
+          ref={controlsRef}
+          enablePan={!isMobile}
+          enableDamping
+          dampingFactor={0.08}
+          minDistance={isMobile ? 30 : 35}
+          maxDistance={isMobile ? 240 : 220}
+        />
 
         {clusters.map((cluster, index) => {
           const center = clusterCenters.get(cluster.id) ?? new THREE.Vector3()
