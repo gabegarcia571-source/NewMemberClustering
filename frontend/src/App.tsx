@@ -96,6 +96,7 @@ function App() {
   const [accessValue, setAccessValue] = useState('')
   const [accessError, setAccessError] = useState('')
   const [hoveredSearchAnalystId, setHoveredSearchAnalystId] = useState<number | null>(null)
+  const [mobileClusterFromSearch, setMobileClusterFromSearch] = useState(false)
 
   useEffect(() => {
     if (typeof window === 'undefined') return
@@ -199,11 +200,13 @@ function App() {
     setSelectedAnalystId(null)
     setCameraResetToken((value) => value + 1)
     setMobileFiltersOpen(false)
+    setMobileClusterFromSearch(false)
   }
 
   const resetToDefault = () => {
     updateFilters({ nameSearch: '', clusterIds: [], activities: [], office: null })
     setViewMode('3d')
+    setHoveredSearchAnalystId(null)
     resetOverview()
   }
 
@@ -217,6 +220,13 @@ function App() {
   }
 
   const handleSelectCluster = (clusterId: number | null) => {
+    if (viewport.isMobile && clusterId !== null && filters.nameSearch.trim()) {
+      updateFilters({ nameSearch: '' })
+      setHoveredSearchAnalystId(null)
+      setMobileClusterFromSearch(true)
+    } else if (clusterId !== null) {
+      setMobileClusterFromSearch(false)
+    }
     setSelectedClusterId(clusterId)
     if (viewport.isMobile && clusterId !== null) {
       setMobileFiltersOpen(false)
@@ -224,10 +234,21 @@ function App() {
   }
 
   const handleSelectAnalyst = (analystId: number | null) => {
+    if (analystId !== null) {
+      const analyst = analystMap.get(analystId)
+      if (analyst) {
+        setSelectedClusterId(analyst.clusterId)
+      }
+    }
     setSelectedAnalystId(analystId)
     if (viewport.isMobile && analystId !== null) {
       setMobileFiltersOpen(false)
     }
+  }
+
+  const handleOpenClusterFromAnalyst = (clusterId: number) => {
+    setSelectedAnalystId(null)
+    setSelectedClusterId(clusterId)
   }
 
   const handleUnlock = () => {
@@ -470,7 +491,10 @@ function App() {
                   <p className="font-orbitron text-2xl text-white">{selectedCluster.podName}</p>
                   <p className="mt-2 text-sm text-slate-300">{selectedCluster.shortVibe}</p>
                 </div>
-                <button className="rounded-full border border-white/15 px-3 py-1 text-xs text-slate-200" onClick={() => setSelectedClusterId(null)}>
+                <button
+                  className="rounded-full border border-white/15 px-3 py-1 text-xs text-slate-200"
+                  onClick={viewport.isMobile ? (mobileClusterFromSearch ? resetToDefault : resetOverview) : () => setSelectedClusterId(null)}
+                >
                   Close
                 </button>
               </div>
@@ -502,17 +526,24 @@ function App() {
           )}
 
           {selectedAnalyst && viewport.isMobile && (
-            <ProfileCard
+            <AnalystMobileSheet
               analyst={selectedAnalyst}
               analystsById={analystMap}
               onClose={() => handleSelectAnalyst(null)}
               onSelectAnalyst={handleSelectAnalyst}
+              onOpenCluster={handleOpenClusterFromAnalyst}
               viewport={viewport}
             />
           )}
 
           {selectedAnalyst && !viewport.isMobile && (
-            <AnalystSidePanel analyst={selectedAnalyst} analystsById={analystMap} onClose={() => handleSelectAnalyst(null)} onSelectAnalyst={handleSelectAnalyst} />
+            <AnalystSidePanel
+              analyst={selectedAnalyst}
+              analystsById={analystMap}
+              onClose={() => handleSelectAnalyst(null)}
+              onSelectAnalyst={handleSelectAnalyst}
+              onOpenCluster={handleOpenClusterFromAnalyst}
+            />
           )}
 
           {viewport.isMobile && mobileFiltersOpen && (
@@ -545,6 +576,8 @@ function App() {
                   toggleActivity={toggleActivity}
                   resetFilters={resetFilters}
                   showSearch={!viewport.isMobile}
+                  showClusters={false}
+                  showOffice={false}
                 />
               </div>
             </div>
@@ -588,6 +621,8 @@ function FilterControls({
   toggleActivity,
   resetFilters,
   showSearch = true,
+  showClusters = true,
+  showOffice = true,
 }: {
   analysts: Analyst[]
   clusters: Cluster[]
@@ -604,6 +639,8 @@ function FilterControls({
   toggleActivity: (activity: string) => void
   resetFilters: () => void
   showSearch?: boolean
+  showClusters?: boolean
+  showOffice?: boolean
 }) {
   return (
     <div className="space-y-4">
@@ -619,25 +656,27 @@ function FilterControls({
         </div>
       )}
 
-      <FilterSection title="Clusters">
-        <div className="flex flex-wrap gap-2">
-          {clusters.map((cluster, index) => {
-            const active = filters.clusterIds.includes(cluster.id)
-            return (
-              <button
-                key={cluster.id}
-                onClick={() => toggleCluster(cluster.id)}
-                className={`rounded-full border px-3 py-1 text-xs transition ${
-                  active ? 'border-white bg-white text-slate-950' : 'border-white/15 bg-white/5 text-slate-200 hover:border-white/40'
-                }`}
-                style={!active ? { boxShadow: `0 0 0 1px ${CLUSTER_COLORS[index % CLUSTER_COLORS.length]}33` } : undefined}
-              >
-                {cluster.podName}
-              </button>
-            )
-          })}
-        </div>
-      </FilterSection>
+      {showClusters && (
+        <FilterSection title="Clusters">
+          <div className="flex flex-wrap gap-2">
+            {clusters.map((cluster, index) => {
+              const active = filters.clusterIds.includes(cluster.id)
+              return (
+                <button
+                  key={cluster.id}
+                  onClick={() => toggleCluster(cluster.id)}
+                  className={`rounded-full border px-3 py-1 text-xs transition ${
+                    active ? 'border-white bg-white text-slate-950' : 'border-white/15 bg-white/5 text-slate-200 hover:border-white/40'
+                  }`}
+                  style={!active ? { boxShadow: `0 0 0 1px ${CLUSTER_COLORS[index % CLUSTER_COLORS.length]}33` } : undefined}
+                >
+                  {cluster.podName}
+                </button>
+              )
+            })}
+          </div>
+        </FilterSection>
+      )}
 
       <FilterSection title="Activities">
         <div className="grid gap-2">
@@ -650,21 +689,23 @@ function FilterControls({
         </div>
       </FilterSection>
 
-      <div>
-        <label className="mb-2 block text-xs uppercase tracking-[0.2em] text-slate-400">Office</label>
-        <select
-          className="w-full rounded-2xl border border-white/10 bg-slate-950/80 px-3 py-2 text-sm text-white"
-          value={filters.office ?? ''}
-          onChange={(event) => updateFilters({ office: event.target.value || null })}
-        >
-          <option value="">All offices</option>
-          {offices.map((office) => (
-            <option key={office} value={office}>
-              {office}
-            </option>
-          ))}
-        </select>
-      </div>
+      {showOffice && (
+        <div>
+          <label className="mb-2 block text-xs uppercase tracking-[0.2em] text-slate-400">Office</label>
+          <select
+            className="w-full rounded-2xl border border-white/10 bg-slate-950/80 px-3 py-2 text-sm text-white"
+            value={filters.office ?? ''}
+            onChange={(event) => updateFilters({ office: event.target.value || null })}
+          >
+            <option value="">All offices</option>
+            {offices.map((office) => (
+              <option key={office} value={office}>
+                {office}
+              </option>
+            ))}
+          </select>
+        </div>
+      )}
 
       <button className="w-full rounded-2xl border border-white/15 bg-white/5 px-3 py-2 text-sm text-slate-200 transition hover:bg-white/10" onClick={resetFilters}>
         Reset Filters
@@ -793,10 +834,12 @@ function AnalystDetailsContent({
   analyst,
   analystsById,
   onSelectAnalyst,
+  onOpenCluster,
 }: {
   analyst: Analyst
   analystsById: Map<number, Analyst>
   onSelectAnalyst: (id: number | null) => void
+  onOpenCluster?: (clusterId: number) => void
 }) {
   return (
     <>
@@ -805,7 +848,17 @@ function AnalystDetailsContent({
           <p className="text-xs uppercase tracking-[0.2em] text-slate-400">About Me</p>
           <p className="mt-1 leading-6 text-slate-200">{analyst.aboutMe ?? 'No bio provided.'}</p>
         </div>
-        <PanelMetric label="Cluster Vibe" value={analyst.shortVibe} />
+        <div>
+          <p className="text-xs uppercase tracking-[0.2em] text-slate-400">Cluster</p>
+          {onOpenCluster ? (
+            <button className="mt-1 text-left text-base text-sky-200 transition hover:text-white hover:underline" onClick={() => onOpenCluster(analyst.clusterId)}>
+              {analyst.podName}
+            </button>
+          ) : (
+            <p className="mt-1 text-base text-white">{analyst.podName}</p>
+          )}
+          <p className="mt-2 leading-6 text-slate-300">{analyst.shortVibe}</p>
+        </div>
         <PanelMetric label="Top Activities" value={analyst.topActivities.join(', ') || 'No strong preferences'} />
         <div className="grid gap-4 md:grid-cols-3">
           <ContactMetric label="Email" value={analyst.email} href={analyst.email ? `mailto:${analyst.email}` : null} />
@@ -959,12 +1012,14 @@ function ProfileCard({
   analystsById,
   onClose,
   onSelectAnalyst,
+  onOpenCluster,
   viewport,
 }: {
   analyst: Analyst
   analystsById: Map<number, Analyst>
   onClose: () => void
   onSelectAnalyst: (id: number | null) => void
+  onOpenCluster?: (clusterId: number) => void
   viewport: ViewportProfile
 }) {
   return (
@@ -988,7 +1043,50 @@ function ProfileCard({
           </div>
         </div>
         <div className="overflow-y-auto px-5 pb-5 pt-5 pr-4 md:px-6 md:pb-6 md:pt-6 md:pr-5" style={{ maxHeight: viewport.popupBodyMaxHeight }}>
-          <AnalystDetailsContent analyst={analyst} analystsById={analystsById} onSelectAnalyst={onSelectAnalyst} />
+          <AnalystDetailsContent analyst={analyst} analystsById={analystsById} onSelectAnalyst={onSelectAnalyst} onOpenCluster={onOpenCluster} />
+        </div>
+      </div>
+    </div>
+  )
+}
+
+function AnalystMobileSheet({
+  analyst,
+  analystsById,
+  onClose,
+  onSelectAnalyst,
+  onOpenCluster,
+  viewport,
+}: {
+  analyst: Analyst
+  analystsById: Map<number, Analyst>
+  onClose: () => void
+  onSelectAnalyst: (id: number | null) => void
+  onOpenCluster: (clusterId: number) => void
+  viewport: ViewportProfile
+}) {
+  return (
+    <div
+      className="absolute inset-x-0 bottom-0 z-30 max-h-[62vh] rounded-t-[2rem] border-t border-white/10 bg-slate-950/85 p-5 backdrop-blur"
+      style={{
+        maxHeight: viewport.mobileOverlayMaxHeight,
+        paddingBottom: 'calc(env(safe-area-inset-bottom, 0px) + 1.25rem)',
+      }}
+    >
+      <div className="flex h-full flex-col">
+        <div className="flex items-start justify-between gap-3 border-b border-white/10 pb-4">
+          <div className="min-w-0">
+            <p className="font-orbitron text-2xl text-white">{analyst.name}</p>
+            <div className="mt-2 inline-flex rounded-full border border-sky-300/30 bg-sky-300/10 px-3 py-1 text-xs uppercase tracking-[0.2em] text-sky-100">
+              {analyst.personaTag}
+            </div>
+          </div>
+          <button className="rounded-full border border-white/15 px-3 py-1 text-xs text-slate-200" onClick={onClose}>
+            Close
+          </button>
+        </div>
+        <div className="mt-5 flex-1 overflow-auto pr-1">
+          <AnalystDetailsContent analyst={analyst} analystsById={analystsById} onSelectAnalyst={onSelectAnalyst} onOpenCluster={onOpenCluster} />
         </div>
       </div>
     </div>
@@ -1000,11 +1098,13 @@ function AnalystSidePanel({
   analystsById,
   onClose,
   onSelectAnalyst,
+  onOpenCluster,
 }: {
   analyst: Analyst
   analystsById: Map<number, Analyst>
   onClose: () => void
   onSelectAnalyst: (id: number | null) => void
+  onOpenCluster?: (clusterId: number) => void
 }) {
   return (
     <div className="absolute right-0 top-0 z-30 h-full w-full max-w-[360px] border-l border-white/10 bg-slate-950/85 p-5 backdrop-blur">
@@ -1021,7 +1121,7 @@ function AnalystSidePanel({
           </button>
         </div>
         <div className="mt-5 flex-1 overflow-auto pr-1">
-          <AnalystDetailsContent analyst={analyst} analystsById={analystsById} onSelectAnalyst={onSelectAnalyst} />
+          <AnalystDetailsContent analyst={analyst} analystsById={analystsById} onSelectAnalyst={onSelectAnalyst} onOpenCluster={onOpenCluster} />
         </div>
       </div>
     </div>
@@ -1203,9 +1303,9 @@ function FocusController({
         previousClusterId.current = focusedClusterId
         return
       }
-      const direction = new THREE.Vector3(1.2, 0.6, 1.22).normalize()
-      const distance = isMobile ? 46 : 42
-      const adjustedTarget = isMobile ? target.clone().add(new THREE.Vector3(0, -10, 0)) : target.clone()
+      const direction = new THREE.Vector3(1.2, 0.62, 1.24).normalize()
+      const distance = isMobile ? 50 : 42
+      const adjustedTarget = isMobile ? target.clone().add(new THREE.Vector3(0, -12, 0)) : target.clone()
       animationRef.current = {
         startedAt: performance.now(),
         duration: 900,
