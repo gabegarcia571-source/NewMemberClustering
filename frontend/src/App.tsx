@@ -95,6 +95,7 @@ function App() {
   const [isUnlocked, setIsUnlocked] = useState(false)
   const [accessValue, setAccessValue] = useState('')
   const [accessError, setAccessError] = useState('')
+  const [hoveredSearchAnalystId, setHoveredSearchAnalystId] = useState<number | null>(null)
 
   useEffect(() => {
     if (typeof window === 'undefined') return
@@ -152,6 +153,12 @@ function App() {
     }
   }, [viewport.isMobile])
 
+  useEffect(() => {
+    if (!filters.nameSearch.trim() || viewport.isMobile) {
+      setHoveredSearchAnalystId(null)
+    }
+  }, [filters.nameSearch, viewport.isMobile])
+
   const analystMap = useMemo(() => new Map(analysts.map((analyst) => [analyst.id, analyst])), [analysts])
   const clusterMap = useMemo(() => new Map(clusters.map((cluster) => [cluster.id, cluster])), [clusters])
   const offices = useMemo(() => Array.from(new Set(analysts.map((analyst) => analyst.office))).sort(), [analysts])
@@ -171,8 +178,11 @@ function App() {
   const filteredIds = useMemo(() => new Set(filteredAnalysts.map((analyst) => analyst.id)), [filteredAnalysts])
   const selectedAnalyst = selectedAnalystId !== null ? analystMap.get(selectedAnalystId) ?? null : null
   const selectedCluster = selectedClusterId !== null ? clusterMap.get(selectedClusterId) ?? null : null
+  const hoveredSearchAnalyst = hoveredSearchAnalystId !== null ? analystMap.get(hoveredSearchAnalystId) ?? null : null
   const searchFocusClusterId =
     filters.nameSearch.trim() && filteredAnalysts.length === 1 && !selectedAnalyst && selectedClusterId === null ? filteredAnalysts[0].clusterId : null
+  const effectiveFocusedClusterId = selectedClusterId ?? hoveredSearchAnalyst?.clusterId ?? searchFocusClusterId
+  const effectiveHighlightedAnalystId = selectedAnalystId ?? hoveredSearchAnalystId
 
   const sortedTableRows = useMemo(() => {
     const rows = [...filteredAnalysts]
@@ -412,8 +422,8 @@ function App() {
               onSelectAnalyst={handleSelectAnalyst}
               onSelectCluster={handleSelectCluster}
               selectedClusterId={selectedClusterId}
-              focusedClusterId={selectedClusterId ?? searchFocusClusterId}
-              selectedAnalystId={selectedAnalystId}
+              focusedClusterId={effectiveFocusedClusterId}
+              highlightedAnalystId={effectiveHighlightedAnalystId}
               cameraResetToken={cameraResetToken}
             />
           ) : (
@@ -433,6 +443,7 @@ function App() {
                 searchValue={filters.nameSearch}
                 onClear={() => updateFilters({ nameSearch: '' })}
                 onSelectAnalyst={handleSelectAnalyst}
+                onHoverAnalyst={setHoveredSearchAnalystId}
                 maxHeight="52vh"
               />
             </div>
@@ -723,6 +734,7 @@ function SearchMatchesPanel({
   searchValue,
   onClear,
   onSelectAnalyst,
+  onHoverAnalyst,
   mobile = false,
   maxHeight,
   title = 'Search Matches',
@@ -731,6 +743,7 @@ function SearchMatchesPanel({
   searchValue: string
   onClear: () => void
   onSelectAnalyst: (id: number | null) => void
+  onHoverAnalyst?: (id: number | null) => void
   mobile?: boolean
   maxHeight?: string
   title?: string
@@ -758,6 +771,8 @@ function SearchMatchesPanel({
               key={analyst.id}
               className="w-full rounded-2xl border border-white/10 bg-white/5 px-3 py-3 text-left transition hover:border-sky-300/50 hover:bg-white/10"
               onClick={() => onSelectAnalyst(analyst.id)}
+              onMouseEnter={() => onHoverAnalyst?.(analyst.id)}
+              onMouseLeave={() => onHoverAnalyst?.(null)}
             >
               <div className="font-medium text-white">{analyst.name}</div>
               <div className="mt-1 text-xs text-sky-100">
@@ -992,7 +1007,7 @@ function AnalystSidePanel({
   onSelectAnalyst: (id: number | null) => void
 }) {
   return (
-    <div className="absolute right-0 top-0 z-30 h-full w-full max-w-[360px] border-l border-white/10 bg-slate-950/88 p-5 backdrop-blur">
+    <div className="absolute right-0 top-0 z-30 h-full w-full max-w-[360px] border-l border-white/10 bg-slate-950/85 p-5 backdrop-blur">
       <div className="flex h-full flex-col">
         <div className="flex items-start justify-between gap-3 border-b border-white/10 pb-4">
           <div className="min-w-0">
@@ -1022,7 +1037,7 @@ function GalaxyScene({
   onSelectCluster,
   selectedClusterId,
   focusedClusterId,
-  selectedAnalystId,
+  highlightedAnalystId,
   cameraResetToken,
 }: {
   analysts: Analyst[]
@@ -1033,7 +1048,7 @@ function GalaxyScene({
   onSelectCluster: (id: number | null) => void
   selectedClusterId: number | null
   focusedClusterId: number | null
-  selectedAnalystId: number | null
+  highlightedAnalystId: number | null
   cameraResetToken: number
 }) {
   const controlsRef = useRef<any>(null)
@@ -1101,7 +1116,7 @@ function GalaxyScene({
           const clusterIndex = clusters.findIndex((cluster) => cluster.id === analyst.clusterId)
           const color = CLUSTER_COLORS[(clusterIndex >= 0 ? clusterIndex : 0) % CLUSTER_COLORS.length]
           const isVisible = filteredIds.has(analyst.id)
-          const isSelected = analyst.id === selectedAnalystId
+          const isSelected = analyst.id === highlightedAnalystId
           return (
             <Sphere
               key={analyst.id}
@@ -1188,9 +1203,9 @@ function FocusController({
         previousClusterId.current = focusedClusterId
         return
       }
-      const direction = new THREE.Vector3(1.2, 0.58, 1.18).normalize()
-      const distance = isMobile ? 42 : 42
-      const adjustedTarget = isMobile ? target.clone().add(new THREE.Vector3(0, -8, 0)) : target.clone()
+      const direction = new THREE.Vector3(1.2, 0.6, 1.22).normalize()
+      const distance = isMobile ? 46 : 42
+      const adjustedTarget = isMobile ? target.clone().add(new THREE.Vector3(0, -10, 0)) : target.clone()
       animationRef.current = {
         startedAt: performance.now(),
         duration: 900,
