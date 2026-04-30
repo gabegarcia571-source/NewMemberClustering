@@ -409,7 +409,9 @@ function App() {
                       onClick={() => handleSelectAnalyst(analyst.id)}
                     >
                       <div className="font-medium text-white">{analyst.name}</div>
-                      <div className="mt-1 text-xs text-sky-100">{analyst.personaTag}</div>
+                      <div className="mt-1 text-xs text-sky-100">
+                        {analyst.podName} | {analyst.personaTag}
+                      </div>
                       <div className="mt-2 text-xs text-slate-400">{analyst.topActivities.join(', ') || 'No strong preferences'}</div>
                     </button>
                   ))
