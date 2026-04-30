@@ -46,6 +46,22 @@ function createViewportProfile(width: number, height: number): ViewportProfile {
   }
 }
 
+function normalizeInstagramHandle(handle: string | null | undefined): string | null {
+  if (!handle) return null
+  let normalized = handle.trim()
+  normalized = normalized.replace(/^[`'"\s]+/, '')
+  normalized = normalized.replace(/\(.*?\)/g, '')
+  normalized = normalized.replace(/instagram[:\s-]*/i, '')
+  normalized = normalized.replace(/^@+/, '')
+  normalized = normalized.replace(/[^a-zA-Z0-9._]/g, '')
+  return normalized || null
+}
+
+function formatInstagramLabel(handle: string | null | undefined): string | null {
+  const normalized = normalizeInstagramHandle(handle)
+  return normalized ? `@${normalized}` : null
+}
+
 function App() {
   const {
     analysts,
@@ -198,9 +214,24 @@ function App() {
             <>
               <div className="fixed left-4 right-4 z-40" style={{ top: viewport.topInset }}>
                 <div className="flex items-start justify-between gap-3">
-                  <div className="rounded-2xl border border-white/10 bg-slate-950/75 px-4 py-3 backdrop-blur">
-                    <p className="font-orbitron text-sm uppercase tracking-[0.35em] text-sky-200">Rosslyn Analyst Network</p>
-                    <p className="mt-1 text-xs text-slate-300">{filteredAnalysts.length} visible analysts</p>
+                  <div className="min-w-0 flex-1 rounded-2xl border border-white/10 bg-slate-950/75 px-4 py-3 backdrop-blur">
+                    <div className="flex items-start gap-3">
+                      <div className="min-w-0 flex-1">
+                        <p className="font-orbitron text-sm uppercase tracking-[0.35em] text-sky-200">Rosslyn Analyst Network</p>
+                        <p className="mt-1 text-xs text-slate-300">{filteredAnalysts.length} visible analysts</p>
+                      </div>
+                      {!selectedCluster && !selectedAnalyst && (
+                        <div className="w-[46%] max-w-[180px]">
+                          <label className="mb-1 block text-[10px] uppercase tracking-[0.16em] text-slate-500">Search</label>
+                          <input
+                            className="w-full rounded-xl border border-white/10 bg-slate-950/85 px-3 py-2 text-sm text-white outline-none placeholder:text-slate-500"
+                            value={filters.nameSearch}
+                            onChange={(event) => updateFilters({ nameSearch: event.target.value })}
+                            placeholder="Analyst"
+                          />
+                        </div>
+                      )}
+                    </div>
                   </div>
                   <div className="flex flex-col gap-2">
                     <button
@@ -217,18 +248,6 @@ function App() {
                     </button>
                   </div>
                 </div>
-
-                {!selectedCluster && !selectedAnalyst && (
-                  <div className="mt-3 rounded-2xl border border-white/10 bg-slate-950/75 p-3 backdrop-blur">
-                    <label className="mb-2 block text-xs uppercase tracking-[0.2em] text-slate-400">Search Analyst</label>
-                    <input
-                      className="w-full rounded-2xl border border-white/10 bg-slate-950/85 px-3 py-2 text-sm text-white outline-none placeholder:text-slate-500"
-                      value={filters.nameSearch}
-                      onChange={(event) => updateFilters({ nameSearch: event.target.value })}
-                      placeholder="Search analysts"
-                    />
-                  </div>
-                )}
               </div>
 
               <div className="fixed left-4 z-40" style={{ bottom: viewport.bottomInset }}>
@@ -610,13 +629,8 @@ function ListView({
                   </td>
                   <td className="px-4 py-3">
                     {analyst.instagramUsername ? (
-                      <a
-                        className="text-sky-200 transition hover:text-white hover:underline"
-                        href={`https://instagram.com/${analyst.instagramUsername.replace(/^@/, '')}`}
-                        rel="noreferrer"
-                        target="_blank"
-                      >
-                        {analyst.instagramUsername}
+                      <a className="text-sky-200 transition hover:text-white hover:underline" href={`https://instagram.com/${normalizeInstagramHandle(analyst.instagramUsername)}`} rel="noreferrer" target="_blank">
+                        {formatInstagramLabel(analyst.instagramUsername)}
                       </a>
                     ) : (
                       <span className="text-slate-500">Not provided</span>
@@ -677,25 +691,21 @@ function ProfileCard({
           </div>
         </div>
         <div className="overflow-y-auto px-5 pb-5 pt-5 pr-4 md:px-6 md:pb-6 md:pt-6 md:pr-5" style={{ maxHeight: viewport.popupBodyMaxHeight }}>
-          <div className="grid gap-5 text-sm text-slate-200 md:grid-cols-2">
-            <div className="space-y-3">
-              <PanelMetric label="Pod" value={analyst.podName} />
-              <PanelMetric label="Top Activities" value={analyst.topActivities.join(', ') || 'No strong preferences'} />
+          <div className="space-y-5 text-sm text-slate-200">
+            <div>
+              <p className="text-xs uppercase tracking-[0.2em] text-slate-400">About Me</p>
+              <p className="mt-1 leading-6 text-slate-200">{analyst.aboutMe ?? 'No bio provided.'}</p>
+            </div>
+            <PanelMetric label="Cluster Vibe" value={analyst.shortVibe} />
+            <PanelMetric label="Top Activities" value={analyst.topActivities.join(', ') || 'No strong preferences'} />
+            <div className="grid gap-4 md:grid-cols-3">
               <ContactMetric label="Email" value={analyst.email} href={analyst.email ? `mailto:${analyst.email}` : null} />
               <ContactMetric label="Phone" value={analyst.phone} href={analyst.phone ? `tel:${analyst.phone}` : null} />
               <ContactMetric
                 label="Instagram"
-                value={analyst.instagramUsername}
-                href={analyst.instagramUsername ? `https://instagram.com/${analyst.instagramUsername.replace(/^@/, '')}` : null}
+                value={formatInstagramLabel(analyst.instagramUsername)}
+                href={analyst.instagramUsername ? `https://instagram.com/${normalizeInstagramHandle(analyst.instagramUsername)}` : null}
               />
-            </div>
-            <div className="space-y-3">
-              <PanelMetric label="Office" value={analyst.office} />
-              <PanelMetric label="Cluster Vibe" value={analyst.shortVibe} />
-              <div>
-                <p className="text-xs uppercase tracking-[0.2em] text-slate-400">About Me</p>
-                <p className="mt-1 leading-6 text-slate-200">{analyst.aboutMe ?? 'No bio provided.'}</p>
-              </div>
             </div>
           </div>
           <div className="mt-6">
@@ -768,10 +778,10 @@ function GalaxyScene({
         }}
       >
         <color attach="background" args={['#020408']} />
-        <fog attach="fog" args={['#020408', isMobile ? 55 : 72, viewport.galaxyFogFar]} />
-        <ambientLight intensity={isMobile ? (viewport.isCompactMobile ? 1.68 : 1.56) : 1.34} />
-        <pointLight position={[20, 20, 25]} intensity={isMobile ? (viewport.isCompactMobile ? 102 : 96) : 90} color="#c6ebff" />
-        <Stars radius={150} depth={75} count={isMobile ? 3600 : 3200} factor={isMobile ? (viewport.isCompactMobile ? 6 : 5.5) : 4.9} fade speed={0.36} />
+        <fog attach="fog" args={['#020408', isMobile ? 55 : 66, viewport.galaxyFogFar]} />
+        <ambientLight intensity={isMobile ? (viewport.isCompactMobile ? 1.68 : 1.56) : 1.5} />
+        <pointLight position={[20, 20, 25]} intensity={isMobile ? (viewport.isCompactMobile ? 102 : 96) : 104} color="#d2f0ff" />
+        <Stars radius={150} depth={75} count={isMobile ? 3600 : 3400} factor={isMobile ? (viewport.isCompactMobile ? 6 : 5.5) : 5.4} fade speed={0.34} />
         <FocusController
           clusterCenters={clusterCenters}
           controlsRef={controlsRef}
@@ -796,11 +806,11 @@ function GalaxyScene({
             <group key={cluster.id}>
               <mesh position={center} onClick={() => onSelectCluster(cluster.id)}>
                 <sphereGeometry args={[radius, 32, 32]} />
-                <meshBasicMaterial color={color} transparent opacity={selectedClusterId === cluster.id ? (isMobile ? 0.22 : 0.18) : isMobile ? 0.15 : 0.12} wireframe />
+                <meshBasicMaterial color={color} transparent opacity={selectedClusterId === cluster.id ? (isMobile ? 0.22 : 0.22) : isMobile ? 0.15 : 0.18} wireframe />
               </mesh>
               <mesh position={center}>
                 <torusGeometry args={[radius + 1.4, 0.12, 12, 80]} />
-                <meshBasicMaterial color={color} transparent opacity={isMobile ? 0.62 : 0.52} />
+                <meshBasicMaterial color={color} transparent opacity={isMobile ? 0.62 : 0.62} />
               </mesh>
             </group>
           )
@@ -824,8 +834,8 @@ function GalaxyScene({
               <meshStandardMaterial
                 color={color}
                 emissive={new THREE.Color(color)}
-                emissiveIntensity={isSelected ? 3.2 : isVisible ? (isMobile ? 2.15 : 1.9) : isMobile ? 0.48 : 0.42}
-                opacity={isVisible ? 1 : isMobile ? 0.32 : 0.28}
+                emissiveIntensity={isSelected ? 3.2 : isVisible ? (isMobile ? 2.15 : 2.2) : isMobile ? 0.48 : 0.62}
+                opacity={isVisible ? 1 : isMobile ? 0.32 : 0.4}
                 transparent
               />
             </Sphere>
