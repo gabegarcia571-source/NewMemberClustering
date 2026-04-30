@@ -315,6 +315,9 @@ function ListView({ analysts, setSortKey }: { analysts: Analyst[]; setSortKey: (
               <HeaderButton title="Cluster" onClick={() => setSortKey('cluster')} />
               <HeaderButton title="Persona" onClick={() => setSortKey('persona')} />
               <th className="px-4 py-3">Top Activities</th>
+              <th className="px-4 py-3">Email</th>
+              <th className="px-4 py-3">Phone</th>
+              <th className="px-4 py-3">Instagram</th>
               <th className="px-4 py-3">Office</th>
             </tr>
           </thead>
@@ -325,6 +328,38 @@ function ListView({ analysts, setSortKey }: { analysts: Analyst[]; setSortKey: (
                 <td className="px-4 py-3">{analyst.podName}</td>
                 <td className="px-4 py-3">{analyst.personaTag}</td>
                 <td className="px-4 py-3">{analyst.topActivities.join(', ') || 'No strong preferences'}</td>
+                <td className="px-4 py-3">
+                  {analyst.email ? (
+                    <a className="text-sky-200 transition hover:text-white hover:underline" href={`mailto:${analyst.email}`}>
+                      {analyst.email}
+                    </a>
+                  ) : (
+                    <span className="text-slate-500">Not provided</span>
+                  )}
+                </td>
+                <td className="px-4 py-3">
+                  {analyst.phone ? (
+                    <a className="text-sky-200 transition hover:text-white hover:underline" href={`tel:${analyst.phone}`}>
+                      {analyst.phone}
+                    </a>
+                  ) : (
+                    <span className="text-slate-500">Not provided</span>
+                  )}
+                </td>
+                <td className="px-4 py-3">
+                  {analyst.instagramUsername ? (
+                    <a
+                      className="text-sky-200 transition hover:text-white hover:underline"
+                      href={`https://instagram.com/${analyst.instagramUsername.replace(/^@/, '')}`}
+                      rel="noreferrer"
+                      target="_blank"
+                    >
+                      {analyst.instagramUsername}
+                    </a>
+                  ) : (
+                    <span className="text-slate-500">Not provided</span>
+                  )}
+                </td>
                 <td className="px-4 py-3">{analyst.office}</td>
               </tr>
             ))}
