@@ -538,22 +538,24 @@ function ProfileCard({
   return (
     <div className="absolute inset-0 z-50 overflow-y-auto bg-slate-950/55 p-4" onClick={onClose}>
       <div
-        className="mx-auto my-4 w-full max-w-2xl rounded-[2rem] border border-white/10 bg-[#06111c]/95 p-5 shadow-2xl backdrop-blur md:p-6"
+        className="mx-auto my-4 flex w-full max-w-2xl flex-col overflow-hidden rounded-[2rem] border border-white/10 bg-[#06111c]/95 shadow-2xl backdrop-blur"
         style={{ maxHeight: 'calc(100dvh - 2rem)' }}
         onClick={(event) => event.stopPropagation()}
       >
-        <div className="flex items-start justify-between gap-4">
-          <div>
-            <p className="font-orbitron text-2xl text-white">{analyst.name}</p>
-            <div className="mt-2 inline-flex rounded-full border border-sky-300/30 bg-sky-300/10 px-3 py-1 text-xs uppercase tracking-[0.2em] text-sky-100">
-              {analyst.personaTag}
+        <div className="sticky top-0 z-10 border-b border-white/10 bg-[#06111c]/98 px-5 pb-4 pt-5 md:px-6 md:pt-6">
+          <div className="flex items-start justify-between gap-4">
+            <div className="min-w-0">
+              <p className="font-orbitron text-2xl text-white">{analyst.name}</p>
+              <div className="mt-2 inline-flex rounded-full border border-sky-300/30 bg-sky-300/10 px-3 py-1 text-xs uppercase tracking-[0.2em] text-sky-100">
+                {analyst.personaTag}
+              </div>
             </div>
+            <button className="rounded-full border border-white/15 px-3 py-1 text-sm text-slate-200" onClick={onClose}>
+              X
+            </button>
           </div>
-          <button className="rounded-full border border-white/15 px-3 py-1 text-sm text-slate-200" onClick={onClose}>
-            X
-          </button>
         </div>
-        <div className="mt-6 max-h-[calc(100dvh-8.5rem)] overflow-y-auto pr-1">
+        <div className="overflow-y-auto px-5 pb-5 pt-5 pr-4 md:px-6 md:pb-6 md:pt-6 md:pr-5">
           <div className="grid gap-5 text-sm text-slate-200 md:grid-cols-2">
             <div className="space-y-3">
               <PanelMetric label="Pod" value={analyst.podName} />
