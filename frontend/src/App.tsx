@@ -338,10 +338,10 @@ function App() {
                 </div>
               </div>
 
-              {filters.nameSearch.trim() && (
+              {filters.nameSearch.trim() && viewMode !== '3d' && (
                 <div
                   className="fixed left-4 right-4 z-40"
-                  style={{ top: viewport.isCompactMobile ? 'calc(env(safe-area-inset-top, 0px) + 7.5rem)' : 'calc(env(safe-area-inset-top, 0px) + 6.25rem)' }}
+                  style={{ top: viewport.isCompactMobile ? 'calc(env(safe-area-inset-top, 0px) + 8.75rem)' : 'calc(env(safe-area-inset-top, 0px) + 7.25rem)' }}
                 >
                   <SearchMatchesPanel
                     analysts={filteredAnalysts}
@@ -349,7 +349,24 @@ function App() {
                     onClear={() => updateFilters({ nameSearch: '' })}
                     onSelectAnalyst={handleSelectAnalyst}
                     mobile
-                    maxHeight={viewport.isCompactMobile ? '34vh' : '28vh'}
+                    maxHeight={viewport.isCompactMobile ? '32vh' : '26vh'}
+                  />
+                </div>
+              )}
+
+              {filters.nameSearch.trim() && viewMode === '3d' && !selectedCluster && (
+                <div
+                  className="fixed left-4 right-4 z-30"
+                  style={{ bottom: 'calc(env(safe-area-inset-bottom, 0px) + 4.75rem)' }}
+                >
+                  <SearchMatchesPanel
+                    analysts={filteredAnalysts}
+                    searchValue={filters.nameSearch}
+                    onClear={() => updateFilters({ nameSearch: '' })}
+                    onSelectAnalyst={handleSelectAnalyst}
+                    mobile
+                    title="Search Focus"
+                    maxHeight={viewport.isCompactMobile ? '24vh' : '20vh'}
                   />
                 </div>
               )}
@@ -421,7 +438,7 @@ function App() {
             </div>
           )}
 
-          {selectedCluster && (!viewport.isMobile || !selectedAnalyst) && (
+          {selectedCluster && !selectedAnalyst && (
             <div
               className={`absolute z-30 border-white/10 bg-slate-950/85 backdrop-blur ${
                 viewport.isMobile
@@ -473,7 +490,7 @@ function App() {
             </div>
           )}
 
-          {selectedAnalyst && (
+          {selectedAnalyst && viewport.isMobile && (
             <ProfileCard
               analyst={selectedAnalyst}
               analystsById={analystMap}
@@ -481,6 +498,10 @@ function App() {
               onSelectAnalyst={handleSelectAnalyst}
               viewport={viewport}
             />
+          )}
+
+          {selectedAnalyst && !viewport.isMobile && (
+            <AnalystSidePanel analyst={selectedAnalyst} analystsById={analystMap} onClose={() => handleSelectAnalyst(null)} onSelectAnalyst={handleSelectAnalyst} />
           )}
 
           {viewport.isMobile && mobileFiltersOpen && (
@@ -704,6 +725,7 @@ function SearchMatchesPanel({
   onSelectAnalyst,
   mobile = false,
   maxHeight,
+  title = 'Search Matches',
 }: {
   analysts: Analyst[]
   searchValue: string
@@ -711,12 +733,13 @@ function SearchMatchesPanel({
   onSelectAnalyst: (id: number | null) => void
   mobile?: boolean
   maxHeight?: string
+  title?: string
 }) {
   return (
     <div className={`rounded-[2rem] border border-white/10 bg-slate-950/82 p-4 backdrop-blur ${mobile ? 'shadow-2xl' : ''}`}>
       <div className="flex items-start justify-between gap-3">
         <div>
-          <p className="font-orbitron text-sm uppercase tracking-[0.2em] text-sky-200">Search Matches</p>
+          <p className="font-orbitron text-sm uppercase tracking-[0.2em] text-sky-200">{title}</p>
           <p className="mt-1 text-xs text-slate-400">
             {analysts.length} match{analysts.length === 1 ? '' : 'es'} for "{searchValue}"
           </p>
@@ -748,6 +771,58 @@ function SearchMatchesPanel({
         )}
       </div>
     </div>
+  )
+}
+
+function AnalystDetailsContent({
+  analyst,
+  analystsById,
+  onSelectAnalyst,
+}: {
+  analyst: Analyst
+  analystsById: Map<number, Analyst>
+  onSelectAnalyst: (id: number | null) => void
+}) {
+  return (
+    <>
+      <div className="space-y-5 text-sm text-slate-200">
+        <div>
+          <p className="text-xs uppercase tracking-[0.2em] text-slate-400">About Me</p>
+          <p className="mt-1 leading-6 text-slate-200">{analyst.aboutMe ?? 'No bio provided.'}</p>
+        </div>
+        <PanelMetric label="Cluster Vibe" value={analyst.shortVibe} />
+        <PanelMetric label="Top Activities" value={analyst.topActivities.join(', ') || 'No strong preferences'} />
+        <div className="grid gap-4 md:grid-cols-3">
+          <ContactMetric label="Email" value={analyst.email} href={analyst.email ? `mailto:${analyst.email}` : null} />
+          <ContactMetric label="Phone" value={analyst.phone} href={analyst.phone ? `tel:${analyst.phone}` : null} />
+          <ContactMetric
+            label="Instagram"
+            value={formatInstagramLabel(analyst.instagramUsername)}
+            href={analyst.instagramUsername ? `https://instagram.com/${normalizeInstagramHandle(analyst.instagramUsername)}` : null}
+          />
+        </div>
+      </div>
+      <div className="mt-6">
+        <p className="text-xs uppercase tracking-[0.2em] text-slate-400">Closest Matches</p>
+        <div className="mt-3 grid gap-2 md:grid-cols-2">
+          {analyst.closestMatches.map((matchId) => {
+            const match = analystsById.get(matchId)
+            if (!match) return null
+            return (
+              <button
+                key={match.id}
+                className="rounded-2xl border border-white/10 bg-white/5 px-3 py-3 text-left transition hover:border-sky-300/50 hover:bg-white/10"
+                onClick={() => onSelectAnalyst(match.id)}
+              >
+                <div className="font-medium text-white">{match.name}</div>
+                <div className="mt-1 text-xs text-sky-100">{match.podName}</div>
+                <div className="mt-2 text-xs text-slate-400">{match.topActivities.join(', ') || 'No strong preferences'}</div>
+              </button>
+            )
+          })}
+        </div>
+      </div>
+    </>
   )
 }
 
@@ -898,43 +973,40 @@ function ProfileCard({
           </div>
         </div>
         <div className="overflow-y-auto px-5 pb-5 pt-5 pr-4 md:px-6 md:pb-6 md:pt-6 md:pr-5" style={{ maxHeight: viewport.popupBodyMaxHeight }}>
-          <div className="space-y-5 text-sm text-slate-200">
-            <div>
-              <p className="text-xs uppercase tracking-[0.2em] text-slate-400">About Me</p>
-              <p className="mt-1 leading-6 text-slate-200">{analyst.aboutMe ?? 'No bio provided.'}</p>
-            </div>
-            <PanelMetric label="Cluster Vibe" value={analyst.shortVibe} />
-            <PanelMetric label="Top Activities" value={analyst.topActivities.join(', ') || 'No strong preferences'} />
-            <div className="grid gap-4 md:grid-cols-3">
-              <ContactMetric label="Email" value={analyst.email} href={analyst.email ? `mailto:${analyst.email}` : null} />
-              <ContactMetric label="Phone" value={analyst.phone} href={analyst.phone ? `tel:${analyst.phone}` : null} />
-              <ContactMetric
-                label="Instagram"
-                value={formatInstagramLabel(analyst.instagramUsername)}
-                href={analyst.instagramUsername ? `https://instagram.com/${normalizeInstagramHandle(analyst.instagramUsername)}` : null}
-              />
-            </div>
-          </div>
-          <div className="mt-6">
-            <p className="text-xs uppercase tracking-[0.2em] text-slate-400">Closest Matches</p>
-            <div className="mt-3 grid gap-2 md:grid-cols-2">
-              {analyst.closestMatches.map((matchId) => {
-                const match = analystsById.get(matchId)
-                if (!match) return null
-                return (
-                  <button
-                    key={match.id}
-                    className="rounded-2xl border border-white/10 bg-white/5 px-3 py-3 text-left transition hover:border-sky-300/50 hover:bg-white/10"
-                    onClick={() => onSelectAnalyst(match.id)}
-                  >
-                    <div className="font-medium text-white">{match.name}</div>
-                    <div className="mt-1 text-xs text-sky-100">{match.podName}</div>
-                    <div className="mt-2 text-xs text-slate-400">{match.topActivities.join(', ') || 'No strong preferences'}</div>
-                  </button>
-                )
-              })}
+          <AnalystDetailsContent analyst={analyst} analystsById={analystsById} onSelectAnalyst={onSelectAnalyst} />
+        </div>
+      </div>
+    </div>
+  )
+}
+
+function AnalystSidePanel({
+  analyst,
+  analystsById,
+  onClose,
+  onSelectAnalyst,
+}: {
+  analyst: Analyst
+  analystsById: Map<number, Analyst>
+  onClose: () => void
+  onSelectAnalyst: (id: number | null) => void
+}) {
+  return (
+    <div className="absolute right-0 top-0 z-30 h-full w-full max-w-[360px] border-l border-white/10 bg-slate-950/88 p-5 backdrop-blur">
+      <div className="flex h-full flex-col">
+        <div className="flex items-start justify-between gap-3 border-b border-white/10 pb-4">
+          <div className="min-w-0">
+            <p className="font-orbitron text-2xl text-white">{analyst.name}</p>
+            <div className="mt-2 inline-flex rounded-full border border-sky-300/30 bg-sky-300/10 px-3 py-1 text-xs uppercase tracking-[0.2em] text-sky-100">
+              {analyst.personaTag}
             </div>
           </div>
+          <button className="rounded-full border border-white/15 px-3 py-1 text-xs text-slate-200" onClick={onClose}>
+            Close
+          </button>
+        </div>
+        <div className="mt-5 flex-1 overflow-auto pr-1">
+          <AnalystDetailsContent analyst={analyst} analystsById={analystsById} onSelectAnalyst={onSelectAnalyst} />
         </div>
       </div>
     </div>
@@ -1116,15 +1188,16 @@ function FocusController({
         previousClusterId.current = focusedClusterId
         return
       }
-      const direction = new THREE.Vector3(1.2, 0.55, 1.15).normalize()
-      const distance = isMobile ? 34 : 42
+      const direction = new THREE.Vector3(1.2, 0.58, 1.18).normalize()
+      const distance = isMobile ? 42 : 42
+      const adjustedTarget = isMobile ? target.clone().add(new THREE.Vector3(0, -8, 0)) : target.clone()
       animationRef.current = {
         startedAt: performance.now(),
         duration: 900,
         startPos: camera.position.clone(),
-        endPos: target.clone().add(direction.multiplyScalar(distance)),
+        endPos: adjustedTarget.clone().add(direction.multiplyScalar(distance)),
         startTarget: controls.target.clone(),
-        endTarget: target.clone(),
+        endTarget: adjustedTarget,
       }
     }
     previousClusterId.current = focusedClusterId
