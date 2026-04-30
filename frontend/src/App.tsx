@@ -152,12 +152,6 @@ function App() {
     }
   }, [viewport.isMobile])
 
-  useEffect(() => {
-    if (viewport.isMobile && filters.nameSearch.trim() && viewMode !== '2d') {
-      setViewMode('2d')
-    }
-  }, [filters.nameSearch, setViewMode, viewMode, viewport.isMobile])
-
   const analystMap = useMemo(() => new Map(analysts.map((analyst) => [analyst.id, analyst])), [analysts])
   const clusterMap = useMemo(() => new Map(clusters.map((cluster) => [cluster.id, cluster])), [clusters])
   const offices = useMemo(() => Array.from(new Set(analysts.map((analyst) => analyst.office))).sort(), [analysts])
@@ -193,6 +187,21 @@ function App() {
     setSelectedAnalystId(null)
     setCameraResetToken((value) => value + 1)
     setMobileFiltersOpen(false)
+  }
+
+  const resetToDefault = () => {
+    updateFilters({ nameSearch: '', clusterIds: [], activities: [], office: null })
+    setViewMode('3d')
+    resetOverview()
+  }
+
+  const handleSearchChange = (value: string) => {
+    updateFilters({ nameSearch: value })
+    if (viewport.isMobile && value.trim()) {
+      setViewMode('2d')
+      setSelectedClusterId(null)
+      setSelectedAnalystId(null)
+    }
   }
 
   const handleSelectCluster = (clusterId: number | null) => {
@@ -280,19 +289,21 @@ function App() {
           {viewport.isMobile && !selectedAnalyst && (
             <>
               <div className="fixed left-4 right-4 z-40" style={{ top: viewport.topInset }}>
-                <div className="flex items-start justify-between gap-3">
+                <div className="flex items-start justify-between gap-2">
                   <div className="min-w-0 flex-1 rounded-2xl border border-white/10 bg-slate-950/75 px-4 py-3 backdrop-blur">
-                    <div className="flex items-start gap-3">
-                      <div className="min-w-0 flex-1">
-                        <p className="font-orbitron text-sm uppercase tracking-[0.35em] text-sky-200">Rosslyn Analyst Network</p>
+                    <div className={`flex gap-2 ${viewport.isCompactMobile ? 'flex-col' : 'items-start'}`}>
+                      <div className="min-w-0 flex-[1.05]">
+                        <p className={`font-orbitron uppercase text-sky-200 ${viewport.isCompactMobile ? 'text-[11px] tracking-[0.24em]' : 'text-sm tracking-[0.35em]'}`}>
+                          Rosslyn Analyst Network
+                        </p>
                         <p className="mt-1 text-xs text-slate-300">{filteredAnalysts.length} visible analysts</p>
                       </div>
                       {!selectedCluster && !selectedAnalyst && (
-                        <div className="w-[46%] max-w-[180px]">
+                        <div className={`min-w-0 ${viewport.isCompactMobile ? 'w-full' : 'flex-[0.95]'}`}>
                           <input
                             className="w-full rounded-xl border border-white/10 bg-slate-950/85 px-3 py-2 text-sm text-white outline-none placeholder:text-slate-500"
                             value={filters.nameSearch}
-                            onChange={(event) => updateFilters({ nameSearch: event.target.value })}
+                            onChange={(event) => handleSearchChange(event.target.value)}
                             placeholder="SEARCH"
                           />
                         </div>
@@ -308,7 +319,16 @@ function App() {
                     </button>
                     <button
                       className="rounded-full border border-white/15 bg-slate-950/75 px-4 py-2 text-xs uppercase tracking-[0.2em] text-slate-100 backdrop-blur transition hover:border-sky-300 hover:text-white"
-                      onClick={() => setViewMode(viewMode === '3d' ? '2d' : '3d')}
+                      onClick={() => {
+                        if (viewMode === '3d') {
+                          setViewMode('2d')
+                        } else {
+                          setViewMode('3d')
+                          setSelectedClusterId(null)
+                          setSelectedAnalystId(null)
+                          setCameraResetToken((value) => value + 1)
+                        }
+                      }}
                     >
                       {viewMode === '3d' ? 'List View' : '3D View'}
                     </button>
@@ -319,9 +339,9 @@ function App() {
               <div className="fixed left-4 z-40" style={{ bottom: viewport.bottomInset }}>
                 <button
                   className="rounded-full border border-white/15 bg-slate-950/75 px-4 py-2 text-xs uppercase tracking-[0.2em] text-slate-100 backdrop-blur transition hover:border-sky-300 hover:text-white"
-                  onClick={resetOverview}
+                  onClick={filters.nameSearch.trim() ? resetToDefault : resetOverview}
                 >
-                  Back To Overview
+                  {filters.nameSearch.trim() ? 'Reset To Default' : 'Back To Overview'}
                 </button>
               </div>
             </>
@@ -688,7 +708,19 @@ function ListView({
   viewport: ViewportProfile
 }) {
   return (
-    <div className={`h-screen overflow-auto p-4 ${isMobile ? 'pt-28 pb-24' : 'pt-20'}`}>
+    <div
+      className="h-screen overflow-auto p-4"
+      style={
+        isMobile
+          ? {
+              paddingTop: viewport.isCompactMobile ? '9.5rem' : '7.5rem',
+              paddingBottom: '6.5rem',
+            }
+          : {
+              paddingTop: '5rem',
+            }
+      }
+    >
       <div className="overflow-hidden rounded-[2rem] border border-white/10 bg-slate-950/75 backdrop-blur">
         <div className="overflow-x-auto">
           <table className="min-w-full text-left text-sm" style={isMobile ? { minWidth: `${viewport.listMinWidth}px` } : undefined}>
