@@ -509,6 +509,33 @@ function PanelMetric({ label, value }: { label: string; value: string }) {
   )
 }
 
+function ContactMetric({
+  label,
+  value,
+  href,
+}: {
+  label: string
+  value: string | null
+  href?: string | null
+}) {
+  return (
+    <div>
+      <p className="text-xs uppercase tracking-[0.2em] text-slate-400">{label}</p>
+      {value ? (
+        href ? (
+          <a className="mt-1 inline-block text-sm text-sky-200 transition hover:text-white hover:underline" href={href} rel="noreferrer" target={href.startsWith('http') ? '_blank' : undefined}>
+            {value}
+          </a>
+        ) : (
+          <p className="mt-1 text-sm text-white">{value}</p>
+        )
+      ) : (
+        <p className="mt-1 text-sm text-slate-500">Not provided</p>
+      )}
+    </div>
+  )
+}
+
 function ListView({
   analysts,
   isMobile,
@@ -635,9 +662,13 @@ function ProfileCard({
             <div className="space-y-3">
               <PanelMetric label="Pod" value={analyst.podName} />
               <PanelMetric label="Top Activities" value={analyst.topActivities.join(', ') || 'No strong preferences'} />
-              <PanelMetric label="Email" value={analyst.email ?? 'Not provided'} />
-              <PanelMetric label="Phone" value={analyst.phone ?? 'Not provided'} />
-              <PanelMetric label="Instagram" value={analyst.instagramUsername ?? 'Not provided'} />
+              <ContactMetric label="Email" value={analyst.email} href={analyst.email ? `mailto:${analyst.email}` : null} />
+              <ContactMetric label="Phone" value={analyst.phone} href={analyst.phone ? `tel:${analyst.phone}` : null} />
+              <ContactMetric
+                label="Instagram"
+                value={analyst.instagramUsername}
+                href={analyst.instagramUsername ? `https://instagram.com/${analyst.instagramUsername.replace(/^@/, '')}` : null}
+              />
             </div>
             <div className="space-y-3">
               <PanelMetric label="Office" value={analyst.office} />
