@@ -171,6 +171,8 @@ function App() {
   const filteredIds = useMemo(() => new Set(filteredAnalysts.map((analyst) => analyst.id)), [filteredAnalysts])
   const selectedAnalyst = selectedAnalystId !== null ? analystMap.get(selectedAnalystId) ?? null : null
   const selectedCluster = selectedClusterId !== null ? clusterMap.get(selectedClusterId) ?? null : null
+  const searchFocusClusterId =
+    filters.nameSearch.trim() && filteredAnalysts.length === 1 && !selectedAnalyst && selectedClusterId === null ? filteredAnalysts[0].clusterId : null
 
   const sortedTableRows = useMemo(() => {
     const rows = [...filteredAnalysts]
@@ -301,7 +303,7 @@ function App() {
                       {!selectedCluster && !selectedAnalyst && (
                         <div className={`min-w-0 ${viewport.isCompactMobile ? 'w-full' : 'flex-[0.95]'}`}>
                           <input
-                            className="w-full rounded-xl border border-white/10 bg-slate-950/85 px-3 py-2 text-sm text-white outline-none placeholder:text-slate-500"
+                            className="w-full rounded-xl border border-white/10 bg-slate-950/85 px-3 py-2 text-base text-white outline-none placeholder:text-slate-500 md:text-sm"
                             value={filters.nameSearch}
                             onChange={(event) => handleSearchChange(event.target.value)}
                             placeholder="SEARCH"
@@ -335,6 +337,22 @@ function App() {
                   </div>
                 </div>
               </div>
+
+              {filters.nameSearch.trim() && (
+                <div
+                  className="fixed left-4 right-4 z-40"
+                  style={{ top: viewport.isCompactMobile ? 'calc(env(safe-area-inset-top, 0px) + 7.5rem)' : 'calc(env(safe-area-inset-top, 0px) + 6.25rem)' }}
+                >
+                  <SearchMatchesPanel
+                    analysts={filteredAnalysts}
+                    searchValue={filters.nameSearch}
+                    onClear={() => updateFilters({ nameSearch: '' })}
+                    onSelectAnalyst={handleSelectAnalyst}
+                    mobile
+                    maxHeight={viewport.isCompactMobile ? '34vh' : '28vh'}
+                  />
+                </div>
+              )}
 
               <div className="fixed left-4 z-40" style={{ bottom: viewport.bottomInset }}>
                 <button
@@ -377,48 +395,29 @@ function App() {
               onSelectAnalyst={handleSelectAnalyst}
               onSelectCluster={handleSelectCluster}
               selectedClusterId={selectedClusterId}
+              focusedClusterId={selectedClusterId ?? searchFocusClusterId}
               selectedAnalystId={selectedAnalystId}
               cameraResetToken={cameraResetToken}
             />
           ) : (
-            <ListView analysts={sortedTableRows} isMobile={viewport.isMobile} setSortKey={setSortKey} viewport={viewport} />
+            <ListView
+              analysts={sortedTableRows}
+              isMobile={viewport.isMobile}
+              setSortKey={setSortKey}
+              viewport={viewport}
+              onSelectAnalyst={handleSelectAnalyst}
+            />
           )}
 
           {!viewport.isMobile && viewMode === '3d' && filters.nameSearch.trim() && (
-            <div className="absolute left-4 top-44 z-20 w-full max-w-[320px] rounded-[2rem] border border-white/10 bg-slate-950/82 p-4 backdrop-blur">
-              <div className="flex items-start justify-between gap-3">
-                <div>
-                  <p className="font-orbitron text-sm uppercase tracking-[0.2em] text-sky-200">Search Matches</p>
-                  <p className="mt-1 text-xs text-slate-400">
-                    {filteredAnalysts.length} match{filteredAnalysts.length === 1 ? '' : 'es'} for "{filters.nameSearch}"
-                  </p>
-                </div>
-                <button
-                  className="rounded-full border border-white/15 px-3 py-1 text-xs text-slate-200 transition hover:border-sky-300 hover:text-white"
-                  onClick={() => updateFilters({ nameSearch: '' })}
-                >
-                  Clear
-                </button>
-              </div>
-              <div className="mt-4 max-h-[52vh] space-y-2 overflow-auto pr-1">
-                {filteredAnalysts.length > 0 ? (
-                  filteredAnalysts.map((analyst) => (
-                    <button
-                      key={analyst.id}
-                      className="w-full rounded-2xl border border-white/10 bg-white/5 px-3 py-3 text-left transition hover:border-sky-300/50 hover:bg-white/10"
-                      onClick={() => handleSelectAnalyst(analyst.id)}
-                    >
-                      <div className="font-medium text-white">{analyst.name}</div>
-                      <div className="mt-1 text-xs text-sky-100">
-                        {analyst.podName} | {analyst.personaTag}
-                      </div>
-                      <div className="mt-2 text-xs text-slate-400">{analyst.topActivities.join(', ') || 'No strong preferences'}</div>
-                    </button>
-                  ))
-                ) : (
-                  <div className="rounded-2xl border border-white/10 bg-white/5 px-3 py-4 text-sm text-slate-400">No analyst names matched that search.</div>
-                )}
-              </div>
+            <div className="absolute left-4 top-44 z-20 w-full max-w-[320px]">
+              <SearchMatchesPanel
+                analysts={filteredAnalysts}
+                searchValue={filters.nameSearch}
+                onClear={() => updateFilters({ nameSearch: '' })}
+                onSelectAnalyst={handleSelectAnalyst}
+                maxHeight="52vh"
+              />
             </div>
           )}
 
@@ -698,16 +697,72 @@ function ContactMetric({
   )
 }
 
+function SearchMatchesPanel({
+  analysts,
+  searchValue,
+  onClear,
+  onSelectAnalyst,
+  mobile = false,
+  maxHeight,
+}: {
+  analysts: Analyst[]
+  searchValue: string
+  onClear: () => void
+  onSelectAnalyst: (id: number | null) => void
+  mobile?: boolean
+  maxHeight?: string
+}) {
+  return (
+    <div className={`rounded-[2rem] border border-white/10 bg-slate-950/82 p-4 backdrop-blur ${mobile ? 'shadow-2xl' : ''}`}>
+      <div className="flex items-start justify-between gap-3">
+        <div>
+          <p className="font-orbitron text-sm uppercase tracking-[0.2em] text-sky-200">Search Matches</p>
+          <p className="mt-1 text-xs text-slate-400">
+            {analysts.length} match{analysts.length === 1 ? '' : 'es'} for "{searchValue}"
+          </p>
+        </div>
+        <button
+          className="rounded-full border border-white/15 px-3 py-1 text-xs text-slate-200 transition hover:border-sky-300 hover:text-white"
+          onClick={onClear}
+        >
+          Clear
+        </button>
+      </div>
+      <div className="mt-4 space-y-2 overflow-auto pr-1" style={maxHeight ? { maxHeight } : undefined}>
+        {analysts.length > 0 ? (
+          analysts.map((analyst) => (
+            <button
+              key={analyst.id}
+              className="w-full rounded-2xl border border-white/10 bg-white/5 px-3 py-3 text-left transition hover:border-sky-300/50 hover:bg-white/10"
+              onClick={() => onSelectAnalyst(analyst.id)}
+            >
+              <div className="font-medium text-white">{analyst.name}</div>
+              <div className="mt-1 text-xs text-sky-100">
+                {analyst.podName} | {analyst.personaTag}
+              </div>
+              <div className="mt-2 text-xs text-slate-400">{analyst.topActivities.join(', ') || 'No strong preferences'}</div>
+            </button>
+          ))
+        ) : (
+          <div className="rounded-2xl border border-white/10 bg-white/5 px-3 py-4 text-sm text-slate-400">No analyst names matched that search.</div>
+        )}
+      </div>
+    </div>
+  )
+}
+
 function ListView({
   analysts,
   isMobile,
   setSortKey,
   viewport,
+  onSelectAnalyst,
 }: {
   analysts: Analyst[]
   isMobile: boolean
   setSortKey: (value: 'name' | 'cluster' | 'persona') => void
   viewport: ViewportProfile
+  onSelectAnalyst: (id: number | null) => void
 }) {
   return (
     <div
@@ -730,7 +785,7 @@ function ListView({
               <tr>
                 <HeaderButton title="Name" onClick={() => setSortKey('name')} />
                 <HeaderButton title="Cluster" onClick={() => setSortKey('cluster')} />
-                <HeaderButton title="Persona" onClick={() => setSortKey('persona')} />
+                {!isMobile && <HeaderButton title="Persona" onClick={() => setSortKey('persona')} />}
                 <th className="px-4 py-3">Top Activities</th>
                 <th className="px-4 py-3">Email</th>
                 <th className="px-4 py-3">Phone</th>
@@ -739,10 +794,28 @@ function ListView({
             </thead>
             <tbody>
               {analysts.map((analyst) => (
-                <tr key={analyst.id} className="border-t border-white/5 text-slate-100">
-                  <td className="px-4 py-3">{analyst.name}</td>
+                <tr
+                  key={analyst.id}
+                  className={`border-t border-white/5 text-slate-100 ${isMobile ? 'cursor-pointer transition hover:bg-white/5' : ''}`}
+                  onClick={isMobile ? () => onSelectAnalyst(analyst.id) : undefined}
+                >
+                  <td className="px-4 py-3">
+                    {isMobile ? (
+                      <button
+                        className="text-left text-sky-100 transition hover:text-white"
+                        onClick={(event) => {
+                          event.stopPropagation()
+                          onSelectAnalyst(analyst.id)
+                        }}
+                      >
+                        {analyst.name}
+                      </button>
+                    ) : (
+                      analyst.name
+                    )}
+                  </td>
                   <td className="px-4 py-3">{analyst.podName}</td>
-                  <td className="px-4 py-3">{analyst.personaTag}</td>
+                  {!isMobile && <td className="px-4 py-3">{analyst.personaTag}</td>}
                   <td className="px-4 py-3">{analyst.topActivities.join(', ') || 'No strong preferences'}</td>
                   <td className="px-4 py-3">
                     {analyst.email ? (
@@ -876,6 +949,7 @@ function GalaxyScene({
   onSelectAnalyst,
   onSelectCluster,
   selectedClusterId,
+  focusedClusterId,
   selectedAnalystId,
   cameraResetToken,
 }: {
@@ -886,6 +960,7 @@ function GalaxyScene({
   onSelectAnalyst: (id: number | null) => void
   onSelectCluster: (id: number | null) => void
   selectedClusterId: number | null
+  focusedClusterId: number | null
   selectedAnalystId: number | null
   cameraResetToken: number
 }) {
@@ -919,7 +994,7 @@ function GalaxyScene({
         <FocusController
           clusterCenters={clusterCenters}
           controlsRef={controlsRef}
-          selectedClusterId={selectedClusterId}
+          focusedClusterId={focusedClusterId}
           isMobile={viewport.isMobile}
           cameraResetToken={cameraResetToken}
         />
@@ -983,13 +1058,13 @@ function GalaxyScene({
 function FocusController({
   clusterCenters,
   controlsRef,
-  selectedClusterId,
+  focusedClusterId,
   isMobile,
   cameraResetToken,
 }: {
   clusterCenters: Map<number, THREE.Vector3>
   controlsRef: MutableRefObject<any>
-  selectedClusterId: number | null
+  focusedClusterId: number | null
   isMobile: boolean
   cameraResetToken: number
 }) {
@@ -1022,11 +1097,11 @@ function FocusController({
 
   useEffect(() => {
     const controls = controlsRef.current
-    if (!controls || selectedClusterId === previousClusterId.current) {
-      previousClusterId.current = selectedClusterId
+    if (!controls || focusedClusterId === previousClusterId.current) {
+      previousClusterId.current = focusedClusterId
       return
     }
-    if (selectedClusterId === null) {
+    if (focusedClusterId === null) {
       animationRef.current = {
         startedAt: performance.now(),
         duration: 850,
@@ -1036,9 +1111,9 @@ function FocusController({
         endTarget: defaultTarget.current.clone(),
       }
     } else {
-      const target = clusterCenters.get(selectedClusterId)
+      const target = clusterCenters.get(focusedClusterId)
       if (!target) {
-        previousClusterId.current = selectedClusterId
+        previousClusterId.current = focusedClusterId
         return
       }
       const direction = new THREE.Vector3(1.2, 0.55, 1.15).normalize()
@@ -1052,8 +1127,8 @@ function FocusController({
         endTarget: target.clone(),
       }
     }
-    previousClusterId.current = selectedClusterId
-  }, [camera, clusterCenters, controlsRef, isMobile, selectedClusterId])
+    previousClusterId.current = focusedClusterId
+  }, [camera, clusterCenters, controlsRef, focusedClusterId, isMobile])
 
   useFrame(() => {
     const animation = animationRef.current
