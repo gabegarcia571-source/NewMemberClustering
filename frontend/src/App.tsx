@@ -7,6 +7,8 @@ import { useAppStore } from './store'
 import type { Analyst, Cluster, NetworkMap } from './types'
 
 const CLUSTER_COLORS = ['#4FC3F7', '#81C784', '#FFB74D', '#F06292', '#CE93D8', '#4DB6AC', '#FFF176', '#FF8A65', '#90CAF9', '#A5D6A7']
+const ACCESS_PASSWORDS = ['rosslyn']
+const ACCESS_STORAGE_KEY = 'rosslyn-network-access'
 
 interface ViewportProfile {
   width: number
@@ -90,8 +92,19 @@ function App() {
     typeof window !== 'undefined' ? createViewportProfile(window.innerWidth, window.innerHeight) : createViewportProfile(1440, 900),
   )
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false)
+  const [isUnlocked, setIsUnlocked] = useState(false)
+  const [accessValue, setAccessValue] = useState('')
+  const [accessError, setAccessError] = useState('')
 
   useEffect(() => {
+    if (typeof window === 'undefined') return
+    if (window.sessionStorage.getItem(ACCESS_STORAGE_KEY) === 'granted') {
+      setIsUnlocked(true)
+    }
+  }, [])
+
+  useEffect(() => {
+    if (!isUnlocked) return
     let mounted = true
     async function loadData() {
       setLoading(true)
@@ -119,7 +132,7 @@ function App() {
     return () => {
       mounted = false
     }
-  }, [setData, setError, setLoading])
+  }, [isUnlocked, setData, setError, setLoading])
 
   useEffect(() => {
     if (typeof window === 'undefined') return
@@ -138,6 +151,12 @@ function App() {
       setMobileFiltersOpen(false)
     }
   }, [viewport.isMobile])
+
+  useEffect(() => {
+    if (viewport.isMobile && filters.nameSearch.trim() && viewMode !== '2d') {
+      setViewMode('2d')
+    }
+  }, [filters.nameSearch, setViewMode, viewMode, viewport.isMobile])
 
   const analystMap = useMemo(() => new Map(analysts.map((analyst) => [analyst.id, analyst])), [analysts])
   const clusterMap = useMemo(() => new Map(clusters.map((cluster) => [cluster.id, cluster])), [clusters])
@@ -188,6 +207,54 @@ function App() {
     if (viewport.isMobile && analystId !== null) {
       setMobileFiltersOpen(false)
     }
+  }
+
+  const handleUnlock = () => {
+    const normalized = accessValue.trim().toLowerCase()
+    if (ACCESS_PASSWORDS.includes(normalized)) {
+      if (typeof window !== 'undefined') {
+        window.sessionStorage.setItem(ACCESS_STORAGE_KEY, 'granted')
+      }
+      setIsUnlocked(true)
+      setAccessError('')
+      setAccessValue('')
+      return
+    }
+    setAccessError('Incorrect password')
+  }
+
+  if (!isUnlocked) {
+    return (
+      <div className="min-h-screen bg-[#020408] text-white">
+        <div className="flex min-h-screen items-center justify-center p-6">
+          <div className="w-full max-w-md rounded-[2rem] border border-white/10 bg-[#06111c]/95 p-8 shadow-2xl backdrop-blur">
+            <p className="font-orbitron text-xl uppercase tracking-[0.35em] text-sky-200">Rosslyn Analyst Network</p>
+            <p className="mt-4 text-sm leading-6 text-slate-300">
+              Enter the shared access word to open the network map.
+            </p>
+            <div className="mt-6 space-y-3">
+              <input
+                className="w-full rounded-2xl border border-white/10 bg-slate-950/85 px-4 py-3 text-sm text-white outline-none placeholder:text-slate-500"
+                value={accessValue}
+                onChange={(event) => setAccessValue(event.target.value)}
+                onKeyDown={(event) => {
+                  if (event.key === 'Enter') handleUnlock()
+                }}
+                placeholder="Password"
+                type="password"
+              />
+              {accessError ? <p className="text-sm text-rose-300">{accessError}</p> : null}
+              <button
+                className="w-full rounded-2xl border border-white/15 bg-white/5 px-4 py-3 text-sm uppercase tracking-[0.18em] text-slate-100 transition hover:border-sky-300 hover:text-white"
+                onClick={handleUnlock}
+              >
+                Enter
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    )
   }
 
   return (
@@ -295,6 +362,42 @@ function App() {
             />
           ) : (
             <ListView analysts={sortedTableRows} isMobile={viewport.isMobile} setSortKey={setSortKey} viewport={viewport} />
+          )}
+
+          {!viewport.isMobile && viewMode === '3d' && filters.nameSearch.trim() && (
+            <div className="absolute left-4 top-44 z-20 w-full max-w-[320px] rounded-[2rem] border border-white/10 bg-slate-950/82 p-4 backdrop-blur">
+              <div className="flex items-start justify-between gap-3">
+                <div>
+                  <p className="font-orbitron text-sm uppercase tracking-[0.2em] text-sky-200">Search Matches</p>
+                  <p className="mt-1 text-xs text-slate-400">
+                    {filteredAnalysts.length} match{filteredAnalysts.length === 1 ? '' : 'es'} for "{filters.nameSearch}"
+                  </p>
+                </div>
+                <button
+                  className="rounded-full border border-white/15 px-3 py-1 text-xs text-slate-200 transition hover:border-sky-300 hover:text-white"
+                  onClick={() => updateFilters({ nameSearch: '' })}
+                >
+                  Clear
+                </button>
+              </div>
+              <div className="mt-4 max-h-[52vh] space-y-2 overflow-auto pr-1">
+                {filteredAnalysts.length > 0 ? (
+                  filteredAnalysts.map((analyst) => (
+                    <button
+                      key={analyst.id}
+                      className="w-full rounded-2xl border border-white/10 bg-white/5 px-3 py-3 text-left transition hover:border-sky-300/50 hover:bg-white/10"
+                      onClick={() => handleSelectAnalyst(analyst.id)}
+                    >
+                      <div className="font-medium text-white">{analyst.name}</div>
+                      <div className="mt-1 text-xs text-sky-100">{analyst.personaTag}</div>
+                      <div className="mt-2 text-xs text-slate-400">{analyst.topActivities.join(', ') || 'No strong preferences'}</div>
+                    </button>
+                  ))
+                ) : (
+                  <div className="rounded-2xl border border-white/10 bg-white/5 px-3 py-4 text-sm text-slate-400">No analyst names matched that search.</div>
+                )}
+              </div>
+            </div>
           )}
 
           {selectedCluster && (!viewport.isMobile || !selectedAnalyst) && (
@@ -598,7 +701,6 @@ function ListView({
                 <th className="px-4 py-3">Email</th>
                 <th className="px-4 py-3">Phone</th>
                 <th className="px-4 py-3">Instagram</th>
-                <th className="px-4 py-3">Office</th>
               </tr>
             </thead>
             <tbody>
@@ -635,7 +737,6 @@ function ListView({
                       <span className="text-slate-500">Not provided</span>
                     )}
                   </td>
-                  <td className="px-4 py-3">{analyst.office}</td>
                 </tr>
               ))}
             </tbody>
