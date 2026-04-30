@@ -536,8 +536,12 @@ function ProfileCard({
   onSelectAnalyst: (id: number | null) => void
 }) {
   return (
-    <div className="absolute inset-0 z-50 flex items-center justify-center bg-slate-950/55 p-4" onClick={onClose}>
-      <div className="w-full max-w-2xl rounded-[2rem] border border-white/10 bg-[#06111c]/95 p-6 shadow-2xl backdrop-blur" onClick={(event) => event.stopPropagation()}>
+    <div className="absolute inset-0 z-50 overflow-y-auto bg-slate-950/55 p-4" onClick={onClose}>
+      <div
+        className="mx-auto my-4 w-full max-w-2xl rounded-[2rem] border border-white/10 bg-[#06111c]/95 p-5 shadow-2xl backdrop-blur md:p-6"
+        style={{ maxHeight: 'calc(100dvh - 2rem)' }}
+        onClick={(event) => event.stopPropagation()}
+      >
         <div className="flex items-start justify-between gap-4">
           <div>
             <p className="font-orbitron text-2xl text-white">{analyst.name}</p>
@@ -549,41 +553,43 @@ function ProfileCard({
             X
           </button>
         </div>
-        <div className="mt-6 grid gap-5 text-sm text-slate-200 md:grid-cols-2">
-          <div className="space-y-3">
-            <PanelMetric label="Pod" value={analyst.podName} />
-            <PanelMetric label="Top Activities" value={analyst.topActivities.join(', ') || 'No strong preferences'} />
-            <PanelMetric label="Email" value={analyst.email ?? 'Not provided'} />
-            <PanelMetric label="Phone" value={analyst.phone ?? 'Not provided'} />
-            <PanelMetric label="Instagram" value={analyst.instagramUsername ?? 'Not provided'} />
-          </div>
-          <div className="space-y-3">
-            <PanelMetric label="Office" value={analyst.office} />
-            <PanelMetric label="Cluster Vibe" value={analyst.shortVibe} />
-            <div>
-              <p className="text-xs uppercase tracking-[0.2em] text-slate-400">About Me</p>
-              <p className="mt-1 leading-6 text-slate-200">{analyst.aboutMe ?? 'No bio provided.'}</p>
+        <div className="mt-6 max-h-[calc(100dvh-8.5rem)] overflow-y-auto pr-1">
+          <div className="grid gap-5 text-sm text-slate-200 md:grid-cols-2">
+            <div className="space-y-3">
+              <PanelMetric label="Pod" value={analyst.podName} />
+              <PanelMetric label="Top Activities" value={analyst.topActivities.join(', ') || 'No strong preferences'} />
+              <PanelMetric label="Email" value={analyst.email ?? 'Not provided'} />
+              <PanelMetric label="Phone" value={analyst.phone ?? 'Not provided'} />
+              <PanelMetric label="Instagram" value={analyst.instagramUsername ?? 'Not provided'} />
+            </div>
+            <div className="space-y-3">
+              <PanelMetric label="Office" value={analyst.office} />
+              <PanelMetric label="Cluster Vibe" value={analyst.shortVibe} />
+              <div>
+                <p className="text-xs uppercase tracking-[0.2em] text-slate-400">About Me</p>
+                <p className="mt-1 leading-6 text-slate-200">{analyst.aboutMe ?? 'No bio provided.'}</p>
+              </div>
             </div>
           </div>
-        </div>
-        <div className="mt-6">
-          <p className="text-xs uppercase tracking-[0.2em] text-slate-400">Closest Matches</p>
-          <div className="mt-3 grid gap-2 md:grid-cols-2">
-            {analyst.closestMatches.map((matchId) => {
-              const match = analystsById.get(matchId)
-              if (!match) return null
-              return (
-                <button
-                  key={match.id}
-                  className="rounded-2xl border border-white/10 bg-white/5 px-3 py-3 text-left transition hover:border-sky-300/50 hover:bg-white/10"
-                  onClick={() => onSelectAnalyst(match.id)}
-                >
-                  <div className="font-medium text-white">{match.name}</div>
-                  <div className="mt-1 text-xs text-sky-100">{match.podName}</div>
-                  <div className="mt-2 text-xs text-slate-400">{match.topActivities.join(', ') || 'No strong preferences'}</div>
-                </button>
-              )
-            })}
+          <div className="mt-6">
+            <p className="text-xs uppercase tracking-[0.2em] text-slate-400">Closest Matches</p>
+            <div className="mt-3 grid gap-2 md:grid-cols-2">
+              {analyst.closestMatches.map((matchId) => {
+                const match = analystsById.get(matchId)
+                if (!match) return null
+                return (
+                  <button
+                    key={match.id}
+                    className="rounded-2xl border border-white/10 bg-white/5 px-3 py-3 text-left transition hover:border-sky-300/50 hover:bg-white/10"
+                    onClick={() => onSelectAnalyst(match.id)}
+                  >
+                    <div className="font-medium text-white">{match.name}</div>
+                    <div className="mt-1 text-xs text-sky-100">{match.podName}</div>
+                    <div className="mt-2 text-xs text-slate-400">{match.topActivities.join(', ') || 'No strong preferences'}</div>
+                  </button>
+                )
+              })}
+            </div>
           </div>
         </div>
       </div>
