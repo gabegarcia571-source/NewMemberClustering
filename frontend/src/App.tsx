@@ -27,13 +27,13 @@ function App() {
     updateFilters,
     resetFilters,
     toggleCluster,
-    togglePersona,
     toggleActivity,
   } = useAppStore()
 
   const [sortKey, setSortKey] = useState<'name' | 'cluster' | 'persona'>('name')
   const [cameraResetToken, setCameraResetToken] = useState(0)
-  const isMobile = typeof navigator !== 'undefined' && navigator.maxTouchPoints > 0
+  const [isMobile, setIsMobile] = useState(() => (typeof window !== 'undefined' ? window.innerWidth < 1024 : false))
+  const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false)
 
   useEffect(() => {
     let mounted = true
@@ -65,28 +65,38 @@ function App() {
     }
   }, [setData, setError, setLoading])
 
+  useEffect(() => {
+    if (typeof window === 'undefined') return
+    const mediaQuery = window.matchMedia('(max-width: 1023px)')
+    const update = () => setIsMobile(mediaQuery.matches)
+    update()
+    mediaQuery.addEventListener('change', update)
+    return () => mediaQuery.removeEventListener('change', update)
+  }, [])
+
+  useEffect(() => {
+    if (!isMobile) {
+      setMobileFiltersOpen(false)
+    }
+  }, [isMobile])
+
   const analystMap = useMemo(() => new Map(analysts.map((analyst) => [analyst.id, analyst])), [analysts])
   const clusterMap = useMemo(() => new Map(clusters.map((cluster) => [cluster.id, cluster])), [clusters])
+  const offices = useMemo(() => Array.from(new Set(analysts.map((analyst) => analyst.office))).sort(), [analysts])
 
   const filteredAnalysts = useMemo(() => {
     return analysts.filter((analyst) => {
       const nameMatch = !filters.nameSearch || analyst.name.toLowerCase().includes(filters.nameSearch.toLowerCase())
       const clusterMatch = filters.clusterIds.length === 0 || filters.clusterIds.includes(analyst.clusterId)
-      const personaMatch = filters.personas.length === 0 || filters.personas.includes(analyst.personaTag)
       const activityMatch =
         filters.activities.length === 0 ||
         filters.activities.every((activity) => analyst.topActivities.includes(activity) || analyst.activityScores[activity] > 0)
       const officeMatch = !filters.office || analyst.office === filters.office
-      return nameMatch && clusterMatch && personaMatch && activityMatch && officeMatch
+      return nameMatch && clusterMatch && activityMatch && officeMatch
     })
   }, [analysts, filters])
 
   const filteredIds = useMemo(() => new Set(filteredAnalysts.map((analyst) => analyst.id)), [filteredAnalysts])
-  const personas = useMemo(
-    () => Array.from(new Set(analysts.map((analyst) => analyst.personaTag))).filter((persona) => persona !== 'Persona Unspecified').sort(),
-    [analysts],
-  )
-  const offices = useMemo(() => Array.from(new Set(analysts.map((analyst) => analyst.office))).sort(), [analysts])
   const selectedAnalyst = selectedAnalystId !== null ? analystMap.get(selectedAnalystId) ?? null : null
   const selectedCluster = selectedClusterId !== null ? clusterMap.get(selectedClusterId) ?? null : null
 
@@ -100,115 +110,97 @@ function App() {
     return rows
   }, [filteredAnalysts, sortKey])
 
+  const resetOverview = () => {
+    setSelectedClusterId(null)
+    setSelectedAnalystId(null)
+    setCameraResetToken((value) => value + 1)
+    setMobileFiltersOpen(false)
+  }
+
+  const handleSelectCluster = (clusterId: number | null) => {
+    setSelectedClusterId(clusterId)
+    if (isMobile && clusterId !== null) {
+      setMobileFiltersOpen(false)
+    }
+  }
+
+  const handleSelectAnalyst = (analystId: number | null) => {
+    setSelectedAnalystId(analystId)
+    if (isMobile && analystId !== null) {
+      setMobileFiltersOpen(false)
+    }
+  }
+
   return (
     <div className="min-h-screen">
       <div className="mx-auto flex min-h-screen max-w-[1800px] flex-col lg:flex-row">
-        <aside className="border-b border-white/10 bg-white/5 p-4 backdrop-blur lg:w-[320px] lg:border-b-0 lg:border-r">
-          <div className="mb-4 flex items-start justify-between gap-3">
-            <div>
-              <p className="font-orbitron text-lg uppercase tracking-[0.35em] text-sky-200">Rosslyn Analyst Network</p>
-              <p className="mt-2 text-sm text-slate-300">Professional & social alignment map for the full Rosslyn analyst cohort.</p>
-            </div>
-            <button
-              className="rounded-full border border-white/15 px-3 py-2 text-xs uppercase tracking-[0.2em] text-slate-200 transition hover:border-sky-300 hover:text-white"
-              onClick={() => setViewMode(viewMode === '3d' ? '2d' : '3d')}
-            >
-              {viewMode === '3d' ? 'List View' : '3D View'}
-            </button>
-          </div>
-
-          <div className="space-y-4">
-            <div>
-              <label className="mb-2 block text-xs uppercase tracking-[0.2em] text-slate-400">Search Name</label>
-              <input
-                className="w-full rounded-2xl border border-white/10 bg-slate-950/80 px-3 py-2 text-sm text-white outline-none ring-0 placeholder:text-slate-500"
-                value={filters.nameSearch}
-                onChange={(event) => updateFilters({ nameSearch: event.target.value })}
-                placeholder="Search analysts"
-              />
-            </div>
-
-            <FilterSection title="Clusters">
-              <div className="flex flex-wrap gap-2">
-                {clusters.map((cluster, index) => {
-                  const active = filters.clusterIds.includes(cluster.id)
-                  return (
-                    <button
-                      key={cluster.id}
-                      onClick={() => toggleCluster(cluster.id)}
-                      className={`rounded-full border px-3 py-1 text-xs transition ${
-                        active ? 'border-white bg-white text-slate-950' : 'border-white/15 bg-white/5 text-slate-200 hover:border-white/40'
-                      }`}
-                      style={!active ? { boxShadow: `0 0 0 1px ${CLUSTER_COLORS[index % CLUSTER_COLORS.length]}33` } : undefined}
-                    >
-                      {cluster.podName}
-                    </button>
-                  )
-                })}
-              </div>
-            </FilterSection>
-
-            <FilterSection title="Persona">
-              <div className="grid grid-cols-2 gap-2">
-                {personas.map((persona) => (
-                  <label key={persona} className="flex items-center gap-2 text-sm text-slate-300">
-                    <input type="checkbox" checked={filters.personas.includes(persona)} onChange={() => togglePersona(persona)} />
-                    <span>{persona}</span>
-                  </label>
-                ))}
-              </div>
-            </FilterSection>
-
-            <FilterSection title="Activities">
-              <div className="grid gap-2">
-                {Object.keys(analysts[0]?.activityScores ?? {}).map((activity) => (
-                  <label key={activity} className="flex items-center gap-2 text-sm text-slate-300">
-                    <input type="checkbox" checked={filters.activities.includes(activity)} onChange={() => toggleActivity(activity)} />
-                    <span>{activity}</span>
-                  </label>
-                ))}
-              </div>
-            </FilterSection>
-
-            <div>
-              <label className="mb-2 block text-xs uppercase tracking-[0.2em] text-slate-400">Office</label>
-              <select
-                className="w-full rounded-2xl border border-white/10 bg-slate-950/80 px-3 py-2 text-sm text-white"
-                value={filters.office ?? ''}
-                onChange={(event) => updateFilters({ office: event.target.value || null })}
-              >
-                <option value="">All offices</option>
-                {offices.map((office) => (
-                  <option key={office} value={office}>
-                    {office}
-                  </option>
-                ))}
-              </select>
-            </div>
-
-            <button className="w-full rounded-2xl border border-white/15 bg-white/5 px-3 py-2 text-sm text-slate-200 transition hover:bg-white/10" onClick={resetFilters}>
-              Reset Filters
-            </button>
-          </div>
-        </aside>
+        {!isMobile && (
+          <aside className="border-b border-white/10 bg-white/5 p-4 backdrop-blur lg:w-[320px] lg:border-b-0 lg:border-r">
+            <SidebarHeader viewMode={viewMode} setViewMode={setViewMode} />
+            <FilterControls
+              analysts={analysts}
+              clusters={clusters}
+              filters={filters}
+              offices={offices}
+              updateFilters={updateFilters}
+              toggleCluster={toggleCluster}
+              toggleActivity={toggleActivity}
+              resetFilters={resetFilters}
+            />
+          </aside>
+        )}
 
         <main className="relative flex-1">
-          <div className="absolute left-4 top-4 z-10 rounded-2xl border border-white/10 bg-slate-950/70 px-4 py-3 backdrop-blur">
-            <p className="text-xs uppercase tracking-[0.25em] text-slate-400">Visible Analysts</p>
-            <p className="mt-1 font-orbitron text-2xl text-white">{filteredAnalysts.length}</p>
-          </div>
-          <div className="absolute left-4 top-24 z-10">
-            <button
-              className="rounded-full border border-white/15 bg-slate-950/70 px-4 py-2 text-xs uppercase tracking-[0.2em] text-slate-100 backdrop-blur transition hover:border-sky-300 hover:text-white"
-              onClick={() => {
-                setSelectedClusterId(null)
-                setSelectedAnalystId(null)
-                setCameraResetToken((value) => value + 1)
-              }}
-            >
-              Back To Overview
-            </button>
-          </div>
+          {isMobile && (
+            <>
+              <div className="absolute left-4 right-4 top-4 z-20 flex items-start justify-between gap-3">
+                <div className="rounded-2xl border border-white/10 bg-slate-950/75 px-4 py-3 backdrop-blur">
+                  <p className="font-orbitron text-sm uppercase tracking-[0.35em] text-sky-200">Rosslyn Analyst Network</p>
+                  <p className="mt-1 text-xs text-slate-300">{filteredAnalysts.length} visible analysts</p>
+                </div>
+                <div className="flex flex-col gap-2">
+                  <button
+                    className="rounded-full border border-white/15 bg-slate-950/75 px-4 py-2 text-xs uppercase tracking-[0.2em] text-slate-100 backdrop-blur transition hover:border-sky-300 hover:text-white"
+                    onClick={() => setMobileFiltersOpen(true)}
+                  >
+                    Filters
+                  </button>
+                  <button
+                    className="rounded-full border border-white/15 bg-slate-950/75 px-4 py-2 text-xs uppercase tracking-[0.2em] text-slate-100 backdrop-blur transition hover:border-sky-300 hover:text-white"
+                    onClick={() => setViewMode(viewMode === '3d' ? '2d' : '3d')}
+                  >
+                    {viewMode === '3d' ? 'List View' : '3D View'}
+                  </button>
+                </div>
+              </div>
+
+              <div className="absolute bottom-4 left-4 z-20">
+                <button
+                  className="rounded-full border border-white/15 bg-slate-950/75 px-4 py-2 text-xs uppercase tracking-[0.2em] text-slate-100 backdrop-blur transition hover:border-sky-300 hover:text-white"
+                  onClick={resetOverview}
+                >
+                  Back To Overview
+                </button>
+              </div>
+            </>
+          )}
+
+          {!isMobile && (
+            <>
+              <div className="absolute left-4 top-4 z-10 rounded-2xl border border-white/10 bg-slate-950/70 px-4 py-3 backdrop-blur">
+                <p className="text-xs uppercase tracking-[0.25em] text-slate-400">Visible Analysts</p>
+                <p className="mt-1 font-orbitron text-2xl text-white">{filteredAnalysts.length}</p>
+              </div>
+              <div className="absolute left-4 top-24 z-10">
+                <button
+                  className="rounded-full border border-white/15 bg-slate-950/70 px-4 py-2 text-xs uppercase tracking-[0.2em] text-slate-100 backdrop-blur transition hover:border-sky-300 hover:text-white"
+                  onClick={resetOverview}
+                >
+                  Back To Overview
+                </button>
+              </div>
+            </>
+          )}
 
           {isLoading ? (
             <CenterMessage title="Loading galaxy map..." subtitle="Pulling the latest network-map.json into the site." />
@@ -220,18 +212,24 @@ function App() {
               clusters={clusters}
               filteredIds={filteredIds}
               isMobile={isMobile}
-              onSelectAnalyst={setSelectedAnalystId}
-              onSelectCluster={setSelectedClusterId}
+              onSelectAnalyst={handleSelectAnalyst}
+              onSelectCluster={handleSelectCluster}
               selectedClusterId={selectedClusterId}
               selectedAnalystId={selectedAnalystId}
               cameraResetToken={cameraResetToken}
             />
           ) : (
-            <ListView analysts={sortedTableRows} setSortKey={setSortKey} />
+            <ListView analysts={sortedTableRows} isMobile={isMobile} setSortKey={setSortKey} />
           )}
 
           {selectedCluster && (
-            <div className="absolute right-0 top-0 z-10 h-full w-full max-w-[360px] border-l border-white/10 bg-slate-950/80 p-5 backdrop-blur">
+            <div
+              className={`absolute z-30 border-white/10 bg-slate-950/85 backdrop-blur ${
+                isMobile
+                  ? 'inset-x-0 bottom-0 max-h-[62vh] rounded-t-[2rem] border-t p-5'
+                  : 'right-0 top-0 h-full w-full max-w-[360px] border-l p-5'
+              }`}
+            >
               <div className="flex items-start justify-between gap-3">
                 <div>
                   <p className="font-orbitron text-2xl text-white">{selectedCluster.podName}</p>
@@ -247,7 +245,7 @@ function App() {
                 <PanelMetric label="Top Activities" value={selectedCluster.topClusterActivities.join(', ')} />
                 <div>
                   <p className="mb-2 text-xs uppercase tracking-[0.2em] text-slate-400">Members</p>
-                  <div className="max-h-[44vh] space-y-2 overflow-auto pr-1">
+                  <div className="max-h-[34vh] space-y-2 overflow-auto pr-1">
                     {selectedCluster.members.map((memberId) => {
                       const analyst = analystMap.get(memberId)
                       if (!analyst) return null
@@ -255,7 +253,7 @@ function App() {
                         <button
                           key={analyst.id}
                           className="w-full rounded-2xl border border-white/10 bg-white/5 px-3 py-2 text-left text-sm transition hover:border-sky-300/50 hover:bg-white/10"
-                          onClick={() => setSelectedAnalystId(analyst.id)}
+                          onClick={() => handleSelectAnalyst(analyst.id)}
                         >
                           <div className="font-medium text-white">{analyst.name}</div>
                           <div className="text-xs text-slate-400">{analyst.personaTag}</div>
@@ -268,9 +266,153 @@ function App() {
             </div>
           )}
 
-          {selectedAnalyst && <ProfileCard analyst={selectedAnalyst} analystsById={analystMap} onClose={() => setSelectedAnalystId(null)} onSelectAnalyst={setSelectedAnalystId} />}
+          {selectedAnalyst && <ProfileCard analyst={selectedAnalyst} analystsById={analystMap} onClose={() => handleSelectAnalyst(null)} onSelectAnalyst={handleSelectAnalyst} />}
+
+          {isMobile && mobileFiltersOpen && (
+            <div className="absolute inset-0 z-40 bg-slate-950/60 backdrop-blur-sm" onClick={() => setMobileFiltersOpen(false)}>
+              <div
+                className="absolute inset-x-0 bottom-0 max-h-[78vh] overflow-auto rounded-t-[2rem] border-t border-white/10 bg-[#06111c]/97 p-5"
+                onClick={(event) => event.stopPropagation()}
+              >
+                <div className="mx-auto mb-4 h-1.5 w-14 rounded-full bg-white/20" />
+                <div className="mb-4 flex items-center justify-between gap-3">
+                  <div>
+                    <p className="font-orbitron text-lg text-white">Filters</p>
+                    <p className="text-sm text-slate-400">Explore first, refine when you need to.</p>
+                  </div>
+                  <button className="rounded-full border border-white/15 px-3 py-1 text-xs text-slate-200" onClick={() => setMobileFiltersOpen(false)}>
+                    Close
+                  </button>
+                </div>
+                <FilterControls
+                  analysts={analysts}
+                  clusters={clusters}
+                  filters={filters}
+                  offices={offices}
+                  updateFilters={updateFilters}
+                  toggleCluster={toggleCluster}
+                  toggleActivity={toggleActivity}
+                  resetFilters={resetFilters}
+                />
+              </div>
+            </div>
+          )}
         </main>
       </div>
+    </div>
+  )
+}
+
+function SidebarHeader({
+  viewMode,
+  setViewMode,
+}: {
+  viewMode: '3d' | '2d'
+  setViewMode: (value: '3d' | '2d') => void
+}) {
+  return (
+    <div className="mb-4 flex items-start justify-between gap-3">
+      <div>
+        <p className="font-orbitron text-lg uppercase tracking-[0.35em] text-sky-200">Rosslyn Analyst Network</p>
+        <p className="mt-2 text-sm text-slate-300">Professional & social alignment map for the full Rosslyn analyst cohort.</p>
+      </div>
+      <button
+        className="rounded-full border border-white/15 px-3 py-2 text-xs uppercase tracking-[0.2em] text-slate-200 transition hover:border-sky-300 hover:text-white"
+        onClick={() => setViewMode(viewMode === '3d' ? '2d' : '3d')}
+      >
+        {viewMode === '3d' ? 'List View' : '3D View'}
+      </button>
+    </div>
+  )
+}
+
+function FilterControls({
+  analysts,
+  clusters,
+  filters,
+  offices,
+  updateFilters,
+  toggleCluster,
+  toggleActivity,
+  resetFilters,
+}: {
+  analysts: Analyst[]
+  clusters: Cluster[]
+  filters: {
+    nameSearch: string
+    clusterIds: number[]
+    personas: string[]
+    activities: string[]
+    office: string | null
+  }
+  offices: string[]
+  updateFilters: (value: Partial<{ nameSearch: string; clusterIds: number[]; personas: string[]; activities: string[]; office: string | null }>) => void
+  toggleCluster: (clusterId: number) => void
+  toggleActivity: (activity: string) => void
+  resetFilters: () => void
+}) {
+  return (
+    <div className="space-y-4">
+      <div>
+        <label className="mb-2 block text-xs uppercase tracking-[0.2em] text-slate-400">Search Name</label>
+        <input
+          className="w-full rounded-2xl border border-white/10 bg-slate-950/80 px-3 py-2 text-sm text-white outline-none ring-0 placeholder:text-slate-500"
+          value={filters.nameSearch}
+          onChange={(event) => updateFilters({ nameSearch: event.target.value })}
+          placeholder="Search analysts"
+        />
+      </div>
+
+      <FilterSection title="Clusters">
+        <div className="flex flex-wrap gap-2">
+          {clusters.map((cluster, index) => {
+            const active = filters.clusterIds.includes(cluster.id)
+            return (
+              <button
+                key={cluster.id}
+                onClick={() => toggleCluster(cluster.id)}
+                className={`rounded-full border px-3 py-1 text-xs transition ${
+                  active ? 'border-white bg-white text-slate-950' : 'border-white/15 bg-white/5 text-slate-200 hover:border-white/40'
+                }`}
+                style={!active ? { boxShadow: `0 0 0 1px ${CLUSTER_COLORS[index % CLUSTER_COLORS.length]}33` } : undefined}
+              >
+                {cluster.podName}
+              </button>
+            )
+          })}
+        </div>
+      </FilterSection>
+
+      <FilterSection title="Activities">
+        <div className="grid gap-2">
+          {Object.keys(analysts[0]?.activityScores ?? {}).map((activity) => (
+            <label key={activity} className="flex items-center gap-2 text-sm text-slate-300">
+              <input type="checkbox" checked={filters.activities.includes(activity)} onChange={() => toggleActivity(activity)} />
+              <span>{activity}</span>
+            </label>
+          ))}
+        </div>
+      </FilterSection>
+
+      <div>
+        <label className="mb-2 block text-xs uppercase tracking-[0.2em] text-slate-400">Office</label>
+        <select
+          className="w-full rounded-2xl border border-white/10 bg-slate-950/80 px-3 py-2 text-sm text-white"
+          value={filters.office ?? ''}
+          onChange={(event) => updateFilters({ office: event.target.value || null })}
+        >
+          <option value="">All offices</option>
+          {offices.map((office) => (
+            <option key={office} value={office}>
+              {office}
+            </option>
+          ))}
+        </select>
+      </div>
+
+      <button className="w-full rounded-2xl border border-white/15 bg-white/5 px-3 py-2 text-sm text-slate-200 transition hover:bg-white/10" onClick={resetFilters}>
+        Reset Filters
+      </button>
     </div>
   )
 }
@@ -304,67 +446,69 @@ function PanelMetric({ label, value }: { label: string; value: string }) {
   )
 }
 
-function ListView({ analysts, setSortKey }: { analysts: Analyst[]; setSortKey: (value: 'name' | 'cluster' | 'persona') => void }) {
+function ListView({ analysts, isMobile, setSortKey }: { analysts: Analyst[]; isMobile: boolean; setSortKey: (value: 'name' | 'cluster' | 'persona') => void }) {
   return (
-    <div className="h-screen overflow-auto p-4 pt-20">
+    <div className={`h-screen overflow-auto p-4 ${isMobile ? 'pt-28 pb-24' : 'pt-20'}`}>
       <div className="overflow-hidden rounded-[2rem] border border-white/10 bg-slate-950/75 backdrop-blur">
-        <table className="min-w-full text-left text-sm">
-          <thead className="sticky top-0 bg-slate-950/95 text-slate-300">
-            <tr>
-              <HeaderButton title="Name" onClick={() => setSortKey('name')} />
-              <HeaderButton title="Cluster" onClick={() => setSortKey('cluster')} />
-              <HeaderButton title="Persona" onClick={() => setSortKey('persona')} />
-              <th className="px-4 py-3">Top Activities</th>
-              <th className="px-4 py-3">Email</th>
-              <th className="px-4 py-3">Phone</th>
-              <th className="px-4 py-3">Instagram</th>
-              <th className="px-4 py-3">Office</th>
-            </tr>
-          </thead>
-          <tbody>
-            {analysts.map((analyst) => (
-              <tr key={analyst.id} className="border-t border-white/5 text-slate-100">
-                <td className="px-4 py-3">{analyst.name}</td>
-                <td className="px-4 py-3">{analyst.podName}</td>
-                <td className="px-4 py-3">{analyst.personaTag}</td>
-                <td className="px-4 py-3">{analyst.topActivities.join(', ') || 'No strong preferences'}</td>
-                <td className="px-4 py-3">
-                  {analyst.email ? (
-                    <a className="text-sky-200 transition hover:text-white hover:underline" href={`mailto:${analyst.email}`}>
-                      {analyst.email}
-                    </a>
-                  ) : (
-                    <span className="text-slate-500">Not provided</span>
-                  )}
-                </td>
-                <td className="px-4 py-3">
-                  {analyst.phone ? (
-                    <a className="text-sky-200 transition hover:text-white hover:underline" href={`tel:${analyst.phone}`}>
-                      {analyst.phone}
-                    </a>
-                  ) : (
-                    <span className="text-slate-500">Not provided</span>
-                  )}
-                </td>
-                <td className="px-4 py-3">
-                  {analyst.instagramUsername ? (
-                    <a
-                      className="text-sky-200 transition hover:text-white hover:underline"
-                      href={`https://instagram.com/${analyst.instagramUsername.replace(/^@/, '')}`}
-                      rel="noreferrer"
-                      target="_blank"
-                    >
-                      {analyst.instagramUsername}
-                    </a>
-                  ) : (
-                    <span className="text-slate-500">Not provided</span>
-                  )}
-                </td>
-                <td className="px-4 py-3">{analyst.office}</td>
+        <div className="overflow-x-auto">
+          <table className={`min-w-full text-left text-sm ${isMobile ? 'min-w-[1120px]' : ''}`}>
+            <thead className="sticky top-0 bg-slate-950/95 text-slate-300">
+              <tr>
+                <HeaderButton title="Name" onClick={() => setSortKey('name')} />
+                <HeaderButton title="Cluster" onClick={() => setSortKey('cluster')} />
+                <HeaderButton title="Persona" onClick={() => setSortKey('persona')} />
+                <th className="px-4 py-3">Top Activities</th>
+                <th className="px-4 py-3">Email</th>
+                <th className="px-4 py-3">Phone</th>
+                <th className="px-4 py-3">Instagram</th>
+                <th className="px-4 py-3">Office</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {analysts.map((analyst) => (
+                <tr key={analyst.id} className="border-t border-white/5 text-slate-100">
+                  <td className="px-4 py-3">{analyst.name}</td>
+                  <td className="px-4 py-3">{analyst.podName}</td>
+                  <td className="px-4 py-3">{analyst.personaTag}</td>
+                  <td className="px-4 py-3">{analyst.topActivities.join(', ') || 'No strong preferences'}</td>
+                  <td className="px-4 py-3">
+                    {analyst.email ? (
+                      <a className="text-sky-200 transition hover:text-white hover:underline" href={`mailto:${analyst.email}`}>
+                        {analyst.email}
+                      </a>
+                    ) : (
+                      <span className="text-slate-500">Not provided</span>
+                    )}
+                  </td>
+                  <td className="px-4 py-3">
+                    {analyst.phone ? (
+                      <a className="text-sky-200 transition hover:text-white hover:underline" href={`tel:${analyst.phone}`}>
+                        {analyst.phone}
+                      </a>
+                    ) : (
+                      <span className="text-slate-500">Not provided</span>
+                    )}
+                  </td>
+                  <td className="px-4 py-3">
+                    {analyst.instagramUsername ? (
+                      <a
+                        className="text-sky-200 transition hover:text-white hover:underline"
+                        href={`https://instagram.com/${analyst.instagramUsername.replace(/^@/, '')}`}
+                        rel="noreferrer"
+                        target="_blank"
+                      >
+                        {analyst.instagramUsername}
+                      </a>
+                    ) : (
+                      <span className="text-slate-500">Not provided</span>
+                    )}
+                  </td>
+                  <td className="px-4 py-3">{analyst.office}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   )
@@ -389,10 +533,10 @@ function ProfileCard({
   analyst: Analyst
   analystsById: Map<number, Analyst>
   onClose: () => void
-  onSelectAnalyst: (id: number) => void
+  onSelectAnalyst: (id: number | null) => void
 }) {
   return (
-    <div className="absolute inset-0 z-20 flex items-center justify-center bg-slate-950/55 p-4" onClick={onClose}>
+    <div className="absolute inset-0 z-50 flex items-center justify-center bg-slate-950/55 p-4" onClick={onClose}>
       <div className="w-full max-w-2xl rounded-[2rem] border border-white/10 bg-[#06111c]/95 p-6 shadow-2xl backdrop-blur" onClick={(event) => event.stopPropagation()}>
         <div className="flex items-start justify-between gap-4">
           <div>
@@ -490,10 +634,10 @@ function GalaxyScene({
         }}
       >
         <color attach="background" args={['#020408']} />
-        <fog attach="fog" args={['#020408', 80, 220]} />
-        <ambientLight intensity={1.15} />
-        <pointLight position={[20, 20, 25]} intensity={70} color="#9ed8ff" />
-        <Stars radius={140} depth={60} count={3000} factor={4} fade speed={0.4} />
+        <fog attach="fog" args={['#020408', isMobile ? 55 : 80, isMobile ? 255 : 220]} />
+        <ambientLight intensity={isMobile ? 1.35 : 1.15} />
+        <pointLight position={[20, 20, 25]} intensity={isMobile ? 82 : 70} color="#b8e5ff" />
+        <Stars radius={150} depth={75} count={isMobile ? 3600 : 3000} factor={isMobile ? 5 : 4} fade speed={0.4} />
         <FocusController
           clusterCenters={clusterCenters}
           controlsRef={controlsRef}
@@ -511,11 +655,11 @@ function GalaxyScene({
             <group key={cluster.id}>
               <mesh position={center} onClick={() => onSelectCluster(cluster.id)}>
                 <sphereGeometry args={[radius, 32, 32]} />
-                <meshBasicMaterial color={color} transparent opacity={selectedClusterId === cluster.id ? 0.12 : 0.05} wireframe />
+                <meshBasicMaterial color={color} transparent opacity={selectedClusterId === cluster.id ? (isMobile ? 0.17 : 0.12) : isMobile ? 0.09 : 0.05} wireframe />
               </mesh>
               <mesh position={center}>
                 <torusGeometry args={[radius + 1.4, 0.12, 12, 80]} />
-                <meshBasicMaterial color={color} transparent opacity={0.35} />
+                <meshBasicMaterial color={color} transparent opacity={isMobile ? 0.46 : 0.35} />
               </mesh>
             </group>
           )
@@ -539,8 +683,8 @@ function GalaxyScene({
               <meshStandardMaterial
                 color={color}
                 emissive={new THREE.Color(color)}
-                emissiveIntensity={isSelected ? 2.8 : isVisible ? 1.4 : 0.18}
-                opacity={isVisible ? 0.95 : 0.12}
+                emissiveIntensity={isSelected ? 3.0 : isVisible ? (isMobile ? 1.8 : 1.4) : isMobile ? 0.28 : 0.18}
+                opacity={isVisible ? (isMobile ? 1 : 0.95) : isMobile ? 0.2 : 0.12}
                 transparent
               />
             </Sphere>
