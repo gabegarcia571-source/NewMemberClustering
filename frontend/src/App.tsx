@@ -222,12 +222,11 @@ function App() {
                       </div>
                       {!selectedCluster && !selectedAnalyst && (
                         <div className="w-[46%] max-w-[180px]">
-                          <label className="mb-1 block text-[10px] uppercase tracking-[0.16em] text-slate-500">Search</label>
                           <input
                             className="w-full rounded-xl border border-white/10 bg-slate-950/85 px-3 py-2 text-sm text-white outline-none placeholder:text-slate-500"
                             value={filters.nameSearch}
                             onChange={(event) => updateFilters({ nameSearch: event.target.value })}
-                            placeholder="Analyst"
+                            placeholder="SEARCH"
                           />
                         </div>
                       )}
