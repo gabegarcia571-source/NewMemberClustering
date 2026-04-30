@@ -196,25 +196,39 @@ function App() {
         <main className="relative flex-1">
           {viewport.isMobile && (
             <>
-              <div className="fixed left-4 right-4 z-40 flex items-start justify-between gap-3" style={{ top: viewport.topInset }}>
-                <div className="rounded-2xl border border-white/10 bg-slate-950/75 px-4 py-3 backdrop-blur">
-                  <p className="font-orbitron text-sm uppercase tracking-[0.35em] text-sky-200">Rosslyn Analyst Network</p>
-                  <p className="mt-1 text-xs text-slate-300">{filteredAnalysts.length} visible analysts</p>
+              <div className="fixed left-4 right-4 z-40" style={{ top: viewport.topInset }}>
+                <div className="flex items-start justify-between gap-3">
+                  <div className="rounded-2xl border border-white/10 bg-slate-950/75 px-4 py-3 backdrop-blur">
+                    <p className="font-orbitron text-sm uppercase tracking-[0.35em] text-sky-200">Rosslyn Analyst Network</p>
+                    <p className="mt-1 text-xs text-slate-300">{filteredAnalysts.length} visible analysts</p>
+                  </div>
+                  <div className="flex flex-col gap-2">
+                    <button
+                      className="rounded-full border border-white/15 bg-slate-950/75 px-4 py-2 text-xs uppercase tracking-[0.2em] text-slate-100 backdrop-blur transition hover:border-sky-300 hover:text-white"
+                      onClick={() => setMobileFiltersOpen(true)}
+                    >
+                      Filters
+                    </button>
+                    <button
+                      className="rounded-full border border-white/15 bg-slate-950/75 px-4 py-2 text-xs uppercase tracking-[0.2em] text-slate-100 backdrop-blur transition hover:border-sky-300 hover:text-white"
+                      onClick={() => setViewMode(viewMode === '3d' ? '2d' : '3d')}
+                    >
+                      {viewMode === '3d' ? 'List View' : '3D View'}
+                    </button>
+                  </div>
                 </div>
-                <div className="flex flex-col gap-2">
-                  <button
-                    className="rounded-full border border-white/15 bg-slate-950/75 px-4 py-2 text-xs uppercase tracking-[0.2em] text-slate-100 backdrop-blur transition hover:border-sky-300 hover:text-white"
-                    onClick={() => setMobileFiltersOpen(true)}
-                  >
-                    Filters
-                  </button>
-                  <button
-                    className="rounded-full border border-white/15 bg-slate-950/75 px-4 py-2 text-xs uppercase tracking-[0.2em] text-slate-100 backdrop-blur transition hover:border-sky-300 hover:text-white"
-                    onClick={() => setViewMode(viewMode === '3d' ? '2d' : '3d')}
-                  >
-                    {viewMode === '3d' ? 'List View' : '3D View'}
-                  </button>
-                </div>
+
+                {!selectedCluster && !selectedAnalyst && (
+                  <div className="mt-3 rounded-2xl border border-white/10 bg-slate-950/75 p-3 backdrop-blur">
+                    <label className="mb-2 block text-xs uppercase tracking-[0.2em] text-slate-400">Search Analyst</label>
+                    <input
+                      className="w-full rounded-2xl border border-white/10 bg-slate-950/85 px-3 py-2 text-sm text-white outline-none placeholder:text-slate-500"
+                      value={filters.nameSearch}
+                      onChange={(event) => updateFilters({ nameSearch: event.target.value })}
+                      placeholder="Search analysts"
+                    />
+                  </div>
+                )}
               </div>
 
               <div className="fixed left-4 z-40" style={{ bottom: viewport.bottomInset }}>
@@ -356,6 +370,7 @@ function App() {
                   toggleCluster={toggleCluster}
                   toggleActivity={toggleActivity}
                   resetFilters={resetFilters}
+                  showSearch={!viewport.isMobile}
                 />
               </div>
             </div>
@@ -398,6 +413,7 @@ function FilterControls({
   toggleCluster,
   toggleActivity,
   resetFilters,
+  showSearch = true,
 }: {
   analysts: Analyst[]
   clusters: Cluster[]
@@ -413,18 +429,21 @@ function FilterControls({
   toggleCluster: (clusterId: number) => void
   toggleActivity: (activity: string) => void
   resetFilters: () => void
+  showSearch?: boolean
 }) {
   return (
     <div className="space-y-4">
-      <div>
-        <label className="mb-2 block text-xs uppercase tracking-[0.2em] text-slate-400">Search Name</label>
-        <input
-          className="w-full rounded-2xl border border-white/10 bg-slate-950/80 px-3 py-2 text-sm text-white outline-none ring-0 placeholder:text-slate-500"
-          value={filters.nameSearch}
-          onChange={(event) => updateFilters({ nameSearch: event.target.value })}
-          placeholder="Search analysts"
-        />
-      </div>
+      {showSearch && (
+        <div>
+          <label className="mb-2 block text-xs uppercase tracking-[0.2em] text-slate-400">Search Name</label>
+          <input
+            className="w-full rounded-2xl border border-white/10 bg-slate-950/80 px-3 py-2 text-sm text-white outline-none ring-0 placeholder:text-slate-500"
+            value={filters.nameSearch}
+            onChange={(event) => updateFilters({ nameSearch: event.target.value })}
+            placeholder="Search analysts"
+          />
+        </div>
+      )}
 
       <FilterSection title="Clusters">
         <div className="flex flex-wrap gap-2">
