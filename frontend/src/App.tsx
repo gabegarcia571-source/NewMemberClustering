@@ -213,9 +213,10 @@ function App() {
   const handleSearchChange = (value: string) => {
     updateFilters({ nameSearch: value })
     if (viewport.isMobile && value.trim()) {
-      setViewMode('2d')
+      setViewMode('3d')
       setSelectedClusterId(null)
       setSelectedAnalystId(null)
+      setMobileClusterFromSearch(false)
     }
   }
 
@@ -238,6 +239,10 @@ function App() {
       const analyst = analystMap.get(analystId)
       if (analyst) {
         setSelectedClusterId(analyst.clusterId)
+        if (viewport.isMobile && filters.nameSearch.trim()) {
+          setMobileClusterFromSearch(true)
+          setViewMode('3d')
+        }
       }
     }
     setSelectedAnalystId(analystId)
