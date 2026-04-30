@@ -750,9 +750,9 @@ function GalaxyScene({
       >
         <color attach="background" args={['#020408']} />
         <fog attach="fog" args={['#020408', isMobile ? 55 : 80, viewport.galaxyFogFar]} />
-        <ambientLight intensity={isMobile ? (viewport.isCompactMobile ? 1.42 : 1.35) : 1.15} />
-        <pointLight position={[20, 20, 25]} intensity={isMobile ? (viewport.isCompactMobile ? 88 : 82) : 70} color="#b8e5ff" />
-        <Stars radius={150} depth={75} count={isMobile ? 3600 : 3000} factor={isMobile ? (viewport.isCompactMobile ? 5.4 : 5) : 4} fade speed={0.4} />
+        <ambientLight intensity={isMobile ? (viewport.isCompactMobile ? 1.68 : 1.56) : 1.22} />
+        <pointLight position={[20, 20, 25]} intensity={isMobile ? (viewport.isCompactMobile ? 102 : 96) : 78} color="#c6ebff" />
+        <Stars radius={150} depth={75} count={isMobile ? 3600 : 3000} factor={isMobile ? (viewport.isCompactMobile ? 6 : 5.5) : 4.4} fade speed={0.38} />
         <FocusController
           clusterCenters={clusterCenters}
           controlsRef={controlsRef}
@@ -777,11 +777,11 @@ function GalaxyScene({
             <group key={cluster.id}>
               <mesh position={center} onClick={() => onSelectCluster(cluster.id)}>
                 <sphereGeometry args={[radius, 32, 32]} />
-                <meshBasicMaterial color={color} transparent opacity={selectedClusterId === cluster.id ? (isMobile ? 0.17 : 0.12) : isMobile ? 0.09 : 0.05} wireframe />
+                <meshBasicMaterial color={color} transparent opacity={selectedClusterId === cluster.id ? (isMobile ? 0.22 : 0.14) : isMobile ? 0.15 : 0.08} wireframe />
               </mesh>
               <mesh position={center}>
                 <torusGeometry args={[radius + 1.4, 0.12, 12, 80]} />
-                <meshBasicMaterial color={color} transparent opacity={isMobile ? 0.46 : 0.35} />
+                <meshBasicMaterial color={color} transparent opacity={isMobile ? 0.62 : 0.42} />
               </mesh>
             </group>
           )
@@ -805,8 +805,8 @@ function GalaxyScene({
               <meshStandardMaterial
                 color={color}
                 emissive={new THREE.Color(color)}
-                emissiveIntensity={isSelected ? 3.0 : isVisible ? (isMobile ? 1.8 : 1.4) : isMobile ? 0.28 : 0.18}
-                opacity={isVisible ? (isMobile ? 1 : 0.95) : isMobile ? 0.2 : 0.12}
+                emissiveIntensity={isSelected ? 3.2 : isVisible ? (isMobile ? 2.15 : 1.6) : isMobile ? 0.48 : 0.28}
+                opacity={isVisible ? 1 : isMobile ? 0.32 : 0.18}
                 transparent
               />
             </Sphere>
