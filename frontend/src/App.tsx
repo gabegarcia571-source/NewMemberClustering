@@ -498,10 +498,10 @@ function App() {
                   <div className="min-w-0 flex-1 rounded-2xl border border-white/10 bg-slate-950/75 px-4 py-3 backdrop-blur">
                     <div className={`flex gap-2 ${viewport.isCompactMobile ? 'flex-col' : 'items-start'}`}>
                       <div className="min-w-0 flex-[1.05]">
-                        <p className={`font-orbitron uppercase text-sky-200 ${viewport.isCompactMobile ? 'text-[11px] tracking-[0.24em]' : 'text-sm tracking-[0.35em]'}`}>
-                          Rosslyn Analyst Network
+                        <p className={`font-orbitron uppercase text-sky-200 ${selectedCluster ? 'text-base tracking-[0.28em]' : viewport.isCompactMobile ? 'text-[11px] tracking-[0.24em]' : 'text-sm tracking-[0.35em]'}`}>
+                          {selectedCluster ? 'RAN' : 'Rosslyn Analyst Network'}
                         </p>
-                        <p className="mt-1 text-xs text-slate-300">{filteredAnalysts.length} visible analysts</p>
+                        {!selectedCluster && <p className="mt-1 text-xs text-slate-300">{filteredAnalysts.length} visible analysts</p>}
                       </div>
                       {!selectedCluster && !selectedAnalyst && (
                         <div className={`min-w-0 ${viewport.isCompactMobile ? 'w-full' : 'flex-[0.95]'}`}>
@@ -527,7 +527,6 @@ function App() {
                       onClick={() => {
                         if (viewMode === '3d') {
                           setViewMode('2d')
-                          setSelectedClusterId(null)
                         } else {
                           setViewMode('3d')
                           if (!selectedCluster) {
@@ -631,7 +630,7 @@ function App() {
             </div>
           )}
 
-          {selectedCluster && !selectedAnalyst && (
+          {selectedCluster && !selectedAnalyst && (!viewport.isMobile || viewMode === '3d') && (
             <div
               className={`absolute z-30 border-white/10 bg-slate-950/85 backdrop-blur ${
                 viewport.isMobile
@@ -643,6 +642,8 @@ function App() {
                   ? {
                       maxHeight: viewport.mobileOverlayMaxHeight,
                       paddingBottom: 'calc(env(safe-area-inset-bottom, 0px) + 1.25rem)',
+                      transform: `translateY(${mobileClusterDragY}px)`,
+                      transition: mobileClusterDragStartY.current === null ? 'transform 220ms ease-out' : 'none',
                     }
                   : undefined
               }
@@ -650,8 +651,14 @@ function App() {
               <div className={`flex ${viewport.isMobile ? 'h-full flex-col' : 'flex-col'}`}>
                 <div
                   className="flex items-start justify-between gap-3 border-b border-white/10 pb-3"
+                  onTouchStart={handleMobileClusterTouchStart}
+                  onTouchMove={handleMobileClusterTouchMove}
+                  onTouchEnd={handleMobileClusterTouchEnd}
+                  onTouchCancel={handleMobileClusterTouchEnd}
+                  style={viewport.isMobile ? { touchAction: 'none' } : undefined}
                 >
                   <div>
+                    {viewport.isMobile && <div className="mx-auto mb-3 h-1.5 w-14 rounded-full bg-white/20" />}
                     <p className="font-orbitron text-2xl text-white">{selectedCluster.podName}</p>
                     <p className="mt-1.5 text-sm leading-5 text-slate-300">{selectedCluster.shortVibe}</p>
                   </div>
