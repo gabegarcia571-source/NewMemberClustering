@@ -2,6 +2,7 @@ import { Canvas, useFrame, useThree } from '@react-three/fiber'
 import { OrbitControls, Sphere, Stars } from '@react-three/drei'
 import { useEffect, useMemo, useRef, useState } from 'react'
 import type { MutableRefObject } from 'react'
+import type { TouchEvent as ReactTouchEvent } from 'react'
 import * as THREE from 'three'
 import { useAppStore } from './store'
 import type { Analyst, Cluster, NetworkMap } from './types'
@@ -109,6 +110,8 @@ function App() {
   const [hoveredSearchAnalystId, setHoveredSearchAnalystId] = useState<number | null>(null)
   const [mobileClusterFromSearch, setMobileClusterFromSearch] = useState(false)
   const [mobileAnalystFromList, setMobileAnalystFromList] = useState(false)
+  const [mobileClusterDragY, setMobileClusterDragY] = useState(0)
+  const mobileClusterDragStartY = useRef<number | null>(null)
 
   useEffect(() => {
     if (typeof window === 'undefined') return
@@ -172,6 +175,11 @@ function App() {
       setMobileFiltersOpen(false)
     }
   }, [viewport.isMobile])
+
+  useEffect(() => {
+    setMobileClusterDragY(0)
+    mobileClusterDragStartY.current = null
+  }, [selectedClusterId])
 
   useEffect(() => {
     if (!filters.nameSearch.trim() || viewport.isMobile) {
@@ -284,6 +292,44 @@ function App() {
   const handleOpenClusterFromAnalyst = (clusterId: number) => {
     setSelectedAnalystId(null)
     setSelectedClusterId(clusterId)
+  }
+
+  const closeClusterView = () => {
+    if (viewport.isMobile) {
+      if (mobileClusterFromSearch) {
+        resetToDefault()
+      } else {
+        resetOverview()
+      }
+      return
+    }
+    setSelectedClusterId(null)
+  }
+
+  const handleMobileClusterTouchStart = (event: ReactTouchEvent<HTMLDivElement>) => {
+    if (!viewport.isMobile) return
+    mobileClusterDragStartY.current = event.touches[0]?.clientY ?? null
+    setMobileClusterDragY(0)
+  }
+
+  const handleMobileClusterTouchMove = (event: ReactTouchEvent<HTMLDivElement>) => {
+    if (!viewport.isMobile || mobileClusterDragStartY.current === null) return
+    const currentY = event.touches[0]?.clientY ?? mobileClusterDragStartY.current
+    const delta = Math.max(0, currentY - mobileClusterDragStartY.current)
+    setMobileClusterDragY(delta)
+  }
+
+  const handleMobileClusterTouchEnd = () => {
+    if (!viewport.isMobile) return
+    const dismissThreshold = Math.min(180, Math.round(viewport.height * 0.18))
+    if (mobileClusterDragY >= dismissThreshold) {
+      setMobileClusterDragY(0)
+      mobileClusterDragStartY.current = null
+      closeClusterView()
+      return
+    }
+    setMobileClusterDragY(0)
+    mobileClusterDragStartY.current = null
   }
 
   const handleUnlock = () => {
@@ -423,7 +469,7 @@ function App() {
               {filters.nameSearch.trim() && viewMode === '3d' && !selectedCluster && (
                 <div
                   className="fixed left-4 right-4 z-30"
-                  style={{ bottom: 'calc(env(safe-area-inset-bottom, 0px) + 4.75rem)' }}
+                  style={{ top: viewport.isCompactMobile ? 'calc(env(safe-area-inset-top, 0px) + 8.75rem)' : 'calc(env(safe-area-inset-top, 0px) + 7.25rem)' }}
                 >
                   <SearchMatchesPanel
                     analysts={filteredAnalysts}
@@ -517,19 +563,29 @@ function App() {
                   ? {
                       maxHeight: viewport.mobileOverlayMaxHeight,
                       paddingBottom: 'calc(env(safe-area-inset-bottom, 0px) + 1.25rem)',
+                      transform: `translateY(${mobileClusterDragY}px)`,
+                      transition: mobileClusterDragStartY.current === null ? 'transform 220ms ease-out' : 'none',
                     }
                   : undefined
               }
             >
               <div className={`flex ${viewport.isMobile ? 'h-full flex-col' : 'flex-col'}`}>
-                <div className="flex items-start justify-between gap-3 border-b border-white/10 pb-3">
+                <div
+                  className="flex items-start justify-between gap-3 border-b border-white/10 pb-3"
+                  onTouchStart={handleMobileClusterTouchStart}
+                  onTouchMove={handleMobileClusterTouchMove}
+                  onTouchEnd={handleMobileClusterTouchEnd}
+                  onTouchCancel={handleMobileClusterTouchEnd}
+                  style={viewport.isMobile ? { touchAction: 'none' } : undefined}
+                >
                   <div>
+                    {viewport.isMobile && <div className="mx-auto mb-3 h-1.5 w-14 rounded-full bg-white/20" />}
                     <p className="font-orbitron text-2xl text-white">{selectedCluster.podName}</p>
                     <p className="mt-1.5 text-sm leading-5 text-slate-300">{selectedCluster.shortVibe}</p>
                   </div>
                   <button
                     className="rounded-full border border-white/15 px-3 py-1 text-xs text-slate-200"
-                    onClick={viewport.isMobile ? (mobileClusterFromSearch ? resetToDefault : resetOverview) : () => setSelectedClusterId(null)}
+                    onClick={closeClusterView}
                   >
                     Close
                   </button>
