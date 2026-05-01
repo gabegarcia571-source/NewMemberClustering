@@ -108,6 +108,7 @@ function App() {
   const [accessError, setAccessError] = useState('')
   const [hoveredSearchAnalystId, setHoveredSearchAnalystId] = useState<number | null>(null)
   const [mobileClusterFromSearch, setMobileClusterFromSearch] = useState(false)
+  const [mobileAnalystFromList, setMobileAnalystFromList] = useState(false)
 
   useEffect(() => {
     if (typeof window === 'undefined') return
@@ -219,6 +220,7 @@ function App() {
     setCameraResetToken((value) => value + 1)
     setMobileFiltersOpen(false)
     setMobileClusterFromSearch(false)
+    setMobileAnalystFromList(false)
   }
 
   const resetToDefault = () => {
@@ -253,6 +255,7 @@ function App() {
   }
 
   const handleSelectAnalyst = (analystId: number | null) => {
+    const openingFromMobileList = viewport.isMobile && viewMode === '2d' && analystId !== null
     if (analystId !== null) {
       const analyst = analystMap.get(analystId)
       if (analyst) {
@@ -261,7 +264,16 @@ function App() {
           setMobileClusterFromSearch(true)
           setViewMode('3d')
         }
+        if (openingFromMobileList) {
+          setMobileAnalystFromList(true)
+          setViewMode('3d')
+        }
       }
+    }
+    if (analystId === null && mobileAnalystFromList) {
+      setSelectedClusterId(null)
+      setViewMode('2d')
+      setMobileAnalystFromList(false)
     }
     setSelectedAnalystId(analystId)
     if (viewport.isMobile && analystId !== null) {
