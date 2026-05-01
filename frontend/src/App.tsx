@@ -703,7 +703,6 @@ function App() {
               onBack={mobileAnalystHistory.length > 0 ? handleBackToPreviousMobileAnalyst : undefined}
               showClusterButton={mobileAnalystFromList}
               onSelectAnalyst={handleSelectAnalyst}
-              onOpenCluster={handleOpenClusterFromAnalyst}
               dragY={mobileAnalystDragY}
               onTouchStart={handleMobileAnalystTouchStart}
               onTouchMove={handleMobileAnalystTouchMove}
@@ -718,7 +717,6 @@ function App() {
               analystsById={analystMap}
               onClose={() => handleSelectAnalyst(null)}
               onSelectAnalyst={handleSelectAnalyst}
-              onOpenCluster={handleOpenClusterFromAnalyst}
             />
           )}
 
@@ -1013,12 +1011,10 @@ function AnalystDetailsContent({
   analyst,
   analystsById,
   onSelectAnalyst,
-  onOpenCluster,
 }: {
   analyst: Analyst
   analystsById: Map<number, Analyst>
   onSelectAnalyst: (id: number | null) => void
-  onOpenCluster?: (clusterId: number) => void
 }) {
   return (
     <>
@@ -1026,17 +1022,6 @@ function AnalystDetailsContent({
         <div>
           <p className="text-xs uppercase tracking-[0.2em] text-slate-400">About Me</p>
           <p className="mt-1 leading-6 text-slate-200">{analyst.aboutMe ?? 'No bio provided.'}</p>
-        </div>
-        <div>
-          <p className="text-xs uppercase tracking-[0.2em] text-slate-400">Cluster</p>
-          {onOpenCluster ? (
-            <button className="mt-1 text-left text-base text-sky-200 transition hover:text-white hover:underline" onClick={() => onOpenCluster(analyst.clusterId)}>
-              {analyst.podName}
-            </button>
-          ) : (
-            <p className="mt-1 text-base text-white">{analyst.podName}</p>
-          )}
-          <p className="mt-2 leading-6 text-slate-300">{analyst.shortVibe}</p>
         </div>
         <PanelMetric label="Top Activities" value={analyst.topActivities.join(', ') || 'No strong preferences'} />
         <div className="grid gap-4">
@@ -1191,14 +1176,12 @@ function ProfileCard({
   analystsById,
   onClose,
   onSelectAnalyst,
-  onOpenCluster,
   viewport,
 }: {
   analyst: Analyst
   analystsById: Map<number, Analyst>
   onClose: () => void
   onSelectAnalyst: (id: number | null) => void
-  onOpenCluster?: (clusterId: number) => void
   viewport: ViewportProfile
 }) {
   return (
@@ -1222,7 +1205,7 @@ function ProfileCard({
           </div>
         </div>
         <div className="overflow-y-auto px-5 pb-5 pt-5 pr-4 md:px-6 md:pb-6 md:pt-6 md:pr-5" style={{ maxHeight: viewport.popupBodyMaxHeight }}>
-          <AnalystDetailsContent analyst={analyst} analystsById={analystsById} onSelectAnalyst={onSelectAnalyst} onOpenCluster={onOpenCluster} />
+          <AnalystDetailsContent analyst={analyst} analystsById={analystsById} onSelectAnalyst={onSelectAnalyst} />
         </div>
       </div>
     </div>
@@ -1236,7 +1219,6 @@ function AnalystMobileSheet({
   onBack,
   showClusterButton,
   onSelectAnalyst,
-  onOpenCluster,
   dragY,
   onTouchStart,
   onTouchMove,
@@ -1249,7 +1231,6 @@ function AnalystMobileSheet({
   onBack?: () => void
   showClusterButton?: boolean
   onSelectAnalyst: (id: number | null) => void
-  onOpenCluster: (clusterId: number) => void
   dragY: number
   onTouchStart: (event: ReactTouchEvent<HTMLDivElement>) => void
   onTouchMove: (event: ReactTouchEvent<HTMLDivElement>) => void
@@ -1293,14 +1274,14 @@ function AnalystMobileSheet({
               </button>
             )}
             {showClusterButton && (
-              <button className="rounded-full border border-white/15 px-3 py-1 text-xs text-slate-200" onClick={() => onOpenCluster(analyst.clusterId)}>
+              <button className="rounded-full border border-white/15 px-3 py-1 text-xs text-slate-200" onClick={() => onClose()}>
                 Cluster
               </button>
             )}
           </div>
         </div>
         <div className="mt-5 flex-1 overflow-auto pr-1">
-          <AnalystDetailsContent analyst={analyst} analystsById={analystsById} onSelectAnalyst={onSelectAnalyst} onOpenCluster={onOpenCluster} />
+          <AnalystDetailsContent analyst={analyst} analystsById={analystsById} onSelectAnalyst={onSelectAnalyst} />
         </div>
       </div>
     </div>
@@ -1312,13 +1293,11 @@ function AnalystSidePanel({
   analystsById,
   onClose,
   onSelectAnalyst,
-  onOpenCluster,
 }: {
   analyst: Analyst
   analystsById: Map<number, Analyst>
   onClose: () => void
   onSelectAnalyst: (id: number | null) => void
-  onOpenCluster?: (clusterId: number) => void
 }) {
   return (
     <div className="absolute right-0 top-0 z-30 h-full w-full max-w-[360px] border-l border-white/10 bg-slate-950/85 p-5 backdrop-blur">
@@ -1335,7 +1314,7 @@ function AnalystSidePanel({
           </button>
         </div>
         <div className="mt-5 flex-1 overflow-auto pr-1">
-          <AnalystDetailsContent analyst={analyst} analystsById={analystsById} onSelectAnalyst={onSelectAnalyst} onOpenCluster={onOpenCluster} />
+          <AnalystDetailsContent analyst={analyst} analystsById={analystsById} onSelectAnalyst={onSelectAnalyst} />
         </div>
       </div>
     </div>
