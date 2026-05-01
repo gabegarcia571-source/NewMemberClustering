@@ -455,22 +455,6 @@ function App() {
                 </div>
               </div>
 
-              {filters.nameSearch.trim() && viewMode !== '3d' && (
-                <div
-                  className="fixed left-4 right-4 z-40"
-                  style={{ top: viewport.isCompactMobile ? 'calc(env(safe-area-inset-top, 0px) + 8.75rem)' : 'calc(env(safe-area-inset-top, 0px) + 7.25rem)' }}
-                >
-                  <SearchMatchesPanel
-                    analysts={filteredAnalysts}
-                    searchValue={filters.nameSearch}
-                    onClear={() => updateFilters({ nameSearch: '' })}
-                    onSelectAnalyst={handleSelectAnalyst}
-                    mobile
-                    maxHeight={viewport.isCompactMobile ? '32vh' : '26vh'}
-                  />
-                </div>
-              )}
-
               {filters.nameSearch.trim() && viewMode === '3d' && !selectedCluster && (
                 <div
                   className="fixed left-4 right-4 z-30"
