@@ -110,9 +110,12 @@ function App() {
   const [hoveredSearchAnalystId, setHoveredSearchAnalystId] = useState<number | null>(null)
   const [mobileClusterFromSearch, setMobileClusterFromSearch] = useState(false)
   const [mobileAnalystFromList, setMobileAnalystFromList] = useState(false)
+  const [mobileAnalystHistory, setMobileAnalystHistory] = useState<number[]>([])
   const [mobileClusterDragY, setMobileClusterDragY] = useState(0)
+  const [mobileAnalystDragY, setMobileAnalystDragY] = useState(0)
   const [desktopSearchMatchesDismissed, setDesktopSearchMatchesDismissed] = useState(false)
   const mobileClusterDragStartY = useRef<number | null>(null)
+  const mobileAnalystDragStartY = useRef<number | null>(null)
 
   useEffect(() => {
     if (typeof window === 'undefined') return
@@ -183,6 +186,11 @@ function App() {
   }, [selectedClusterId])
 
   useEffect(() => {
+    setMobileAnalystDragY(0)
+    mobileAnalystDragStartY.current = null
+  }, [selectedAnalystId])
+
+  useEffect(() => {
     if (!filters.nameSearch.trim() || viewport.isMobile) {
       setHoveredSearchAnalystId(null)
     }
@@ -234,6 +242,7 @@ function App() {
     setMobileFiltersOpen(false)
     setMobileClusterFromSearch(false)
     setMobileAnalystFromList(false)
+    setMobileAnalystHistory([])
   }
 
   const resetToDefault = () => {
@@ -271,6 +280,9 @@ function App() {
   const handleSelectAnalyst = (analystId: number | null) => {
     const openingFromMobileList = viewport.isMobile && viewMode === '2d' && analystId !== null
     if (analystId !== null) {
+      if (viewport.isMobile && selectedAnalystId !== null && selectedAnalystId !== analystId) {
+        setMobileAnalystHistory((history) => [...history, selectedAnalystId])
+      }
       const analyst = analystMap.get(analystId)
       if (analyst) {
         setSelectedClusterId(analyst.clusterId)
@@ -289,6 +301,9 @@ function App() {
       setViewMode('2d')
       setMobileAnalystFromList(false)
     }
+    if (analystId === null) {
+      setMobileAnalystHistory([])
+    }
     setSelectedAnalystId(analystId)
     if (viewport.isMobile && analystId !== null) {
       setMobileFiltersOpen(false)
@@ -297,7 +312,24 @@ function App() {
 
   const handleOpenClusterFromAnalyst = (clusterId: number) => {
     setSelectedAnalystId(null)
+    setMobileAnalystHistory([])
     setSelectedClusterId(clusterId)
+  }
+
+  const handleBackToPreviousMobileAnalyst = () => {
+    setMobileAnalystHistory((history) => {
+      if (history.length === 0) return history
+      const nextHistory = [...history]
+      const previousAnalystId = nextHistory.pop() ?? null
+      setSelectedAnalystId(previousAnalystId)
+      if (previousAnalystId !== null) {
+        const analyst = analystMap.get(previousAnalystId)
+        if (analyst) {
+          setSelectedClusterId(analyst.clusterId)
+        }
+      }
+      return nextHistory
+    })
   }
 
   const closeClusterView = () => {
@@ -336,6 +368,32 @@ function App() {
     }
     setMobileClusterDragY(0)
     mobileClusterDragStartY.current = null
+  }
+
+  const handleMobileAnalystTouchStart = (event: ReactTouchEvent<HTMLDivElement>) => {
+    if (!viewport.isMobile) return
+    mobileAnalystDragStartY.current = event.touches[0]?.clientY ?? null
+    setMobileAnalystDragY(0)
+  }
+
+  const handleMobileAnalystTouchMove = (event: ReactTouchEvent<HTMLDivElement>) => {
+    if (!viewport.isMobile || mobileAnalystDragStartY.current === null) return
+    const currentY = event.touches[0]?.clientY ?? mobileAnalystDragStartY.current
+    const delta = Math.max(0, currentY - mobileAnalystDragStartY.current)
+    setMobileAnalystDragY(delta)
+  }
+
+  const handleMobileAnalystTouchEnd = () => {
+    if (!viewport.isMobile) return
+    const dismissThreshold = Math.min(180, Math.round(viewport.height * 0.18))
+    if (mobileAnalystDragY >= dismissThreshold) {
+      setMobileAnalystDragY(0)
+      mobileAnalystDragStartY.current = null
+      resetToDefault()
+      return
+    }
+    setMobileAnalystDragY(0)
+    mobileAnalystDragStartY.current = null
   }
 
   const handleUnlock = () => {
@@ -619,8 +677,13 @@ function App() {
               analyst={selectedAnalyst}
               analystsById={analystMap}
               onClose={() => handleSelectAnalyst(null)}
+              onBack={mobileAnalystHistory.length > 0 ? handleBackToPreviousMobileAnalyst : undefined}
               onSelectAnalyst={handleSelectAnalyst}
               onOpenCluster={handleOpenClusterFromAnalyst}
+              dragY={mobileAnalystDragY}
+              onTouchStart={handleMobileAnalystTouchStart}
+              onTouchMove={handleMobileAnalystTouchMove}
+              onTouchEnd={handleMobileAnalystTouchEnd}
               viewport={viewport}
             />
           )}
@@ -1146,15 +1209,25 @@ function AnalystMobileSheet({
   analyst,
   analystsById,
   onClose,
+  onBack,
   onSelectAnalyst,
   onOpenCluster,
+  dragY,
+  onTouchStart,
+  onTouchMove,
+  onTouchEnd,
   viewport,
 }: {
   analyst: Analyst
   analystsById: Map<number, Analyst>
   onClose: () => void
+  onBack?: () => void
   onSelectAnalyst: (id: number | null) => void
   onOpenCluster: (clusterId: number) => void
+  dragY: number
+  onTouchStart: (event: ReactTouchEvent<HTMLDivElement>) => void
+  onTouchMove: (event: ReactTouchEvent<HTMLDivElement>) => void
+  onTouchEnd: () => void
   viewport: ViewportProfile
 }) {
   return (
@@ -1163,19 +1236,36 @@ function AnalystMobileSheet({
       style={{
         maxHeight: viewport.mobileOverlayMaxHeight,
         paddingBottom: 'calc(env(safe-area-inset-bottom, 0px) + 1.25rem)',
+        transform: `translateY(${dragY}px)`,
+        transition: 'transform 220ms ease-out',
       }}
     >
       <div className="flex h-full flex-col">
-        <div className="flex items-start justify-between gap-3 border-b border-white/10 pb-4">
+        <div
+          className="flex items-start justify-between gap-3 border-b border-white/10 pb-4"
+          onTouchStart={onTouchStart}
+          onTouchMove={onTouchMove}
+          onTouchEnd={onTouchEnd}
+          onTouchCancel={onTouchEnd}
+          style={{ touchAction: 'none' }}
+        >
           <div className="min-w-0">
+            <div className="mx-auto mb-3 h-1.5 w-14 rounded-full bg-white/20" />
             <p className="font-orbitron text-2xl text-white">{analyst.name}</p>
             <div className="mt-2 inline-flex rounded-full border border-sky-300/30 bg-sky-300/10 px-3 py-1 text-xs uppercase tracking-[0.2em] text-sky-100">
               {analyst.personaTag}
             </div>
           </div>
-          <button className="rounded-full border border-white/15 px-3 py-1 text-xs text-slate-200" onClick={onClose}>
-            Close
-          </button>
+          <div className="flex flex-col gap-2">
+            <button className="rounded-full border border-white/15 px-3 py-1 text-xs text-slate-200" onClick={onClose}>
+              Close
+            </button>
+            {onBack && (
+              <button className="rounded-full border border-white/15 px-3 py-1 text-xs text-slate-200" onClick={onBack}>
+                Back
+              </button>
+            )}
+          </div>
         </div>
         <div className="mt-5 flex-1 overflow-auto pr-1">
           <AnalystDetailsContent analyst={analyst} analystsById={analystsById} onSelectAnalyst={onSelectAnalyst} onOpenCluster={onOpenCluster} />
