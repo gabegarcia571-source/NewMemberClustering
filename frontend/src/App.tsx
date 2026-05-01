@@ -321,6 +321,15 @@ function App() {
     setSelectedClusterId(clusterId)
   }
 
+  const handleBackToListFromAnalyst = () => {
+    setSelectedAnalystId(null)
+    setMobileAnalystHistory([])
+    setSelectedClusterId(null)
+    setMobileClusterFromSearch(false)
+    setMobileAnalystFromList(false)
+    setViewMode('2d')
+  }
+
   const handleBackToClusterFromAnalyst = () => {
     setSelectedAnalystId(null)
     setMobileAnalystHistory([])
@@ -686,8 +695,9 @@ function App() {
             <AnalystMobileSheet
               analyst={selectedAnalyst}
               analystsById={analystMap}
-              onClose={handleBackToClusterFromAnalyst}
+              onClose={mobileAnalystFromList ? handleBackToListFromAnalyst : handleBackToClusterFromAnalyst}
               onBack={mobileAnalystHistory.length > 0 ? handleBackToPreviousMobileAnalyst : undefined}
+              showClusterButton={mobileAnalystFromList}
               onSelectAnalyst={handleSelectAnalyst}
               onOpenCluster={handleOpenClusterFromAnalyst}
               dragY={mobileAnalystDragY}
@@ -1220,6 +1230,7 @@ function AnalystMobileSheet({
   analystsById,
   onClose,
   onBack,
+  showClusterButton,
   onSelectAnalyst,
   onOpenCluster,
   dragY,
@@ -1232,6 +1243,7 @@ function AnalystMobileSheet({
   analystsById: Map<number, Analyst>
   onClose: () => void
   onBack?: () => void
+  showClusterButton?: boolean
   onSelectAnalyst: (id: number | null) => void
   onOpenCluster: (clusterId: number) => void
   dragY: number
@@ -1274,6 +1286,11 @@ function AnalystMobileSheet({
             ) : (
               <button className="rounded-full border border-white/15 px-3 py-1 text-xs text-slate-200" onClick={onClose}>
                 Back
+              </button>
+            )}
+            {showClusterButton && (
+              <button className="rounded-full border border-white/15 px-3 py-1 text-xs text-slate-200" onClick={() => onOpenCluster(analyst.clusterId)}>
+                Cluster
               </button>
             )}
           </div>
