@@ -234,6 +234,12 @@ function App() {
     })
     return rows
   }, [filteredAnalysts, sortKey])
+  const listRows = useMemo(() => {
+    if (viewport.isMobile && viewMode === '2d' && selectedCluster) {
+      return sortedTableRows.filter((analyst) => analyst.clusterId === selectedCluster.id)
+    }
+    return sortedTableRows
+  }, [selectedCluster, sortedTableRows, viewMode, viewport.isMobile])
 
   const resetOverview = () => {
     setSelectedClusterId(null)
@@ -384,6 +390,10 @@ function App() {
     if (mobileClusterDragY >= dismissThreshold) {
       setMobileClusterDragY(0)
       mobileClusterDragStartY.current = null
+      if (viewMode === '2d') {
+        setViewMode('3d')
+        return
+      }
       closeClusterView()
       return
     }
@@ -516,22 +526,24 @@ function App() {
                     >
                       Clusters
                     </button>
-                    <button
-                      className="rounded-full border border-white/15 bg-slate-950/75 px-4 py-2 text-xs uppercase tracking-[0.2em] text-slate-100 backdrop-blur transition hover:border-sky-300 hover:text-white"
-                      onClick={() => {
-                        if (viewMode === '3d') {
-                          setViewMode('2d')
-                        } else {
-                          setViewMode('3d')
-                          setSelectedClusterId(null)
-                          setSelectedAnalystId(null)
-                          setCameraResetToken((value) => value + 1)
-                        }
-                      }}
-                    >
-                      {viewMode === '3d' ? 'List View' : '3D View'}
-                    </button>
-                    {viewMode === '2d' && (
+                    {!selectedCluster && (
+                      <button
+                        className="rounded-full border border-white/15 bg-slate-950/75 px-4 py-2 text-xs uppercase tracking-[0.2em] text-slate-100 backdrop-blur transition hover:border-sky-300 hover:text-white"
+                        onClick={() => {
+                          if (viewMode === '3d') {
+                            setViewMode('2d')
+                          } else {
+                            setViewMode('3d')
+                            setSelectedClusterId(null)
+                            setSelectedAnalystId(null)
+                            setCameraResetToken((value) => value + 1)
+                          }
+                        }}
+                      >
+                        {viewMode === '3d' ? 'List View' : '3D View'}
+                      </button>
+                    )}
+                    {viewMode === '2d' && !selectedCluster && (
                       <button
                         className="rounded-full border border-white/15 bg-slate-950/75 px-4 py-2 text-xs uppercase tracking-[0.2em] text-slate-100 backdrop-blur transition hover:border-sky-300 hover:text-white"
                         onClick={resetMobileListSearch}
@@ -599,7 +611,7 @@ function App() {
             />
           ) : (
             <ListView
-              analysts={sortedTableRows}
+              analysts={listRows}
               isMobile={viewport.isMobile}
               setSortKey={setSortKey}
               viewport={viewport}
@@ -655,12 +667,18 @@ function App() {
                     <p className="font-orbitron text-2xl text-white">{selectedCluster.podName}</p>
                     <p className="mt-1.5 text-sm leading-5 text-slate-300">{selectedCluster.shortVibe}</p>
                   </div>
-                  <button
-                    className="rounded-full border border-white/15 px-3 py-1 text-xs text-slate-200"
-                    onClick={closeClusterView}
-                  >
-                    Close
-                  </button>
+                  {viewport.isMobile ? (
+                    <button
+                      className="rounded-full border border-white/15 px-3 py-1 text-xs text-slate-200"
+                      onClick={() => setViewMode(viewMode === '3d' ? '2d' : '3d')}
+                    >
+                      {viewMode === '3d' ? 'List View' : '3D View'}
+                    </button>
+                  ) : (
+                    <button className="rounded-full border border-white/15 px-3 py-1 text-xs text-slate-200" onClick={closeClusterView}>
+                      Close
+                    </button>
+                  )}
                 </div>
                 <div className={`mt-4 text-sm text-slate-200 ${viewport.isMobile ? 'flex-1 overflow-auto pr-1' : ''}`}>
                   <PanelMetric label="Member Count" value={String(selectedCluster.memberCount)} />
