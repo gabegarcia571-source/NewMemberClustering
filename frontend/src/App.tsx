@@ -26,6 +26,16 @@ interface ViewportProfile {
   galaxyFogFar: number
 }
 
+function getViewportSize() {
+  if (typeof window === 'undefined') {
+    return { width: 1440, height: 900 }
+  }
+  return {
+    width: window.visualViewport?.width ?? window.innerWidth,
+    height: window.visualViewport?.height ?? window.innerHeight,
+  }
+}
+
 function createViewportProfile(width: number, height: number): ViewportProfile {
   const safeWidth = Math.max(width || 390, 320)
   const safeHeight = Math.max(height || 844, 568)
@@ -88,9 +98,10 @@ function App() {
 
   const [sortKey, setSortKey] = useState<'name' | 'cluster' | 'persona'>('name')
   const [cameraResetToken, setCameraResetToken] = useState(0)
-  const [viewport, setViewport] = useState<ViewportProfile>(() =>
-    typeof window !== 'undefined' ? createViewportProfile(window.innerWidth, window.innerHeight) : createViewportProfile(1440, 900),
-  )
+  const [viewport, setViewport] = useState<ViewportProfile>(() => {
+    const size = getViewportSize()
+    return createViewportProfile(size.width, size.height)
+  })
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false)
   const [isUnlocked, setIsUnlocked] = useState(false)
   const [accessValue, setAccessValue] = useState('')
@@ -138,13 +149,20 @@ function App() {
 
   useEffect(() => {
     if (typeof window === 'undefined') return
-    const update = () => setViewport(createViewportProfile(window.innerWidth, window.innerHeight))
+    const update = () => {
+      const size = getViewportSize()
+      setViewport(createViewportProfile(size.width, size.height))
+    }
     update()
     window.addEventListener('resize', update)
     window.addEventListener('orientationchange', update)
+    window.visualViewport?.addEventListener('resize', update)
+    window.visualViewport?.addEventListener('scroll', update)
     return () => {
       window.removeEventListener('resize', update)
       window.removeEventListener('orientationchange', update)
+      window.visualViewport?.removeEventListener('resize', update)
+      window.visualViewport?.removeEventListener('scroll', update)
     }
   }, [])
 

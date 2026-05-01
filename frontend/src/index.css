@@ -10,10 +10,18 @@ html,
 body,
 #root {
   min-height: 100%;
+  width: 100%;
+}
+
+html {
+  overflow-x: hidden;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
 }
 
 body {
   margin: 0;
+  overflow-x: hidden;
   font-family: 'Space Grotesk', sans-serif;
   background:
     radial-gradient(circle at top, rgba(79, 195, 247, 0.12), transparent 30%),
