@@ -472,14 +472,16 @@ function App() {
                 </div>
               )}
 
-              <div className="fixed left-4 z-40" style={{ bottom: viewport.bottomInset }}>
-                <button
-                  className="rounded-full border border-white/15 bg-slate-950/75 px-4 py-2 text-xs uppercase tracking-[0.2em] text-slate-100 backdrop-blur transition hover:border-sky-300 hover:text-white"
-                  onClick={filters.nameSearch.trim() ? resetToDefault : resetOverview}
-                >
-                  {filters.nameSearch.trim() ? 'Reset To Default' : 'Back To Overview'}
-                </button>
-              </div>
+              {viewMode !== '2d' && (
+                <div className="fixed left-4 z-40" style={{ bottom: viewport.bottomInset }}>
+                  <button
+                    className="rounded-full border border-white/15 bg-slate-950/75 px-4 py-2 text-xs uppercase tracking-[0.2em] text-slate-100 backdrop-blur transition hover:border-sky-300 hover:text-white"
+                    onClick={filters.nameSearch.trim() ? resetToDefault : resetOverview}
+                  >
+                    {filters.nameSearch.trim() ? 'Reset To Default' : 'Back To Overview'}
+                  </button>
+                </div>
+              )}
             </>
           )}
 
