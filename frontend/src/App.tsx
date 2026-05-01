@@ -48,7 +48,7 @@ function createViewportProfile(width: number, height: number): ViewportProfile {
     isCompactMobile,
     topInset: 'calc(env(safe-area-inset-top, 0px) + 1rem)',
     bottomInset: 'calc(env(safe-area-inset-bottom, 0px) + 1rem)',
-    mobileOverlayMaxHeight: `min(${Math.round(safeHeight * 0.76)}px, calc(100dvh - env(safe-area-inset-top, 0px) - 3rem))`,
+    mobileOverlayMaxHeight: `min(${Math.round(safeHeight * 0.7)}px, calc(100dvh - env(safe-area-inset-top, 0px) - 4rem))`,
     mobileDrawerMaxHeight: `min(${Math.round(safeHeight * 0.78)}px, calc(100dvh - env(safe-area-inset-top, 0px) - 2rem))`,
     popupMaxHeight: 'calc(100dvh - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px) - 2rem)',
     popupBodyMaxHeight: `min(${Math.round(safeHeight * 0.7)}px, calc(100dvh - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px) - 9rem))`,
@@ -539,7 +539,7 @@ function App() {
                   <PanelMetric label="Common Ground" value={selectedCluster.topClusterActivities.join(', ')} />
                   <div>
                     <p className="mb-2 text-xs uppercase tracking-[0.2em] text-slate-400">Members</p>
-                    <div className={`${viewport.isMobile ? 'max-h-none' : 'max-h-[34vh]'} space-y-2 overflow-auto pr-1`}>
+                    <div className={`${viewport.isMobile ? 'max-h-[26vh]' : 'max-h-[34vh]'} space-y-2 overflow-auto pr-1`}>
                       {selectedCluster.members.map((memberId) => {
                         const analyst = analystMap.get(memberId)
                         if (!analyst) return null
