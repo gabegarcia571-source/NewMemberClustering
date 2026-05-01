@@ -252,6 +252,10 @@ function App() {
     resetOverview()
   }
 
+  const resetMobileListSearch = () => {
+    updateFilters({ nameSearch: '' })
+  }
+
   const handleSearchChange = (value: string) => {
     updateFilters({ nameSearch: value })
     if (viewport.isMobile && value.trim()) {
@@ -513,7 +517,7 @@ function App() {
                     {viewMode === '2d' && (
                       <button
                         className="rounded-full border border-white/15 bg-slate-950/75 px-4 py-2 text-xs uppercase tracking-[0.2em] text-slate-100 backdrop-blur transition hover:border-sky-300 hover:text-white"
-                        onClick={resetToDefault}
+                        onClick={resetMobileListSearch}
                       >
                         Reset
                       </button>
