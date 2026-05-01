@@ -429,7 +429,7 @@ function App() {
                       className="rounded-full border border-white/15 bg-slate-950/75 px-4 py-2 text-xs uppercase tracking-[0.2em] text-slate-100 backdrop-blur transition hover:border-sky-300 hover:text-white"
                       onClick={() => setMobileFiltersOpen(true)}
                     >
-                      Filters
+                      Clusters
                     </button>
                     <button
                       className="rounded-full border border-white/15 bg-slate-950/75 px-4 py-2 text-xs uppercase tracking-[0.2em] text-slate-100 backdrop-blur transition hover:border-sky-300 hover:text-white"
@@ -653,26 +653,29 @@ function App() {
                 <div className="mx-auto mb-4 h-1.5 w-14 rounded-full bg-white/20" />
                 <div className="mb-4 flex items-center justify-between gap-3">
                   <div>
-                    <p className="font-orbitron text-lg text-white">Filters</p>
-                    <p className="text-sm text-slate-400">Explore first, refine when you need to.</p>
+                    <p className="font-orbitron text-lg text-white">Clusters</p>
+                    <p className="text-sm text-slate-400">Jump straight to a pod and open it like a galaxy tap.</p>
                   </div>
                   <button className="rounded-full border border-white/15 px-3 py-1 text-xs text-slate-200" onClick={() => setMobileFiltersOpen(false)}>
                     Close
                   </button>
                 </div>
-                <FilterControls
-                  analysts={analysts}
-                  clusters={clusters}
-                  filters={filters}
-                  offices={offices}
-                  updateFilters={updateFilters}
-                  toggleCluster={toggleCluster}
-                  toggleActivity={toggleActivity}
-                  resetFilters={resetFilters}
-                  showSearch={!viewport.isMobile}
-                  showClusters={false}
-                  showOffice={false}
-                />
+                <div className="space-y-2">
+                  {clusters.map((cluster) => (
+                    <button
+                      key={cluster.id}
+                      className="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-left transition hover:border-sky-300/50 hover:bg-white/10"
+                      onClick={() => {
+                        setMobileFiltersOpen(false)
+                        handleSelectCluster(cluster.id)
+                      }}
+                    >
+                      <div className="font-medium text-white">{cluster.podName}</div>
+                      <div className="mt-1 text-xs text-slate-400">{cluster.shortVibe}</div>
+                      <div className="mt-2 text-xs text-sky-100">{cluster.memberCount} members</div>
+                    </button>
+                  ))}
+                </div>
               </div>
             </div>
           )}
