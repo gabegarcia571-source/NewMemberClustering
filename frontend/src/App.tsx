@@ -510,7 +510,7 @@ function App() {
               className={`absolute z-30 border-white/10 bg-slate-950/85 backdrop-blur ${
                 viewport.isMobile
                   ? 'inset-x-0 bottom-0 rounded-t-[2rem] border-t p-5'
-                  : 'right-0 top-0 h-full w-full max-w-[360px] border-l p-5'
+                  : 'right-0 top-0 h-full w-full max-w-[440px] border-l p-5'
               }`}
               style={
                 viewport.isMobile
@@ -1143,7 +1143,7 @@ function AnalystSidePanel({
   onOpenCluster?: (clusterId: number) => void
 }) {
   return (
-    <div className="absolute right-0 top-0 z-30 h-full w-full max-w-[360px] border-l border-white/10 bg-slate-950/85 p-5 backdrop-blur">
+    <div className="absolute right-0 top-0 z-30 h-full w-full max-w-[440px] border-l border-white/10 bg-slate-950/85 p-5 backdrop-blur">
       <div className="flex h-full flex-col">
         <div className="flex items-start justify-between gap-3 border-b border-white/10 pb-4">
           <div className="min-w-0">
@@ -1341,7 +1341,7 @@ function FocusController({
       }
       const direction = new THREE.Vector3(1.2, 0.62, 1.24).normalize()
       const distance = isMobile ? 50 : 42
-      const adjustedTarget = isMobile ? target.clone().add(new THREE.Vector3(0, -12, 0)) : target.clone()
+      const adjustedTarget = isMobile ? target.clone().add(new THREE.Vector3(0, -12, 0)) : target.clone().add(new THREE.Vector3(-12, 0, 0))
       animationRef.current = {
         startedAt: performance.now(),
         duration: 900,
