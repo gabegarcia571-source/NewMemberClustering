@@ -111,6 +111,7 @@ function App() {
   const [mobileClusterFromSearch, setMobileClusterFromSearch] = useState(false)
   const [mobileAnalystFromList, setMobileAnalystFromList] = useState(false)
   const [mobileClusterDragY, setMobileClusterDragY] = useState(0)
+  const [desktopSearchMatchesDismissed, setDesktopSearchMatchesDismissed] = useState(false)
   const mobileClusterDragStartY = useRef<number | null>(null)
 
   useEffect(() => {
@@ -186,6 +187,10 @@ function App() {
       setHoveredSearchAnalystId(null)
     }
   }, [filters.nameSearch, viewport.isMobile])
+
+  useEffect(() => {
+    setDesktopSearchMatchesDismissed(false)
+  }, [filters.nameSearch])
 
   const analystMap = useMemo(() => new Map(analysts.map((analyst) => [analyst.id, analyst])), [analysts])
   const clusterMap = useMemo(() => new Map(clusters.map((cluster) => [cluster.id, cluster])), [clusters])
@@ -538,13 +543,16 @@ function App() {
             />
           )}
 
-          {!viewport.isMobile && viewMode === '3d' && filters.nameSearch.trim() && (
+          {!viewport.isMobile && viewMode === '3d' && filters.nameSearch.trim() && !desktopSearchMatchesDismissed && (
             <div className="absolute left-4 top-44 z-20 w-full max-w-[320px]">
               <SearchMatchesPanel
                 analysts={filteredAnalysts}
                 searchValue={filters.nameSearch}
                 onClear={() => updateFilters({ nameSearch: '' })}
-                onSelectAnalyst={handleSelectAnalyst}
+                onSelectAnalyst={(id) => {
+                  setDesktopSearchMatchesDismissed(true)
+                  handleSelectAnalyst(id)
+                }}
                 onHoverAnalyst={setHoveredSearchAnalystId}
                 maxHeight="52vh"
               />
