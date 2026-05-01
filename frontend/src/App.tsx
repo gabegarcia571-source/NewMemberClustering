@@ -538,12 +538,12 @@ function App() {
                     >
                       {viewMode === '3d' ? 'List View' : '3D View'}
                     </button>
-                    {viewMode === '2d' && !selectedCluster && (
+                    {viewMode === '2d' && (
                       <button
                         className="rounded-full border border-white/15 bg-slate-950/75 px-4 py-2 text-xs uppercase tracking-[0.2em] text-slate-100 backdrop-blur transition hover:border-sky-300 hover:text-white"
-                        onClick={resetMobileListSearch}
+                        onClick={selectedCluster ? resetToDefault : resetMobileListSearch}
                       >
-                        Reset
+                        {selectedCluster ? 'Home' : 'Reset'}
                       </button>
                     )}
                   </div>
