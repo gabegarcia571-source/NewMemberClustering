@@ -246,10 +246,11 @@ function App() {
   const handleSearchChange = (value: string) => {
     updateFilters({ nameSearch: value })
     if (viewport.isMobile && value.trim()) {
-      setViewMode('3d')
-      setSelectedClusterId(null)
-      setSelectedAnalystId(null)
-      setMobileClusterFromSearch(false)
+      if (viewMode === '3d') {
+        setSelectedClusterId(null)
+        setSelectedAnalystId(null)
+        setMobileClusterFromSearch(false)
+      }
     }
   }
 
