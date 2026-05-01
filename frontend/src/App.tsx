@@ -48,7 +48,7 @@ function createViewportProfile(width: number, height: number): ViewportProfile {
     isCompactMobile,
     topInset: 'calc(env(safe-area-inset-top, 0px) + 1rem)',
     bottomInset: 'calc(env(safe-area-inset-bottom, 0px) + 1rem)',
-    mobileOverlayMaxHeight: `min(${Math.round(safeHeight * 0.7)}px, calc(100dvh - env(safe-area-inset-top, 0px) - 4rem))`,
+    mobileOverlayMaxHeight: `min(${Math.round(safeHeight * 0.76)}px, calc(100dvh - env(safe-area-inset-top, 0px) - 3rem))`,
     mobileDrawerMaxHeight: `min(${Math.round(safeHeight * 0.78)}px, calc(100dvh - env(safe-area-inset-top, 0px) - 2rem))`,
     popupMaxHeight: 'calc(100dvh - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px) - 2rem)',
     popupBodyMaxHeight: `min(${Math.round(safeHeight * 0.7)}px, calc(100dvh - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px) - 9rem))`,
@@ -522,10 +522,10 @@ function App() {
               }
             >
               <div className={`flex ${viewport.isMobile ? 'h-full flex-col' : 'flex-col'}`}>
-                <div className="flex items-start justify-between gap-3 border-b border-white/10 pb-4">
+                <div className="flex items-start justify-between gap-3 border-b border-white/10 pb-3">
                   <div>
                     <p className="font-orbitron text-2xl text-white">{selectedCluster.podName}</p>
-                    <p className="mt-2 text-sm text-slate-300">{selectedCluster.shortVibe}</p>
+                    <p className="mt-1.5 text-sm leading-5 text-slate-300">{selectedCluster.shortVibe}</p>
                   </div>
                   <button
                     className="rounded-full border border-white/15 px-3 py-1 text-xs text-slate-200"
@@ -534,12 +534,14 @@ function App() {
                     Close
                   </button>
                 </div>
-                <div className={`mt-5 space-y-4 text-sm text-slate-200 ${viewport.isMobile ? 'flex-1 overflow-auto pr-1' : ''}`}>
+                <div className={`mt-4 text-sm text-slate-200 ${viewport.isMobile ? 'flex-1 overflow-auto pr-1' : ''}`}>
                   <PanelMetric label="Member Count" value={String(selectedCluster.memberCount)} />
-                  <PanelMetric label="Common Ground" value={selectedCluster.topClusterActivities.join(', ')} />
-                  <div>
+                  <div className="mt-3">
+                    <PanelMetric label="Common Ground" value={selectedCluster.topClusterActivities.join(', ')} />
+                  </div>
+                  <div className="mt-3">
                     <p className="mb-2 text-xs uppercase tracking-[0.2em] text-slate-400">Members</p>
-                    <div className={`${viewport.isMobile ? 'max-h-[26vh]' : 'max-h-[34vh]'} space-y-2 overflow-auto pr-1`}>
+                    <div className={`${viewport.isMobile ? 'max-h-[36vh]' : 'max-h-[34vh]'} space-y-2 overflow-auto pr-1`}>
                       {selectedCluster.members.map((memberId) => {
                         const analyst = analystMap.get(memberId)
                         if (!analyst) return null
@@ -1340,8 +1342,8 @@ function FocusController({
         return
       }
       const direction = new THREE.Vector3(1.2, 0.62, 1.24).normalize()
-      const distance = isMobile ? 50 : 46
-      const adjustedTarget = isMobile ? target.clone().add(new THREE.Vector3(0, -12, 0)) : target.clone().add(new THREE.Vector3(-18, 0, 0))
+      const distance = isMobile ? 64 : 46
+      const adjustedTarget = isMobile ? target.clone().add(new THREE.Vector3(0, -14, 0)) : target.clone().add(new THREE.Vector3(-18, 0, 0))
       animationRef.current = {
         startedAt: performance.now(),
         duration: 900,
