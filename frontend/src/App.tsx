@@ -354,7 +354,7 @@ function App() {
         )}
 
         <main className="relative flex-1">
-          {viewport.isMobile && !selectedAnalyst && (
+          {viewport.isMobile && !selectedAnalyst && !selectedCluster && (
             <>
               <div className="fixed left-4 right-4 z-40" style={{ top: viewport.topInset }}>
                 <div className="flex items-start justify-between gap-2">
