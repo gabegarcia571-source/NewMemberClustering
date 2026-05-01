@@ -1267,12 +1267,13 @@ function AnalystMobileSheet({
             </div>
           </div>
           <div className="flex flex-col gap-2">
-            <button className="rounded-full border border-white/15 px-3 py-1 text-xs text-slate-200" onClick={onClose}>
-              Back
-            </button>
-            {onBack && (
+            {onBack ? (
               <button className="rounded-full border border-white/15 px-3 py-1 text-xs text-slate-200" onClick={onBack}>
                 Previous
+              </button>
+            ) : (
+              <button className="rounded-full border border-white/15 px-3 py-1 text-xs text-slate-200" onClick={onClose}>
+                Back
               </button>
             )}
           </div>
