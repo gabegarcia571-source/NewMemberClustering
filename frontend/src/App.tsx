@@ -527,6 +527,7 @@ function App() {
                       onClick={() => {
                         if (viewMode === '3d') {
                           setViewMode('2d')
+                          setSelectedClusterId(null)
                         } else {
                           setViewMode('3d')
                           if (!selectedCluster) {
