@@ -317,7 +317,15 @@ function App() {
   const handleOpenClusterFromAnalyst = (clusterId: number) => {
     setSelectedAnalystId(null)
     setMobileAnalystHistory([])
+    setMobileAnalystFromList(false)
     setSelectedClusterId(clusterId)
+  }
+
+  const handleBackToClusterFromAnalyst = () => {
+    setSelectedAnalystId(null)
+    setMobileAnalystHistory([])
+    setMobileAnalystFromList(false)
+    setViewMode('3d')
   }
 
   const handleBackToPreviousMobileAnalyst = () => {
@@ -468,7 +476,7 @@ function App() {
         )}
 
         <main className="relative flex-1">
-          {viewport.isMobile && !selectedAnalyst && !selectedCluster && (
+          {viewport.isMobile && !selectedAnalyst && (
             <>
               <div className="fixed left-4 right-4 z-40" style={{ top: viewport.topInset }}>
                 <div className="flex items-start justify-between gap-2">
@@ -543,16 +551,6 @@ function App() {
                 </div>
               )}
 
-              {viewMode !== '2d' && (
-                <div className="fixed left-4 z-40" style={{ bottom: viewport.bottomInset }}>
-                  <button
-                    className="rounded-full border border-white/15 bg-slate-950/75 px-4 py-2 text-xs uppercase tracking-[0.2em] text-slate-100 backdrop-blur transition hover:border-sky-300 hover:text-white"
-                    onClick={filters.nameSearch.trim() ? resetToDefault : resetOverview}
-                  >
-                    {filters.nameSearch.trim() ? 'Reset To Default' : 'Back To Overview'}
-                  </button>
-                </div>
-              )}
             </>
           )}
 
@@ -688,7 +686,7 @@ function App() {
             <AnalystMobileSheet
               analyst={selectedAnalyst}
               analystsById={analystMap}
-              onClose={() => handleSelectAnalyst(null)}
+              onClose={handleBackToClusterFromAnalyst}
               onBack={mobileAnalystHistory.length > 0 ? handleBackToPreviousMobileAnalyst : undefined}
               onSelectAnalyst={handleSelectAnalyst}
               onOpenCluster={handleOpenClusterFromAnalyst}
@@ -1270,11 +1268,11 @@ function AnalystMobileSheet({
           </div>
           <div className="flex flex-col gap-2">
             <button className="rounded-full border border-white/15 px-3 py-1 text-xs text-slate-200" onClick={onClose}>
-              Close
+              Back
             </button>
             {onBack && (
               <button className="rounded-full border border-white/15 px-3 py-1 text-xs text-slate-200" onClick={onBack}>
-                Back
+                Previous
               </button>
             )}
           </div>
