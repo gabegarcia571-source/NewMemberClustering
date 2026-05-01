@@ -703,6 +703,7 @@ function App() {
               onBack={mobileAnalystHistory.length > 0 ? handleBackToPreviousMobileAnalyst : undefined}
               showClusterButton={mobileAnalystFromList}
               onSelectAnalyst={handleSelectAnalyst}
+              onOpenCluster={handleOpenClusterFromAnalyst}
               dragY={mobileAnalystDragY}
               onTouchStart={handleMobileAnalystTouchStart}
               onTouchMove={handleMobileAnalystTouchMove}
@@ -1219,6 +1220,7 @@ function AnalystMobileSheet({
   onBack,
   showClusterButton,
   onSelectAnalyst,
+  onOpenCluster,
   dragY,
   onTouchStart,
   onTouchMove,
@@ -1231,6 +1233,7 @@ function AnalystMobileSheet({
   onBack?: () => void
   showClusterButton?: boolean
   onSelectAnalyst: (id: number | null) => void
+  onOpenCluster: (clusterId: number) => void
   dragY: number
   onTouchStart: (event: ReactTouchEvent<HTMLDivElement>) => void
   onTouchMove: (event: ReactTouchEvent<HTMLDivElement>) => void
@@ -1274,7 +1277,7 @@ function AnalystMobileSheet({
               </button>
             )}
             {showClusterButton && (
-              <button className="rounded-full border border-white/15 px-3 py-1 text-xs text-slate-200" onClick={() => onClose()}>
+              <button className="rounded-full border border-white/15 px-3 py-1 text-xs text-slate-200" onClick={() => onOpenCluster(analyst.clusterId)}>
                 Cluster
               </button>
             )}
