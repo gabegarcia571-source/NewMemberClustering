@@ -48,7 +48,7 @@ function createViewportProfile(width: number, height: number): ViewportProfile {
     isCompactMobile,
     topInset: 'calc(env(safe-area-inset-top, 0px) + 1rem)',
     bottomInset: 'calc(env(safe-area-inset-bottom, 0px) + 1rem)',
-    mobileOverlayMaxHeight: `min(${Math.round(safeHeight * 0.64)}px, calc(100dvh - env(safe-area-inset-top, 0px) - 5rem))`,
+    mobileOverlayMaxHeight: `min(${Math.round(safeHeight * 0.76)}px, calc(100dvh - env(safe-area-inset-top, 0px) - 3rem))`,
     mobileDrawerMaxHeight: `min(${Math.round(safeHeight * 0.78)}px, calc(100dvh - env(safe-area-inset-top, 0px) - 2rem))`,
     popupMaxHeight: 'calc(100dvh - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px) - 2rem)',
     popupBodyMaxHeight: `min(${Math.round(safeHeight * 0.7)}px, calc(100dvh - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px) - 9rem))`,
@@ -509,7 +509,7 @@ function App() {
             <div
               className={`absolute z-30 border-white/10 bg-slate-950/85 backdrop-blur ${
                 viewport.isMobile
-                  ? 'inset-x-0 bottom-0 max-h-[62vh] rounded-t-[2rem] border-t p-5'
+                  ? 'inset-x-0 bottom-0 rounded-t-[2rem] border-t p-5'
                   : 'right-0 top-0 h-full w-full max-w-[360px] border-l p-5'
               }`}
               style={
@@ -521,38 +521,40 @@ function App() {
                   : undefined
               }
             >
-              <div className="flex items-start justify-between gap-3">
-                <div>
-                  <p className="font-orbitron text-2xl text-white">{selectedCluster.podName}</p>
-                  <p className="mt-2 text-sm text-slate-300">{selectedCluster.shortVibe}</p>
+              <div className={`flex ${viewport.isMobile ? 'h-full flex-col' : 'flex-col'}`}>
+                <div className="flex items-start justify-between gap-3 border-b border-white/10 pb-4">
+                  <div>
+                    <p className="font-orbitron text-2xl text-white">{selectedCluster.podName}</p>
+                    <p className="mt-2 text-sm text-slate-300">{selectedCluster.shortVibe}</p>
+                  </div>
+                  <button
+                    className="rounded-full border border-white/15 px-3 py-1 text-xs text-slate-200"
+                    onClick={viewport.isMobile ? (mobileClusterFromSearch ? resetToDefault : resetOverview) : () => setSelectedClusterId(null)}
+                  >
+                    Close
+                  </button>
                 </div>
-                <button
-                  className="rounded-full border border-white/15 px-3 py-1 text-xs text-slate-200"
-                  onClick={viewport.isMobile ? (mobileClusterFromSearch ? resetToDefault : resetOverview) : () => setSelectedClusterId(null)}
-                >
-                  Close
-                </button>
-              </div>
-              <div className="mt-5 space-y-4 text-sm text-slate-200">
-                <PanelMetric label="Member Count" value={String(selectedCluster.memberCount)} />
-                <PanelMetric label="Common Ground" value={selectedCluster.topClusterActivities.join(', ')} />
-                <div>
-                  <p className="mb-2 text-xs uppercase tracking-[0.2em] text-slate-400">Members</p>
-                  <div className="max-h-[34vh] space-y-2 overflow-auto pr-1">
-                    {selectedCluster.members.map((memberId) => {
-                      const analyst = analystMap.get(memberId)
-                      if (!analyst) return null
-                      return (
-                        <button
-                          key={analyst.id}
-                          className="w-full rounded-2xl border border-white/10 bg-white/5 px-3 py-2 text-left text-sm transition hover:border-sky-300/50 hover:bg-white/10"
-                          onClick={() => handleSelectAnalyst(analyst.id)}
-                        >
-                          <div className="font-medium text-white">{analyst.name}</div>
-                          <div className="text-xs text-slate-400">{analyst.personaTag}</div>
-                        </button>
-                      )
-                    })}
+                <div className={`mt-5 space-y-4 text-sm text-slate-200 ${viewport.isMobile ? 'flex-1 overflow-auto pr-1' : ''}`}>
+                  <PanelMetric label="Member Count" value={String(selectedCluster.memberCount)} />
+                  <PanelMetric label="Common Ground" value={selectedCluster.topClusterActivities.join(', ')} />
+                  <div>
+                    <p className="mb-2 text-xs uppercase tracking-[0.2em] text-slate-400">Members</p>
+                    <div className={`${viewport.isMobile ? 'max-h-none' : 'max-h-[34vh]'} space-y-2 overflow-auto pr-1`}>
+                      {selectedCluster.members.map((memberId) => {
+                        const analyst = analystMap.get(memberId)
+                        if (!analyst) return null
+                        return (
+                          <button
+                            key={analyst.id}
+                            className="w-full rounded-2xl border border-white/10 bg-white/5 px-3 py-2 text-left text-sm transition hover:border-sky-300/50 hover:bg-white/10"
+                            onClick={() => handleSelectAnalyst(analyst.id)}
+                          >
+                            <div className="font-medium text-white">{analyst.name}</div>
+                            <div className="text-xs text-slate-400">{analyst.personaTag}</div>
+                          </button>
+                        )
+                      })}
+                    </div>
                   </div>
                 </div>
               </div>
