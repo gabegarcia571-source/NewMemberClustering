@@ -702,6 +702,7 @@ function App() {
               onClose={mobileAnalystFromList ? handleBackToListFromAnalyst : handleBackToClusterFromAnalyst}
               onBack={mobileAnalystHistory.length > 0 ? handleBackToPreviousMobileAnalyst : undefined}
               showClusterButton={mobileAnalystFromList}
+              backLabel={mobileAnalystFromList ? 'List' : 'Back'}
               onSelectAnalyst={handleSelectAnalyst}
               onOpenCluster={handleOpenClusterFromAnalyst}
               dragY={mobileAnalystDragY}
@@ -1219,6 +1220,7 @@ function AnalystMobileSheet({
   onClose,
   onBack,
   showClusterButton,
+  backLabel = 'Back',
   onSelectAnalyst,
   onOpenCluster,
   dragY,
@@ -1232,6 +1234,7 @@ function AnalystMobileSheet({
   onClose: () => void
   onBack?: () => void
   showClusterButton?: boolean
+  backLabel?: string
   onSelectAnalyst: (id: number | null) => void
   onOpenCluster: (clusterId: number) => void
   dragY: number
@@ -1273,7 +1276,7 @@ function AnalystMobileSheet({
               </button>
             ) : (
               <button className="rounded-full border border-white/15 px-3 py-1 text-xs text-slate-200" onClick={onClose}>
-                Back
+                {backLabel}
               </button>
             )}
             {showClusterButton && (
