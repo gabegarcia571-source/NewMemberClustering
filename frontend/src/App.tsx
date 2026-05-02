@@ -1,6 +1,6 @@
 import { Canvas, useFrame, useThree } from '@react-three/fiber'
 import { OrbitControls, Sphere, Stars } from '@react-three/drei'
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import type { MutableRefObject } from 'react'
 import type { TouchEvent as ReactTouchEvent } from 'react'
 import * as THREE from 'three'
@@ -155,18 +155,24 @@ function App() {
     }
   }, [isUnlocked, setData, setError, setLoading])
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (typeof window === 'undefined') return
     const update = () => {
       const size = getViewportSize()
       setViewport(createViewportProfile(size.width, size.height))
     }
     update()
+    const rafOne = window.requestAnimationFrame(update)
+    const rafTwo = window.requestAnimationFrame(() => window.requestAnimationFrame(update))
+    const timeoutId = window.setTimeout(update, 250)
     window.addEventListener('resize', update)
     window.addEventListener('orientationchange', update)
     window.visualViewport?.addEventListener('resize', update)
     window.visualViewport?.addEventListener('scroll', update)
     return () => {
+      window.cancelAnimationFrame(rafOne)
+      window.cancelAnimationFrame(rafTwo)
+      window.clearTimeout(timeoutId)
       window.removeEventListener('resize', update)
       window.removeEventListener('orientationchange', update)
       window.visualViewport?.removeEventListener('resize', update)
@@ -321,6 +327,9 @@ function App() {
   }
 
   const handleOpenClusterFromAnalyst = (clusterId: number) => {
+    if (viewport.isMobile && mobileAnalystFromList) {
+      updateFilters({ nameSearch: '' })
+    }
     setSelectedAnalystId(null)
     setMobileAnalystHistory([])
     setMobileAnalystFromList(false)
