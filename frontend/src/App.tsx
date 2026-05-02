@@ -111,6 +111,7 @@ function App() {
   const [mobileClusterFromSearch, setMobileClusterFromSearch] = useState(false)
   const [mobileAnalystFromList, setMobileAnalystFromList] = useState(false)
   const [mobileAnalystHistory, setMobileAnalystHistory] = useState<number[]>([])
+  const [desktopAnalystHistory, setDesktopAnalystHistory] = useState<number[]>([])
   const [mobileClusterDragY, setMobileClusterDragY] = useState(0)
   const [mobileAnalystDragY, setMobileAnalystDragY] = useState(0)
   const [desktopSearchMatchesDismissed, setDesktopSearchMatchesDismissed] = useState(false)
@@ -255,6 +256,7 @@ function App() {
     setMobileClusterFromSearch(false)
     setMobileAnalystFromList(false)
     setMobileAnalystHistory([])
+    setDesktopAnalystHistory([])
   }
 
   const resetToDefault = () => {
@@ -299,6 +301,9 @@ function App() {
       if (viewport.isMobile && selectedAnalystId !== null && selectedAnalystId !== analystId) {
         setMobileAnalystHistory((history) => [...history, selectedAnalystId])
       }
+      if (!viewport.isMobile && selectedAnalystId !== null && selectedAnalystId !== analystId) {
+        setDesktopAnalystHistory((history) => [...history, selectedAnalystId])
+      }
       const analyst = analystMap.get(analystId)
       if (analyst) {
         setSelectedClusterId(analyst.clusterId)
@@ -319,6 +324,9 @@ function App() {
     }
     if (analystId === null) {
       setMobileAnalystHistory([])
+      if (!viewport.isMobile) {
+        setDesktopAnalystHistory([])
+      }
     }
     setSelectedAnalystId(analystId)
     if (viewport.isMobile && analystId !== null) {
@@ -354,6 +362,22 @@ function App() {
 
   const handleBackToPreviousMobileAnalyst = () => {
     setMobileAnalystHistory((history) => {
+      if (history.length === 0) return history
+      const nextHistory = [...history]
+      const previousAnalystId = nextHistory.pop() ?? null
+      setSelectedAnalystId(previousAnalystId)
+      if (previousAnalystId !== null) {
+        const analyst = analystMap.get(previousAnalystId)
+        if (analyst) {
+          setSelectedClusterId(analyst.clusterId)
+        }
+      }
+      return nextHistory
+    })
+  }
+
+  const handleBackToPreviousDesktopAnalyst = () => {
+    setDesktopAnalystHistory((history) => {
       if (history.length === 0) return history
       const nextHistory = [...history]
       const previousAnalystId = nextHistory.pop() ?? null
@@ -727,6 +751,7 @@ function App() {
               analyst={selectedAnalyst}
               analystsById={analystMap}
               onClose={() => handleSelectAnalyst(null)}
+              onBack={desktopAnalystHistory.length > 0 ? handleBackToPreviousDesktopAnalyst : undefined}
               onSelectAnalyst={handleSelectAnalyst}
             />
           )}
@@ -1307,11 +1332,13 @@ function AnalystSidePanel({
   analyst,
   analystsById,
   onClose,
+  onBack,
   onSelectAnalyst,
 }: {
   analyst: Analyst
   analystsById: Map<number, Analyst>
   onClose: () => void
+  onBack?: () => void
   onSelectAnalyst: (id: number | null) => void
 }) {
   return (
@@ -1324,9 +1351,16 @@ function AnalystSidePanel({
               {analyst.personaTag}
             </div>
           </div>
-          <button className="rounded-full border border-white/15 px-3 py-1 text-xs text-slate-200" onClick={onClose}>
-            Close
-          </button>
+          <div className="flex flex-col gap-2">
+            {onBack && (
+              <button className="rounded-full border border-white/15 px-3 py-1 text-xs text-slate-200" onClick={onBack}>
+                Back
+              </button>
+            )}
+            <button className="rounded-full border border-white/15 px-3 py-1 text-xs text-slate-200" onClick={onClose}>
+              Close
+            </button>
+          </div>
         </div>
         <div className="mt-5 flex-1 overflow-auto pr-1">
           <AnalystDetailsContent analyst={analyst} analystsById={analystsById} onSelectAnalyst={onSelectAnalyst} />
