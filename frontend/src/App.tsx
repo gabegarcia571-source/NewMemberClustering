@@ -4,6 +4,7 @@ import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import type { MutableRefObject } from 'react'
 import type { TouchEvent as ReactTouchEvent } from 'react'
 import * as THREE from 'three'
+import { Analytics } from '@vercel/analytics/react'
 import { useAppStore } from './store'
 import type { Analyst, Cluster, NetworkMap } from './types'
 
@@ -1446,6 +1447,7 @@ function GalaxyScene({
           )
         })}
       </Canvas>
+      <Analytics />
     </div>
   )
 }
