@@ -319,42 +319,41 @@ def cluster_profile_key(centroid_scores: dict[str, float]) -> tuple[str, str]:
     nights = centroid_scores["Having an activities night"]
 
     if books >= 2.4 and coffee >= 2.6 and watch >= 2.5 and league < 2.1:
-        return "Coffeehouse Connectors", "This pod mixes strong coffee-chat energy with thoughtful conversation and social plans that still feel easygoing."
+        return "Coffee and Conversation", "This group leans toward coffee, books, and easy conversation, with some interest in social plans."
     if happy >= 2.7 and watch >= 2.7 and outdoors >= 2.6 and league >= 2.4:
-        return "Weekend Socializers", "This group is highly social across the board, especially around happy hours, active weekends, and shared outings."
+        return "Active Social", "This group is broadly social and active, with strong interest in happy hour, watching games, and outdoor plans."
     if happy >= 2.5 and watch >= 2.5 and coffee >= 2.4 and movies >= 2.2:
-        return "All-Around Social", "This pod is broadly social, mixing happy hours, game days, coffee runs, and all-purpose group plans."
+        return "Casual Going Out", "This group is centered on casual social plans like happy hour, coffee, movies, and group hangouts."
     if watch >= 2.3 and league >= 2.2 and happy >= 2.2:
-        return "Sports-Centered Social", "This pod leans into game days, leagues, and outgoing group energy around sports."
+        if movies < 1.3 and coffee < 2.1 and nights < 2.2:
+            return "Extroverted Sports Fans", "This group is the most sports-focused, with strong interest in watching games, happy hour, and rec leagues."
+        return "Going Out Group", "This group is more going-out oriented, with strong interest in happy hour, group plans, and watching games."
     if outdoors >= 2.4 and league >= 2.2 and happy < 2.2:
-        return "Active & Outdoors", "This group is most energized by movement, outdoor plans, and staying active together."
+        return "Active Outdoors", "This group is most interested in outdoor plans, movement, and staying active together."
     if coffee >= 2.3 and books >= 1.8 and happy < 2.3:
-        return "Low-Key & Conversational", "This pod favors calmer meetups, thoughtful conversation, and easy one-on-one connection."
+        return "Low-Key Social", "This group prefers calmer plans built around conversation, coffee, and more low-key social time."
     if gaming >= 1.8 and nights >= 2.1:
-        return "Games & Hangouts", "This group is built around playful downtime, shared activities, and easy social nights."
+        return "Games and Hangouts", "This group is centered on activity nights, games, movies, and casual group hangouts."
     if movies >= 2.1 and happy >= 2.2:
-        return "Movies & Mixed Social", "This pod blends nights out, entertainment, and casual social plans."
+        return "Movies and Social", "This group leans toward movies, happy hour, and casual social plans."
     if coffee >= 2.3 and happy >= 2.3:
-        return "Laid-Back Social", "This group likes casual plans that can flex between coffee chats and more social nights."
+        return "Coffee and Going Out", "This group mixes coffee meetups with more social plans like happy hour and group outings."
     if nights >= 2.2 and coffee >= 2.0:
-        return "Community Mixers", "This pod tends to connect through organized activities, shared plans, and easy group hangs."
+        return "Activity Nights", "This group connects through activity nights, shared plans, and easy group hangouts."
     top_sorted = sorted(centroid_scores.items(), key=lambda item: (-item[1], ACTIVITY_COLUMNS.index(item[0])))
     top_labels = [ACTIVITY_SHORT[name] for name, _score in top_sorted[:2]]
-    return f"{top_labels[0]} & {top_labels[1]}", f"This pod is anchored by {top_labels[0].lower()} and {top_labels[1].lower()} as its strongest shared preferences."
+    return f"{top_labels[0]} and {top_labels[1]}", f"This group is primarily defined by {top_labels[0].lower()} and {top_labels[1].lower()}."
 
 
 def make_unique_cluster_names(clusters: list[dict[str, Any]]) -> None:
     counts = Counter(cluster["podName"] for cluster in clusters)
     seen: Counter[str] = Counter()
     suffix_map = {
-        "All-Around Social": ["Prime", "Plus", "Wide"],
-        "Sports-Centered Social": ["League", "Game Day", "Crew"],
-        "Active & Outdoors": ["Trail", "Motion", "Crew"],
-        "Low-Key & Conversational": ["Circle", "Lounge", "Table"],
-        "Games & Hangouts": ["Night", "Crew", "Club"],
-        "Movies & Mixed Social": ["Cinema", "After Hours", "Club"],
-        "Laid-Back Social": ["Coffeehouse", "After Work", "Commons"],
-        "Community Mixers": ["Circle", "Commons", "Crew"],
+        "Casual Going Out": ["1", "2", "3"],
+        "Active Social": ["1", "2", "3"],
+        "Coffee and Conversation": ["1", "2", "3"],
+        "Games and Hangouts": ["1", "2", "3"],
+        "Movies and Social": ["1", "2", "3"],
     }
     for cluster in clusters:
         name = cluster["podName"]
@@ -362,7 +361,7 @@ def make_unique_cluster_names(clusters: list[dict[str, Any]]) -> None:
         if counts[name] > 1:
             suffixes = suffix_map.get(name, ["North", "Central", "South"])
             suffix = suffixes[min(seen[name] - 1, len(suffixes) - 1)]
-            cluster["podName"] = f"{name}: {suffix}"
+            cluster["podName"] = f"{name} {suffix}"
 
 
 def compute_coordinates(features: np.ndarray, labels: np.ndarray) -> np.ndarray:

@@ -41,8 +41,8 @@
         84,
         12
       ],
-      "podName": "Sports-Centered Social: Game Day",
-      "shortVibe": "This pod leans into game days, leagues, and outgoing group energy around sports."
+      "podName": "Going Out Group",
+      "shortVibe": "This group is more going-out oriented, with strong interest in happy hour, group plans, and watching games."
     },
     {
       "id": 1,
@@ -85,8 +85,8 @@
         142,
         152
       ],
-      "podName": "Movies & Mixed Social",
-      "shortVibe": "This pod blends nights out, entertainment, and casual social plans."
+      "podName": "Movies and Social",
+      "shortVibe": "This group leans toward movies, happy hour, and casual social plans."
     },
     {
       "id": 2,
@@ -129,8 +129,8 @@
         102,
         128
       ],
-      "podName": "Games & Hangouts",
-      "shortVibe": "This group is built around playful downtime, shared activities, and easy social nights."
+      "podName": "Games and Hangouts",
+      "shortVibe": "This group is centered on activity nights, games, movies, and casual group hangouts."
     },
     {
       "id": 3,
@@ -173,8 +173,8 @@
         121,
         169
       ],
-      "podName": "Weekend Socializers",
-      "shortVibe": "This group is highly social across the board, especially around happy hours, active weekends, and shared outings."
+      "podName": "Active Social",
+      "shortVibe": "This group is broadly social and active, with strong interest in happy hour, watching games, and outdoor plans."
     },
     {
       "id": 4,
@@ -217,8 +217,8 @@
         17,
         20
       ],
-      "podName": "Sports-Centered Social: League",
-      "shortVibe": "This pod leans into game days, leagues, and outgoing group energy around sports."
+      "podName": "Extroverted Sports Fans",
+      "shortVibe": "This group is the most sports-focused, with strong interest in watching games, happy hour, and rec leagues."
     },
     {
       "id": 5,
@@ -261,8 +261,8 @@
         46,
         135
       ],
-      "podName": "Weekend Socializers",
-      "shortVibe": "This group is highly social across the board, especially around happy hours, active weekends, and shared outings."
+      "podName": "Active Social",
+      "shortVibe": "This group is broadly social and active, with strong interest in happy hour, watching games, and outdoor plans."
     },
     {
       "id": 6,
@@ -305,8 +305,8 @@
         185,
         63
       ],
-      "podName": "Movies & Mixed Social",
-      "shortVibe": "This pod blends nights out, entertainment, and casual social plans."
+      "podName": "Movies and Social",
+      "shortVibe": "This group leans toward movies, happy hour, and casual social plans."
     },
     {
       "id": 7,
@@ -349,8 +349,8 @@
         99,
         114
       ],
-      "podName": "Weekend Socializers",
-      "shortVibe": "This group is highly social across the board, especially around happy hours, active weekends, and shared outings."
+      "podName": "Active Social",
+      "shortVibe": "This group is broadly social and active, with strong interest in happy hour, watching games, and outdoor plans."
     },
     {
       "id": 8,
@@ -393,8 +393,8 @@
         24,
         26
       ],
-      "podName": "Weekend Socializers",
-      "shortVibe": "This group is highly social across the board, especially around happy hours, active weekends, and shared outings."
+      "podName": "Active Social",
+      "shortVibe": "This group is broadly social and active, with strong interest in happy hour, watching games, and outdoor plans."
     },
     {
       "id": 9,
@@ -437,8 +437,8 @@
         80,
         56
       ],
-      "podName": "Movies & Mixed Social",
-      "shortVibe": "This pod blends nights out, entertainment, and casual social plans."
+      "podName": "Movies and Social",
+      "shortVibe": "This group leans toward movies, happy hour, and casual social plans."
     },
     {
       "id": 10,
@@ -481,8 +481,8 @@
         142,
         152
       ],
-      "podName": "Movies & Mixed Social",
-      "shortVibe": "This pod blends nights out, entertainment, and casual social plans."
+      "podName": "Movies and Social",
+      "shortVibe": "This group leans toward movies, happy hour, and casual social plans."
     },
     {
       "id": 11,
@@ -525,8 +525,8 @@
         102,
         16
       ],
-      "podName": "Sports-Centered Social: League",
-      "shortVibe": "This pod leans into game days, leagues, and outgoing group energy around sports."
+      "podName": "Extroverted Sports Fans",
+      "shortVibe": "This group is the most sports-focused, with strong interest in watching games, happy hour, and rec leagues."
     },
     {
       "id": 12,
@@ -569,8 +569,8 @@
         0,
         40
       ],
-      "podName": "Sports-Centered Social: Game Day",
-      "shortVibe": "This pod leans into game days, leagues, and outgoing group energy around sports."
+      "podName": "Going Out Group",
+      "shortVibe": "This group is more going-out oriented, with strong interest in happy hour, group plans, and watching games."
     },
     {
       "id": 13,
@@ -613,8 +613,8 @@
         53,
         71
       ],
-      "podName": "Coffeehouse Connectors",
-      "shortVibe": "This pod mixes strong coffee-chat energy with thoughtful conversation and social plans that still feel easygoing."
+      "podName": "Coffee and Conversation",
+      "shortVibe": "This group leans toward coffee, books, and easy conversation, with some interest in social plans."
     },
     {
       "id": 14,
@@ -657,8 +657,8 @@
         25,
         69
       ],
-      "podName": "Coffeehouse Connectors",
-      "shortVibe": "This pod mixes strong coffee-chat energy with thoughtful conversation and social plans that still feel easygoing."
+      "podName": "Coffee and Conversation",
+      "shortVibe": "This group leans toward coffee, books, and easy conversation, with some interest in social plans."
     },
     {
       "id": 15,
@@ -701,8 +701,8 @@
         125,
         30
       ],
-      "podName": "Movies & Mixed Social",
-      "shortVibe": "This pod blends nights out, entertainment, and casual social plans."
+      "podName": "Movies and Social",
+      "shortVibe": "This group leans toward movies, happy hour, and casual social plans."
     },
     {
       "id": 16,
@@ -745,8 +745,8 @@
         79,
         104
       ],
-      "podName": "Sports-Centered Social: League",
-      "shortVibe": "This pod leans into game days, leagues, and outgoing group energy around sports."
+      "podName": "Extroverted Sports Fans",
+      "shortVibe": "This group is the most sports-focused, with strong interest in watching games, happy hour, and rec leagues."
     },
     {
       "id": 17,
@@ -789,8 +789,8 @@
         155,
         54
       ],
-      "podName": "Sports-Centered Social: League",
-      "shortVibe": "This pod leans into game days, leagues, and outgoing group energy around sports."
+      "podName": "Extroverted Sports Fans",
+      "shortVibe": "This group is the most sports-focused, with strong interest in watching games, happy hour, and rec leagues."
     },
     {
       "id": 18,
@@ -833,8 +833,8 @@
         171,
         182
       ],
-      "podName": "Games & Hangouts",
-      "shortVibe": "This group is built around playful downtime, shared activities, and easy social nights."
+      "podName": "Games and Hangouts",
+      "shortVibe": "This group is centered on activity nights, games, movies, and casual group hangouts."
     },
     {
       "id": 19,
@@ -877,8 +877,8 @@
         13,
         64
       ],
-      "podName": "Coffeehouse Connectors",
-      "shortVibe": "This pod mixes strong coffee-chat energy with thoughtful conversation and social plans that still feel easygoing."
+      "podName": "Coffee and Conversation",
+      "shortVibe": "This group leans toward coffee, books, and easy conversation, with some interest in social plans."
     },
     {
       "id": 20,
@@ -921,8 +921,8 @@
         16,
         54
       ],
-      "podName": "Sports-Centered Social: League",
-      "shortVibe": "This pod leans into game days, leagues, and outgoing group energy around sports."
+      "podName": "Extroverted Sports Fans",
+      "shortVibe": "This group is the most sports-focused, with strong interest in watching games, happy hour, and rec leagues."
     },
     {
       "id": 21,
@@ -965,8 +965,8 @@
         155,
         178
       ],
-      "podName": "Sports-Centered Social: League",
-      "shortVibe": "This pod leans into game days, leagues, and outgoing group energy around sports."
+      "podName": "Extroverted Sports Fans",
+      "shortVibe": "This group is the most sports-focused, with strong interest in watching games, happy hour, and rec leagues."
     },
     {
       "id": 22,
@@ -1009,8 +1009,8 @@
         97,
         134
       ],
-      "podName": "Sports-Centered Social: Game Day",
-      "shortVibe": "This pod leans into game days, leagues, and outgoing group energy around sports."
+      "podName": "Going Out Group",
+      "shortVibe": "This group is more going-out oriented, with strong interest in happy hour, group plans, and watching games."
     },
     {
       "id": 23,
@@ -1053,8 +1053,8 @@
         21,
         32
       ],
-      "podName": "Sports-Centered Social: League",
-      "shortVibe": "This pod leans into game days, leagues, and outgoing group energy around sports."
+      "podName": "Extroverted Sports Fans",
+      "shortVibe": "This group is the most sports-focused, with strong interest in watching games, happy hour, and rec leagues."
     },
     {
       "id": 24,
@@ -1097,8 +1097,8 @@
         124,
         138
       ],
-      "podName": "Weekend Socializers",
-      "shortVibe": "This group is highly social across the board, especially around happy hours, active weekends, and shared outings."
+      "podName": "Active Social",
+      "shortVibe": "This group is broadly social and active, with strong interest in happy hour, watching games, and outdoor plans."
     },
     {
       "id": 25,
@@ -1141,8 +1141,8 @@
         71,
         172
       ],
-      "podName": "Coffeehouse Connectors",
-      "shortVibe": "This pod mixes strong coffee-chat energy with thoughtful conversation and social plans that still feel easygoing."
+      "podName": "Coffee and Conversation",
+      "shortVibe": "This group leans toward coffee, books, and easy conversation, with some interest in social plans."
     },
     {
       "id": 26,
@@ -1185,8 +1185,8 @@
         5,
         7
       ],
-      "podName": "Weekend Socializers",
-      "shortVibe": "This group is highly social across the board, especially around happy hours, active weekends, and shared outings."
+      "podName": "Active Social",
+      "shortVibe": "This group is broadly social and active, with strong interest in happy hour, watching games, and outdoor plans."
     },
     {
       "id": 27,
@@ -1229,8 +1229,8 @@
         140,
         114
       ],
-      "podName": "Weekend Socializers",
-      "shortVibe": "This group is highly social across the board, especially around happy hours, active weekends, and shared outings."
+      "podName": "Active Social",
+      "shortVibe": "This group is broadly social and active, with strong interest in happy hour, watching games, and outdoor plans."
     },
     {
       "id": 28,
@@ -1273,8 +1273,8 @@
         69,
         145
       ],
-      "podName": "Coffeehouse Connectors",
-      "shortVibe": "This pod mixes strong coffee-chat energy with thoughtful conversation and social plans that still feel easygoing."
+      "podName": "Coffee and Conversation",
+      "shortVibe": "This group leans toward coffee, books, and easy conversation, with some interest in social plans."
     },
     {
       "id": 29,
@@ -1317,8 +1317,8 @@
         146,
         154
       ],
-      "podName": "Games & Hangouts",
-      "shortVibe": "This group is built around playful downtime, shared activities, and easy social nights."
+      "podName": "Games and Hangouts",
+      "shortVibe": "This group is centered on activity nights, games, movies, and casual group hangouts."
     },
     {
       "id": 30,
@@ -1361,8 +1361,8 @@
         89,
         120
       ],
-      "podName": "Movies & Mixed Social",
-      "shortVibe": "This pod blends nights out, entertainment, and casual social plans."
+      "podName": "Movies and Social",
+      "shortVibe": "This group leans toward movies, happy hour, and casual social plans."
     },
     {
       "id": 31,
@@ -1405,8 +1405,8 @@
         7,
         98
       ],
-      "podName": "Weekend Socializers",
-      "shortVibe": "This group is highly social across the board, especially around happy hours, active weekends, and shared outings."
+      "podName": "Active Social",
+      "shortVibe": "This group is broadly social and active, with strong interest in happy hour, watching games, and outdoor plans."
     },
     {
       "id": 32,
@@ -1449,8 +1449,8 @@
         101,
         138
       ],
-      "podName": "Weekend Socializers",
-      "shortVibe": "This group is highly social across the board, especially around happy hours, active weekends, and shared outings."
+      "podName": "Active Social",
+      "shortVibe": "This group is broadly social and active, with strong interest in happy hour, watching games, and outdoor plans."
     },
     {
       "id": 33,
@@ -1493,8 +1493,8 @@
         105,
         106
       ],
-      "podName": "Sports-Centered Social: Game Day",
-      "shortVibe": "This pod leans into game days, leagues, and outgoing group energy around sports."
+      "podName": "Going Out Group",
+      "shortVibe": "This group is more going-out oriented, with strong interest in happy hour, group plans, and watching games."
     },
     {
       "id": 34,
@@ -1537,8 +1537,8 @@
         54,
         79
       ],
-      "podName": "Sports-Centered Social: League",
-      "shortVibe": "This pod leans into game days, leagues, and outgoing group energy around sports."
+      "podName": "Extroverted Sports Fans",
+      "shortVibe": "This group is the most sports-focused, with strong interest in watching games, happy hour, and rec leagues."
     },
     {
       "id": 35,
@@ -1581,8 +1581,8 @@
         83,
         161
       ],
-      "podName": "Weekend Socializers",
-      "shortVibe": "This group is highly social across the board, especially around happy hours, active weekends, and shared outings."
+      "podName": "Active Social",
+      "shortVibe": "This group is broadly social and active, with strong interest in happy hour, watching games, and outdoor plans."
     },
     {
       "id": 36,
@@ -1625,8 +1625,8 @@
         73,
         80
       ],
-      "podName": "Movies & Mixed Social",
-      "shortVibe": "This pod blends nights out, entertainment, and casual social plans."
+      "podName": "Movies and Social",
+      "shortVibe": "This group leans toward movies, happy hour, and casual social plans."
     },
     {
       "id": 37,
@@ -1669,8 +1669,8 @@
         3,
         75
       ],
-      "podName": "Weekend Socializers",
-      "shortVibe": "This group is highly social across the board, especially around happy hours, active weekends, and shared outings."
+      "podName": "Active Social",
+      "shortVibe": "This group is broadly social and active, with strong interest in happy hour, watching games, and outdoor plans."
     },
     {
       "id": 38,
@@ -1713,8 +1713,8 @@
         19,
         68
       ],
-      "podName": "Weekend Socializers",
-      "shortVibe": "This group is highly social across the board, especially around happy hours, active weekends, and shared outings."
+      "podName": "Active Social",
+      "shortVibe": "This group is broadly social and active, with strong interest in happy hour, watching games, and outdoor plans."
     },
     {
       "id": 39,
@@ -1757,8 +1757,8 @@
         7,
         98
       ],
-      "podName": "Weekend Socializers",
-      "shortVibe": "This group is highly social across the board, especially around happy hours, active weekends, and shared outings."
+      "podName": "Active Social",
+      "shortVibe": "This group is broadly social and active, with strong interest in happy hour, watching games, and outdoor plans."
     },
     {
       "id": 40,
@@ -1801,8 +1801,8 @@
         0,
         83
       ],
-      "podName": "Sports-Centered Social: Game Day",
-      "shortVibe": "This pod leans into game days, leagues, and outgoing group energy around sports."
+      "podName": "Going Out Group",
+      "shortVibe": "This group is more going-out oriented, with strong interest in happy hour, group plans, and watching games."
     },
     {
       "id": 41,
@@ -1845,8 +1845,8 @@
         104,
         4
       ],
-      "podName": "Sports-Centered Social: League",
-      "shortVibe": "This pod leans into game days, leagues, and outgoing group energy around sports."
+      "podName": "Extroverted Sports Fans",
+      "shortVibe": "This group is the most sports-focused, with strong interest in watching games, happy hour, and rec leagues."
     },
     {
       "id": 42,
@@ -1889,8 +1889,8 @@
         55,
         153
       ],
-      "podName": "Sports-Centered Social: League",
-      "shortVibe": "This pod leans into game days, leagues, and outgoing group energy around sports."
+      "podName": "Extroverted Sports Fans",
+      "shortVibe": "This group is the most sports-focused, with strong interest in watching games, happy hour, and rec leagues."
     },
     {
       "id": 43,
@@ -1933,8 +1933,8 @@
         57,
         76
       ],
-      "podName": "Sports-Centered Social: Game Day",
-      "shortVibe": "This pod leans into game days, leagues, and outgoing group energy around sports."
+      "podName": "Going Out Group",
+      "shortVibe": "This group is more going-out oriented, with strong interest in happy hour, group plans, and watching games."
     },
     {
       "id": 44,
@@ -1977,8 +1977,8 @@
         179,
         81
       ],
-      "podName": "Games & Hangouts",
-      "shortVibe": "This group is built around playful downtime, shared activities, and easy social nights."
+      "podName": "Games and Hangouts",
+      "shortVibe": "This group is centered on activity nights, games, movies, and casual group hangouts."
     },
     {
       "id": 45,
@@ -2021,8 +2021,8 @@
         141,
         77
       ],
-      "podName": "Activity Nights & Gaming",
-      "shortVibe": "This pod is anchored by activity nights and gaming as its strongest shared preferences."
+      "podName": "Activity Nights and Gaming",
+      "shortVibe": "This group is primarily defined by activity nights and gaming."
     },
     {
       "id": 46,
@@ -2065,8 +2065,8 @@
         75,
         90
       ],
-      "podName": "Weekend Socializers",
-      "shortVibe": "This group is highly social across the board, especially around happy hours, active weekends, and shared outings."
+      "podName": "Active Social",
+      "shortVibe": "This group is broadly social and active, with strong interest in happy hour, watching games, and outdoor plans."
     },
     {
       "id": 47,
@@ -2109,8 +2109,8 @@
         6,
         102
       ],
-      "podName": "Games & Hangouts",
-      "shortVibe": "This group is built around playful downtime, shared activities, and easy social nights."
+      "podName": "Games and Hangouts",
+      "shortVibe": "This group is centered on activity nights, games, movies, and casual group hangouts."
     },
     {
       "id": 48,
@@ -2153,8 +2153,8 @@
         27,
         70
       ],
-      "podName": "Sports-Centered Social: League",
-      "shortVibe": "This pod leans into game days, leagues, and outgoing group energy around sports."
+      "podName": "Extroverted Sports Fans",
+      "shortVibe": "This group is the most sports-focused, with strong interest in watching games, happy hour, and rec leagues."
     },
     {
       "id": 49,
@@ -2197,8 +2197,8 @@
         12,
         148
       ],
-      "podName": "Sports-Centered Social: Game Day",
-      "shortVibe": "This pod leans into game days, leagues, and outgoing group energy around sports."
+      "podName": "Going Out Group",
+      "shortVibe": "This group is more going-out oriented, with strong interest in happy hour, group plans, and watching games."
     },
     {
       "id": 50,
@@ -2241,8 +2241,8 @@
         163,
         102
       ],
-      "podName": "Games & Hangouts",
-      "shortVibe": "This group is built around playful downtime, shared activities, and easy social nights."
+      "podName": "Games and Hangouts",
+      "shortVibe": "This group is centered on activity nights, games, movies, and casual group hangouts."
     },
     {
       "id": 51,
@@ -2285,8 +2285,8 @@
         112,
         158
       ],
-      "podName": "Activity Nights & Gaming",
-      "shortVibe": "This pod is anchored by activity nights and gaming as its strongest shared preferences."
+      "podName": "Activity Nights and Gaming",
+      "shortVibe": "This group is primarily defined by activity nights and gaming."
     },
     {
       "id": 52,
@@ -2329,8 +2329,8 @@
         67,
         84
       ],
-      "podName": "Sports-Centered Social: Game Day",
-      "shortVibe": "This pod leans into game days, leagues, and outgoing group energy around sports."
+      "podName": "Going Out Group",
+      "shortVibe": "This group is more going-out oriented, with strong interest in happy hour, group plans, and watching games."
     },
     {
       "id": 53,
@@ -2373,8 +2373,8 @@
         25,
         15
       ],
-      "podName": "Coffeehouse Connectors",
-      "shortVibe": "This pod mixes strong coffee-chat energy with thoughtful conversation and social plans that still feel easygoing."
+      "podName": "Coffee and Conversation",
+      "shortVibe": "This group leans toward coffee, books, and easy conversation, with some interest in social plans."
     },
     {
       "id": 54,
@@ -2417,8 +2417,8 @@
         188,
         75
       ],
-      "podName": "Sports-Centered Social: League",
-      "shortVibe": "This pod leans into game days, leagues, and outgoing group energy around sports."
+      "podName": "Extroverted Sports Fans",
+      "shortVibe": "This group is the most sports-focused, with strong interest in watching games, happy hour, and rec leagues."
     },
     {
       "id": 55,
@@ -2461,8 +2461,8 @@
         71,
         138
       ],
-      "podName": "Coffeehouse Connectors",
-      "shortVibe": "This pod mixes strong coffee-chat energy with thoughtful conversation and social plans that still feel easygoing."
+      "podName": "Coffee and Conversation",
+      "shortVibe": "This group leans toward coffee, books, and easy conversation, with some interest in social plans."
     },
     {
       "id": 56,
@@ -2505,8 +2505,8 @@
         37,
         6
       ],
-      "podName": "Movies & Mixed Social",
-      "shortVibe": "This pod blends nights out, entertainment, and casual social plans."
+      "podName": "Movies and Social",
+      "shortVibe": "This group leans toward movies, happy hour, and casual social plans."
     },
     {
       "id": 57,
@@ -2549,8 +2549,8 @@
         12,
         22
       ],
-      "podName": "Sports-Centered Social: Game Day",
-      "shortVibe": "This pod leans into game days, leagues, and outgoing group energy around sports."
+      "podName": "Going Out Group",
+      "shortVibe": "This group is more going-out oriented, with strong interest in happy hour, group plans, and watching games."
     },
     {
       "id": 58,
@@ -2593,8 +2593,8 @@
         69,
         28
       ],
-      "podName": "Coffeehouse Connectors",
-      "shortVibe": "This pod mixes strong coffee-chat energy with thoughtful conversation and social plans that still feel easygoing."
+      "podName": "Coffee and Conversation",
+      "shortVibe": "This group leans toward coffee, books, and easy conversation, with some interest in social plans."
     },
     {
       "id": 59,
@@ -2637,8 +2637,8 @@
         60,
         105
       ],
-      "podName": "Sports-Centered Social: Game Day",
-      "shortVibe": "This pod leans into game days, leagues, and outgoing group energy around sports."
+      "podName": "Going Out Group",
+      "shortVibe": "This group is more going-out oriented, with strong interest in happy hour, group plans, and watching games."
     },
     {
       "id": 60,
@@ -2681,8 +2681,8 @@
         72,
         105
       ],
-      "podName": "Sports-Centered Social: Game Day",
-      "shortVibe": "This pod leans into game days, leagues, and outgoing group energy around sports."
+      "podName": "Going Out Group",
+      "shortVibe": "This group is more going-out oriented, with strong interest in happy hour, group plans, and watching games."
     },
     {
       "id": 61,
@@ -2725,8 +2725,8 @@
         55,
         113
       ],
-      "podName": "Coffeehouse Connectors",
-      "shortVibe": "This pod mixes strong coffee-chat energy with thoughtful conversation and social plans that still feel easygoing."
+      "podName": "Coffee and Conversation",
+      "shortVibe": "This group leans toward coffee, books, and easy conversation, with some interest in social plans."
     },
     {
       "id": 62,
@@ -2769,8 +2769,8 @@
         74,
         16
       ],
-      "podName": "Sports-Centered Social: League",
-      "shortVibe": "This pod leans into game days, leagues, and outgoing group energy around sports."
+      "podName": "Extroverted Sports Fans",
+      "shortVibe": "This group is the most sports-focused, with strong interest in watching games, happy hour, and rec leagues."
     },
     {
       "id": 63,
@@ -2813,8 +2813,8 @@
         126,
         6
       ],
-      "podName": "Games & Hangouts",
-      "shortVibe": "This group is built around playful downtime, shared activities, and easy social nights."
+      "podName": "Games and Hangouts",
+      "shortVibe": "This group is centered on activity nights, games, movies, and casual group hangouts."
     },
     {
       "id": 64,
@@ -2857,8 +2857,8 @@
         113,
         13
       ],
-      "podName": "Coffeehouse Connectors",
-      "shortVibe": "This pod mixes strong coffee-chat energy with thoughtful conversation and social plans that still feel easygoing."
+      "podName": "Coffee and Conversation",
+      "shortVibe": "This group leans toward coffee, books, and easy conversation, with some interest in social plans."
     },
     {
       "id": 65,
@@ -2901,8 +2901,8 @@
         69,
         145
       ],
-      "podName": "Coffeehouse Connectors",
-      "shortVibe": "This pod mixes strong coffee-chat energy with thoughtful conversation and social plans that still feel easygoing."
+      "podName": "Coffee and Conversation",
+      "shortVibe": "This group leans toward coffee, books, and easy conversation, with some interest in social plans."
     },
     {
       "id": 66,
@@ -2945,8 +2945,8 @@
         29,
         63
       ],
-      "podName": "Games & Hangouts",
-      "shortVibe": "This group is built around playful downtime, shared activities, and easy social nights."
+      "podName": "Games and Hangouts",
+      "shortVibe": "This group is centered on activity nights, games, movies, and casual group hangouts."
     },
     {
       "id": 67,
@@ -2989,8 +2989,8 @@
         43,
         52
       ],
-      "podName": "Sports-Centered Social: Game Day",
-      "shortVibe": "This pod leans into game days, leagues, and outgoing group energy around sports."
+      "podName": "Going Out Group",
+      "shortVibe": "This group is more going-out oriented, with strong interest in happy hour, group plans, and watching games."
     },
     {
       "id": 68,
@@ -3033,8 +3033,8 @@
         179,
         7
       ],
-      "podName": "Games & Hangouts",
-      "shortVibe": "This group is built around playful downtime, shared activities, and easy social nights."
+      "podName": "Games and Hangouts",
+      "shortVibe": "This group is centered on activity nights, games, movies, and casual group hangouts."
     },
     {
       "id": 69,
@@ -3077,8 +3077,8 @@
         65,
         163
       ],
-      "podName": "Coffeehouse Connectors",
-      "shortVibe": "This pod mixes strong coffee-chat energy with thoughtful conversation and social plans that still feel easygoing."
+      "podName": "Coffee and Conversation",
+      "shortVibe": "This group leans toward coffee, books, and easy conversation, with some interest in social plans."
     },
     {
       "id": 70,
@@ -3121,8 +3121,8 @@
         0,
         84
       ],
-      "podName": "Sports-Centered Social: Game Day",
-      "shortVibe": "This pod leans into game days, leagues, and outgoing group energy around sports."
+      "podName": "Going Out Group",
+      "shortVibe": "This group is more going-out oriented, with strong interest in happy hour, group plans, and watching games."
     },
     {
       "id": 71,
@@ -3165,8 +3165,8 @@
         25,
         129
       ],
-      "podName": "Coffeehouse Connectors",
-      "shortVibe": "This pod mixes strong coffee-chat energy with thoughtful conversation and social plans that still feel easygoing."
+      "podName": "Coffee and Conversation",
+      "shortVibe": "This group leans toward coffee, books, and easy conversation, with some interest in social plans."
     },
     {
       "id": 72,
@@ -3209,8 +3209,8 @@
         161,
         12
       ],
-      "podName": "Sports-Centered Social: Game Day",
-      "shortVibe": "This pod leans into game days, leagues, and outgoing group energy around sports."
+      "podName": "Going Out Group",
+      "shortVibe": "This group is more going-out oriented, with strong interest in happy hour, group plans, and watching games."
     },
     {
       "id": 73,
@@ -3253,8 +3253,8 @@
         15,
         89
       ],
-      "podName": "Movies & Mixed Social",
-      "shortVibe": "This pod blends nights out, entertainment, and casual social plans."
+      "podName": "Movies and Social",
+      "shortVibe": "This group leans toward movies, happy hour, and casual social plans."
     },
     {
       "id": 74,
@@ -3297,8 +3297,8 @@
         62,
         61
       ],
-      "podName": "Sports-Centered Social: League",
-      "shortVibe": "This pod leans into game days, leagues, and outgoing group energy around sports."
+      "podName": "Extroverted Sports Fans",
+      "shortVibe": "This group is the most sports-focused, with strong interest in watching games, happy hour, and rec leagues."
     },
     {
       "id": 75,
@@ -3341,8 +3341,8 @@
         121,
         124
       ],
-      "podName": "Weekend Socializers",
-      "shortVibe": "This group is highly social across the board, especially around happy hours, active weekends, and shared outings."
+      "podName": "Active Social",
+      "shortVibe": "This group is broadly social and active, with strong interest in happy hour, watching games, and outdoor plans."
     },
     {
       "id": 76,
@@ -3385,8 +3385,8 @@
         43,
         57
       ],
-      "podName": "Sports-Centered Social: Game Day",
-      "shortVibe": "This pod leans into game days, leagues, and outgoing group energy around sports."
+      "podName": "Going Out Group",
+      "shortVibe": "This group is more going-out oriented, with strong interest in happy hour, group plans, and watching games."
     },
     {
       "id": 77,
@@ -3429,8 +3429,8 @@
         154,
         159
       ],
-      "podName": "Games & Hangouts",
-      "shortVibe": "This group is built around playful downtime, shared activities, and easy social nights."
+      "podName": "Games and Hangouts",
+      "shortVibe": "This group is centered on activity nights, games, movies, and casual group hangouts."
     },
     {
       "id": 78,
@@ -3473,8 +3473,8 @@
         151,
         5
       ],
-      "podName": "Weekend Socializers",
-      "shortVibe": "This group is highly social across the board, especially around happy hours, active weekends, and shared outings."
+      "podName": "Active Social",
+      "shortVibe": "This group is broadly social and active, with strong interest in happy hour, watching games, and outdoor plans."
     },
     {
       "id": 79,
@@ -3517,8 +3517,8 @@
         16,
         34
       ],
-      "podName": "Sports-Centered Social: League",
-      "shortVibe": "This pod leans into game days, leagues, and outgoing group energy around sports."
+      "podName": "Extroverted Sports Fans",
+      "shortVibe": "This group is the most sports-focused, with strong interest in watching games, happy hour, and rec leagues."
     },
     {
       "id": 80,
@@ -3561,8 +3561,8 @@
         56,
         89
       ],
-      "podName": "Movies & Mixed Social",
-      "shortVibe": "This pod blends nights out, entertainment, and casual social plans."
+      "podName": "Movies and Social",
+      "shortVibe": "This group leans toward movies, happy hour, and casual social plans."
     },
     {
       "id": 81,
@@ -3605,8 +3605,8 @@
         10,
         15
       ],
-      "podName": "Movies & Mixed Social",
-      "shortVibe": "This pod blends nights out, entertainment, and casual social plans."
+      "podName": "Movies and Social",
+      "shortVibe": "This group leans toward movies, happy hour, and casual social plans."
     },
     {
       "id": 82,
@@ -3649,8 +3649,8 @@
         159,
         182
       ],
-      "podName": "Games & Hangouts",
-      "shortVibe": "This group is built around playful downtime, shared activities, and easy social nights."
+      "podName": "Games and Hangouts",
+      "shortVibe": "This group is centered on activity nights, games, movies, and casual group hangouts."
     },
     {
       "id": 83,
@@ -3693,8 +3693,8 @@
         105,
         107
       ],
-      "podName": "Sports-Centered Social: Game Day",
-      "shortVibe": "This pod leans into game days, leagues, and outgoing group energy around sports."
+      "podName": "Going Out Group",
+      "shortVibe": "This group is more going-out oriented, with strong interest in happy hour, group plans, and watching games."
     },
     {
       "id": 84,
@@ -3737,8 +3737,8 @@
         181,
         33
       ],
-      "podName": "Sports-Centered Social: Game Day",
-      "shortVibe": "This pod leans into game days, leagues, and outgoing group energy around sports."
+      "podName": "Going Out Group",
+      "shortVibe": "This group is more going-out oriented, with strong interest in happy hour, group plans, and watching games."
     },
     {
       "id": 85,
@@ -3781,8 +3781,8 @@
         82,
         58
       ],
-      "podName": "Games & Hangouts",
-      "shortVibe": "This group is built around playful downtime, shared activities, and easy social nights."
+      "podName": "Games and Hangouts",
+      "shortVibe": "This group is centered on activity nights, games, movies, and casual group hangouts."
     },
     {
       "id": 86,
@@ -3825,8 +3825,8 @@
         134,
         188
       ],
-      "podName": "Sports-Centered Social: Game Day",
-      "shortVibe": "This pod leans into game days, leagues, and outgoing group energy around sports."
+      "podName": "Going Out Group",
+      "shortVibe": "This group is more going-out oriented, with strong interest in happy hour, group plans, and watching games."
     },
     {
       "id": 87,
@@ -3869,8 +3869,8 @@
         153,
         160
       ],
-      "podName": "Movies & Mixed Social",
-      "shortVibe": "This pod blends nights out, entertainment, and casual social plans."
+      "podName": "Movies and Social",
+      "shortVibe": "This group leans toward movies, happy hour, and casual social plans."
     },
     {
       "id": 88,
@@ -3913,8 +3913,8 @@
         73,
         152
       ],
-      "podName": "Movies & Mixed Social",
-      "shortVibe": "This pod blends nights out, entertainment, and casual social plans."
+      "podName": "Movies and Social",
+      "shortVibe": "This group leans toward movies, happy hour, and casual social plans."
     },
     {
       "id": 89,
@@ -3957,8 +3957,8 @@
         73,
         80
       ],
-      "podName": "Movies & Mixed Social",
-      "shortVibe": "This pod blends nights out, entertainment, and casual social plans."
+      "podName": "Movies and Social",
+      "shortVibe": "This group leans toward movies, happy hour, and casual social plans."
     },
     {
       "id": 90,
@@ -4001,8 +4001,8 @@
         24,
         26
       ],
-      "podName": "Weekend Socializers",
-      "shortVibe": "This group is highly social across the board, especially around happy hours, active weekends, and shared outings."
+      "podName": "Active Social",
+      "shortVibe": "This group is broadly social and active, with strong interest in happy hour, watching games, and outdoor plans."
     },
     {
       "id": 91,
@@ -4045,8 +4045,8 @@
         32,
         98
       ],
-      "podName": "Weekend Socializers",
-      "shortVibe": "This group is highly social across the board, especially around happy hours, active weekends, and shared outings."
+      "podName": "Active Social",
+      "shortVibe": "This group is broadly social and active, with strong interest in happy hour, watching games, and outdoor plans."
     },
     {
       "id": 92,
@@ -4089,8 +4089,8 @@
         105,
         40
       ],
-      "podName": "Sports-Centered Social: Game Day",
-      "shortVibe": "This pod leans into game days, leagues, and outgoing group energy around sports."
+      "podName": "Going Out Group",
+      "shortVibe": "This group is more going-out oriented, with strong interest in happy hour, group plans, and watching games."
     },
     {
       "id": 93,
@@ -4133,8 +4133,8 @@
         77,
         159
       ],
-      "podName": "Movies & Mixed Social",
-      "shortVibe": "This pod blends nights out, entertainment, and casual social plans."
+      "podName": "Movies and Social",
+      "shortVibe": "This group leans toward movies, happy hour, and casual social plans."
     },
     {
       "id": 94,
@@ -4177,8 +4177,8 @@
         59,
         22
       ],
-      "podName": "Sports-Centered Social: Game Day",
-      "shortVibe": "This pod leans into game days, leagues, and outgoing group energy around sports."
+      "podName": "Going Out Group",
+      "shortVibe": "This group is more going-out oriented, with strong interest in happy hour, group plans, and watching games."
     },
     {
       "id": 95,
@@ -4217,8 +4217,8 @@
         178,
         133
       ],
-      "podName": "Activity Nights & Gaming",
-      "shortVibe": "This pod is anchored by activity nights and gaming as its strongest shared preferences."
+      "podName": "Activity Nights and Gaming",
+      "shortVibe": "This group is primarily defined by activity nights and gaming."
     },
     {
       "id": 96,
@@ -4261,8 +4261,8 @@
         121,
         138
       ],
-      "podName": "Weekend Socializers",
-      "shortVibe": "This group is highly social across the board, especially around happy hours, active weekends, and shared outings."
+      "podName": "Active Social",
+      "shortVibe": "This group is broadly social and active, with strong interest in happy hour, watching games, and outdoor plans."
     },
     {
       "id": 97,
@@ -4305,8 +4305,8 @@
         106,
         134
       ],
-      "podName": "Sports-Centered Social: Game Day",
-      "shortVibe": "This pod leans into game days, leagues, and outgoing group energy around sports."
+      "podName": "Going Out Group",
+      "shortVibe": "This group is more going-out oriented, with strong interest in happy hour, group plans, and watching games."
     },
     {
       "id": 98,
@@ -4349,8 +4349,8 @@
         90,
         140
       ],
-      "podName": "Weekend Socializers",
-      "shortVibe": "This group is highly social across the board, especially around happy hours, active weekends, and shared outings."
+      "podName": "Active Social",
+      "shortVibe": "This group is broadly social and active, with strong interest in happy hour, watching games, and outdoor plans."
     },
     {
       "id": 99,
@@ -4393,8 +4393,8 @@
         90,
         140
       ],
-      "podName": "Weekend Socializers",
-      "shortVibe": "This group is highly social across the board, especially around happy hours, active weekends, and shared outings."
+      "podName": "Active Social",
+      "shortVibe": "This group is broadly social and active, with strong interest in happy hour, watching games, and outdoor plans."
     },
     {
       "id": 100,
@@ -4437,8 +4437,8 @@
         183,
         74
       ],
-      "podName": "Movies & Mixed Social",
-      "shortVibe": "This pod blends nights out, entertainment, and casual social plans."
+      "podName": "Movies and Social",
+      "shortVibe": "This group leans toward movies, happy hour, and casual social plans."
     },
     {
       "id": 101,
@@ -4481,8 +4481,8 @@
         7,
         38
       ],
-      "podName": "Weekend Socializers",
-      "shortVibe": "This group is highly social across the board, especially around happy hours, active weekends, and shared outings."
+      "podName": "Active Social",
+      "shortVibe": "This group is broadly social and active, with strong interest in happy hour, watching games, and outdoor plans."
     },
     {
       "id": 102,
@@ -4525,8 +4525,8 @@
         50,
         11
       ],
-      "podName": "Games & Hangouts",
-      "shortVibe": "This group is built around playful downtime, shared activities, and easy social nights."
+      "podName": "Games and Hangouts",
+      "shortVibe": "This group is centered on activity nights, games, movies, and casual group hangouts."
     },
     {
       "id": 103,
@@ -4569,8 +4569,8 @@
         155,
         34
       ],
-      "podName": "Sports-Centered Social: League",
-      "shortVibe": "This pod leans into game days, leagues, and outgoing group energy around sports."
+      "podName": "Extroverted Sports Fans",
+      "shortVibe": "This group is the most sports-focused, with strong interest in watching games, happy hour, and rec leagues."
     },
     {
       "id": 104,
@@ -4613,8 +4613,8 @@
         16,
         79
       ],
-      "podName": "Sports-Centered Social: League",
-      "shortVibe": "This pod leans into game days, leagues, and outgoing group energy around sports."
+      "podName": "Extroverted Sports Fans",
+      "shortVibe": "This group is the most sports-focused, with strong interest in watching games, happy hour, and rec leagues."
     },
     {
       "id": 105,
@@ -4657,8 +4657,8 @@
         181,
         33
       ],
-      "podName": "Sports-Centered Social: Game Day",
-      "shortVibe": "This pod leans into game days, leagues, and outgoing group energy around sports."
+      "podName": "Going Out Group",
+      "shortVibe": "This group is more going-out oriented, with strong interest in happy hour, group plans, and watching games."
     },
     {
       "id": 106,
@@ -4701,8 +4701,8 @@
         72,
         97
       ],
-      "podName": "Sports-Centered Social: Game Day",
-      "shortVibe": "This pod leans into game days, leagues, and outgoing group energy around sports."
+      "podName": "Going Out Group",
+      "shortVibe": "This group is more going-out oriented, with strong interest in happy hour, group plans, and watching games."
     },
     {
       "id": 107,
@@ -4745,8 +4745,8 @@
         181,
         98
       ],
-      "podName": "Sports-Centered Social: Game Day",
-      "shortVibe": "This pod leans into game days, leagues, and outgoing group energy around sports."
+      "podName": "Going Out Group",
+      "shortVibe": "This group is more going-out oriented, with strong interest in happy hour, group plans, and watching games."
     },
     {
       "id": 108,
@@ -4789,8 +4789,8 @@
         15,
         81
       ],
-      "podName": "Movies & Mixed Social",
-      "shortVibe": "This pod blends nights out, entertainment, and casual social plans."
+      "podName": "Movies and Social",
+      "shortVibe": "This group leans toward movies, happy hour, and casual social plans."
     },
     {
       "id": 109,
@@ -4833,8 +4833,8 @@
         155,
         79
       ],
-      "podName": "Sports-Centered Social: League",
-      "shortVibe": "This pod leans into game days, leagues, and outgoing group energy around sports."
+      "podName": "Extroverted Sports Fans",
+      "shortVibe": "This group is the most sports-focused, with strong interest in watching games, happy hour, and rec leagues."
     },
     {
       "id": 110,
@@ -4877,8 +4877,8 @@
         80,
         24
       ],
-      "podName": "Weekend Socializers",
-      "shortVibe": "This group is highly social across the board, especially around happy hours, active weekends, and shared outings."
+      "podName": "Active Social",
+      "shortVibe": "This group is broadly social and active, with strong interest in happy hour, watching games, and outdoor plans."
     },
     {
       "id": 111,
@@ -4921,8 +4921,8 @@
         17,
         48
       ],
-      "podName": "Sports-Centered Social: League",
-      "shortVibe": "This pod leans into game days, leagues, and outgoing group energy around sports."
+      "podName": "Extroverted Sports Fans",
+      "shortVibe": "This group is the most sports-focused, with strong interest in watching games, happy hour, and rec leagues."
     },
     {
       "id": 112,
@@ -4965,8 +4965,8 @@
         11,
         43
       ],
-      "podName": "Activity Nights & Gaming",
-      "shortVibe": "This pod is anchored by activity nights and gaming as its strongest shared preferences."
+      "podName": "Activity Nights and Gaming",
+      "shortVibe": "This group is primarily defined by activity nights and gaming."
     },
     {
       "id": 113,
@@ -5009,8 +5009,8 @@
         64,
         129
       ],
-      "podName": "Coffeehouse Connectors",
-      "shortVibe": "This pod mixes strong coffee-chat energy with thoughtful conversation and social plans that still feel easygoing."
+      "podName": "Coffee and Conversation",
+      "shortVibe": "This group leans toward coffee, books, and easy conversation, with some interest in social plans."
     },
     {
       "id": 114,
@@ -5053,8 +5053,8 @@
         98,
         99
       ],
-      "podName": "Weekend Socializers",
-      "shortVibe": "This group is highly social across the board, especially around happy hours, active weekends, and shared outings."
+      "podName": "Active Social",
+      "shortVibe": "This group is broadly social and active, with strong interest in happy hour, watching games, and outdoor plans."
     },
     {
       "id": 115,
@@ -5097,8 +5097,8 @@
         31,
         101
       ],
-      "podName": "Weekend Socializers",
-      "shortVibe": "This group is highly social across the board, especially around happy hours, active weekends, and shared outings."
+      "podName": "Active Social",
+      "shortVibe": "This group is broadly social and active, with strong interest in happy hour, watching games, and outdoor plans."
     },
     {
       "id": 116,
@@ -5141,8 +5141,8 @@
         79,
         104
       ],
-      "podName": "Sports-Centered Social: League",
-      "shortVibe": "This pod leans into game days, leagues, and outgoing group energy around sports."
+      "podName": "Extroverted Sports Fans",
+      "shortVibe": "This group is the most sports-focused, with strong interest in watching games, happy hour, and rec leagues."
     },
     {
       "id": 117,
@@ -5185,8 +5185,8 @@
         15,
         160
       ],
-      "podName": "Movies & Mixed Social",
-      "shortVibe": "This pod blends nights out, entertainment, and casual social plans."
+      "podName": "Movies and Social",
+      "shortVibe": "This group leans toward movies, happy hour, and casual social plans."
     },
     {
       "id": 118,
@@ -5229,8 +5229,8 @@
         44,
         25
       ],
-      "podName": "Coffeehouse Connectors",
-      "shortVibe": "This pod mixes strong coffee-chat energy with thoughtful conversation and social plans that still feel easygoing."
+      "podName": "Coffee and Conversation",
+      "shortVibe": "This group leans toward coffee, books, and easy conversation, with some interest in social plans."
     },
     {
       "id": 119,
@@ -5273,8 +5273,8 @@
         2,
         44
       ],
-      "podName": "Games & Hangouts",
-      "shortVibe": "This group is built around playful downtime, shared activities, and easy social nights."
+      "podName": "Games and Hangouts",
+      "shortVibe": "This group is centered on activity nights, games, movies, and casual group hangouts."
     },
     {
       "id": 120,
@@ -5317,8 +5317,8 @@
         15,
         125
       ],
-      "podName": "Movies & Mixed Social",
-      "shortVibe": "This pod blends nights out, entertainment, and casual social plans."
+      "podName": "Movies and Social",
+      "shortVibe": "This group leans toward movies, happy hour, and casual social plans."
     },
     {
       "id": 121,
@@ -5361,8 +5361,8 @@
         169,
         46
       ],
-      "podName": "Weekend Socializers",
-      "shortVibe": "This group is highly social across the board, especially around happy hours, active weekends, and shared outings."
+      "podName": "Active Social",
+      "shortVibe": "This group is broadly social and active, with strong interest in happy hour, watching games, and outdoor plans."
     },
     {
       "id": 122,
@@ -5405,8 +5405,8 @@
         26,
         31
       ],
-      "podName": "Weekend Socializers",
-      "shortVibe": "This group is highly social across the board, especially around happy hours, active weekends, and shared outings."
+      "podName": "Active Social",
+      "shortVibe": "This group is broadly social and active, with strong interest in happy hour, watching games, and outdoor plans."
     },
     {
       "id": 123,
@@ -5449,8 +5449,8 @@
         17,
         134
       ],
-      "podName": "Sports-Centered Social: Game Day",
-      "shortVibe": "This pod leans into game days, leagues, and outgoing group energy around sports."
+      "podName": "Going Out Group",
+      "shortVibe": "This group is more going-out oriented, with strong interest in happy hour, group plans, and watching games."
     },
     {
       "id": 124,
@@ -5493,8 +5493,8 @@
         90,
         110
       ],
-      "podName": "Weekend Socializers",
-      "shortVibe": "This group is highly social across the board, especially around happy hours, active weekends, and shared outings."
+      "podName": "Active Social",
+      "shortVibe": "This group is broadly social and active, with strong interest in happy hour, watching games, and outdoor plans."
     },
     {
       "id": 125,
@@ -5537,8 +5537,8 @@
         187,
         53
       ],
-      "podName": "Movies & Mixed Social",
-      "shortVibe": "This pod blends nights out, entertainment, and casual social plans."
+      "podName": "Movies and Social",
+      "shortVibe": "This group leans toward movies, happy hour, and casual social plans."
     },
     {
       "id": 126,
@@ -5581,8 +5581,8 @@
         162,
         47
       ],
-      "podName": "Games & Hangouts",
-      "shortVibe": "This group is built around playful downtime, shared activities, and easy social nights."
+      "podName": "Games and Hangouts",
+      "shortVibe": "This group is centered on activity nights, games, movies, and casual group hangouts."
     },
     {
       "id": 127,
@@ -5625,8 +5625,8 @@
         5,
         8
       ],
-      "podName": "Weekend Socializers",
-      "shortVibe": "This group is highly social across the board, especially around happy hours, active weekends, and shared outings."
+      "podName": "Active Social",
+      "shortVibe": "This group is broadly social and active, with strong interest in happy hour, watching games, and outdoor plans."
     },
     {
       "id": 128,
@@ -5669,8 +5669,8 @@
         159,
         186
       ],
-      "podName": "Games & Hangouts",
-      "shortVibe": "This group is built around playful downtime, shared activities, and easy social nights."
+      "podName": "Games and Hangouts",
+      "shortVibe": "This group is centered on activity nights, games, movies, and casual group hangouts."
     },
     {
       "id": 129,
@@ -5713,8 +5713,8 @@
         71,
         113
       ],
-      "podName": "Coffeehouse Connectors",
-      "shortVibe": "This pod mixes strong coffee-chat energy with thoughtful conversation and social plans that still feel easygoing."
+      "podName": "Coffee and Conversation",
+      "shortVibe": "This group leans toward coffee, books, and easy conversation, with some interest in social plans."
     },
     {
       "id": 130,
@@ -5757,8 +5757,8 @@
         13,
         145
       ],
-      "podName": "Coffeehouse Connectors",
-      "shortVibe": "This pod mixes strong coffee-chat energy with thoughtful conversation and social plans that still feel easygoing."
+      "podName": "Coffee and Conversation",
+      "shortVibe": "This group leans toward coffee, books, and easy conversation, with some interest in social plans."
     },
     {
       "id": 131,
@@ -5801,8 +5801,8 @@
         45,
         112
       ],
-      "podName": "Activity Nights & Gaming",
-      "shortVibe": "This pod is anchored by activity nights and gaming as its strongest shared preferences."
+      "podName": "Activity Nights and Gaming",
+      "shortVibe": "This group is primarily defined by activity nights and gaming."
     },
     {
       "id": 132,
@@ -5845,8 +5845,8 @@
         43,
         74
       ],
-      "podName": "Sports-Centered Social: League",
-      "shortVibe": "This pod leans into game days, leagues, and outgoing group energy around sports."
+      "podName": "Extroverted Sports Fans",
+      "shortVibe": "This group is the most sports-focused, with strong interest in watching games, happy hour, and rec leagues."
     },
     {
       "id": 133,
@@ -5889,8 +5889,8 @@
         131,
         132
       ],
-      "podName": "Activity Nights & Gaming",
-      "shortVibe": "This pod is anchored by activity nights and gaming as its strongest shared preferences."
+      "podName": "Activity Nights and Gaming",
+      "shortVibe": "This group is primarily defined by activity nights and gaming."
     },
     {
       "id": 134,
@@ -5933,8 +5933,8 @@
         22,
         33
       ],
-      "podName": "Sports-Centered Social: Game Day",
-      "shortVibe": "This pod leans into game days, leagues, and outgoing group energy around sports."
+      "podName": "Going Out Group",
+      "shortVibe": "This group is more going-out oriented, with strong interest in happy hour, group plans, and watching games."
     },
     {
       "id": 135,
@@ -5977,8 +5977,8 @@
         75,
         110
       ],
-      "podName": "Weekend Socializers",
-      "shortVibe": "This group is highly social across the board, especially around happy hours, active weekends, and shared outings."
+      "podName": "Active Social",
+      "shortVibe": "This group is broadly social and active, with strong interest in happy hour, watching games, and outdoor plans."
     },
     {
       "id": 136,
@@ -6021,8 +6021,8 @@
         175,
         43
       ],
-      "podName": "Sports-Centered Social: Game Day",
-      "shortVibe": "This pod leans into game days, leagues, and outgoing group energy around sports."
+      "podName": "Going Out Group",
+      "shortVibe": "This group is more going-out oriented, with strong interest in happy hour, group plans, and watching games."
     },
     {
       "id": 137,
@@ -6065,8 +6065,8 @@
         46,
         122
       ],
-      "podName": "Weekend Socializers",
-      "shortVibe": "This group is highly social across the board, especially around happy hours, active weekends, and shared outings."
+      "podName": "Active Social",
+      "shortVibe": "This group is broadly social and active, with strong interest in happy hour, watching games, and outdoor plans."
     },
     {
       "id": 138,
@@ -6109,8 +6109,8 @@
         8,
         98
       ],
-      "podName": "Weekend Socializers",
-      "shortVibe": "This group is highly social across the board, especially around happy hours, active weekends, and shared outings."
+      "podName": "Active Social",
+      "shortVibe": "This group is broadly social and active, with strong interest in happy hour, watching games, and outdoor plans."
     },
     {
       "id": 139,
@@ -6153,8 +6153,8 @@
         53,
         96
       ],
-      "podName": "Coffeehouse Connectors",
-      "shortVibe": "This pod mixes strong coffee-chat energy with thoughtful conversation and social plans that still feel easygoing."
+      "podName": "Coffee and Conversation",
+      "shortVibe": "This group leans toward coffee, books, and easy conversation, with some interest in social plans."
     },
     {
       "id": 140,
@@ -6197,8 +6197,8 @@
         27,
         35
       ],
-      "podName": "Weekend Socializers",
-      "shortVibe": "This group is highly social across the board, especially around happy hours, active weekends, and shared outings."
+      "podName": "Active Social",
+      "shortVibe": "This group is broadly social and active, with strong interest in happy hour, watching games, and outdoor plans."
     },
     {
       "id": 141,
@@ -6241,8 +6241,8 @@
         51,
         133
       ],
-      "podName": "Activity Nights & Gaming",
-      "shortVibe": "This pod is anchored by activity nights and gaming as its strongest shared preferences."
+      "podName": "Activity Nights and Gaming",
+      "shortVibe": "This group is primarily defined by activity nights and gaming."
     },
     {
       "id": 142,
@@ -6285,8 +6285,8 @@
         80,
         10
       ],
-      "podName": "Movies & Mixed Social",
-      "shortVibe": "This pod blends nights out, entertainment, and casual social plans."
+      "podName": "Movies and Social",
+      "shortVibe": "This group leans toward movies, happy hour, and casual social plans."
     },
     {
       "id": 143,
@@ -6329,8 +6329,8 @@
         57,
         72
       ],
-      "podName": "Sports-Centered Social: Game Day",
-      "shortVibe": "This pod leans into game days, leagues, and outgoing group energy around sports."
+      "podName": "Going Out Group",
+      "shortVibe": "This group is more going-out oriented, with strong interest in happy hour, group plans, and watching games."
     },
     {
       "id": 144,
@@ -6373,8 +6373,8 @@
         162,
         11
       ],
-      "podName": "Coffeehouse Connectors",
-      "shortVibe": "This pod mixes strong coffee-chat energy with thoughtful conversation and social plans that still feel easygoing."
+      "podName": "Coffee and Conversation",
+      "shortVibe": "This group leans toward coffee, books, and easy conversation, with some interest in social plans."
     },
     {
       "id": 145,
@@ -6417,8 +6417,8 @@
         61,
         71
       ],
-      "podName": "Coffeehouse Connectors",
-      "shortVibe": "This pod mixes strong coffee-chat energy with thoughtful conversation and social plans that still feel easygoing."
+      "podName": "Coffee and Conversation",
+      "shortVibe": "This group leans toward coffee, books, and easy conversation, with some interest in social plans."
     },
     {
       "id": 146,
@@ -6461,8 +6461,8 @@
         82,
         85
       ],
-      "podName": "Games & Hangouts",
-      "shortVibe": "This group is built around playful downtime, shared activities, and easy social nights."
+      "podName": "Games and Hangouts",
+      "shortVibe": "This group is centered on activity nights, games, movies, and casual group hangouts."
     },
     {
       "id": 147,
@@ -6505,8 +6505,8 @@
         83,
         143
       ],
-      "podName": "Sports-Centered Social: Game Day",
-      "shortVibe": "This pod leans into game days, leagues, and outgoing group energy around sports."
+      "podName": "Going Out Group",
+      "shortVibe": "This group is more going-out oriented, with strong interest in happy hour, group plans, and watching games."
     },
     {
       "id": 148,
@@ -6549,8 +6549,8 @@
         70,
         72
       ],
-      "podName": "Sports-Centered Social: Game Day",
-      "shortVibe": "This pod leans into game days, leagues, and outgoing group energy around sports."
+      "podName": "Going Out Group",
+      "shortVibe": "This group is more going-out oriented, with strong interest in happy hour, group plans, and watching games."
     },
     {
       "id": 149,
@@ -6593,8 +6593,8 @@
         127,
         156
       ],
-      "podName": "Movies & Mixed Social",
-      "shortVibe": "This pod blends nights out, entertainment, and casual social plans."
+      "podName": "Movies and Social",
+      "shortVibe": "This group leans toward movies, happy hour, and casual social plans."
     },
     {
       "id": 150,
@@ -6637,8 +6637,8 @@
         83,
         143
       ],
-      "podName": "Sports-Centered Social: Game Day",
-      "shortVibe": "This pod leans into game days, leagues, and outgoing group energy around sports."
+      "podName": "Going Out Group",
+      "shortVibe": "This group is more going-out oriented, with strong interest in happy hour, group plans, and watching games."
     },
     {
       "id": 151,
@@ -6681,8 +6681,8 @@
         11,
         41
       ],
-      "podName": "Sports-Centered Social: League",
-      "shortVibe": "This pod leans into game days, leagues, and outgoing group energy around sports."
+      "podName": "Extroverted Sports Fans",
+      "shortVibe": "This group is the most sports-focused, with strong interest in watching games, happy hour, and rec leagues."
     },
     {
       "id": 152,
@@ -6725,8 +6725,8 @@
         30,
         73
       ],
-      "podName": "Movies & Mixed Social",
-      "shortVibe": "This pod blends nights out, entertainment, and casual social plans."
+      "podName": "Movies and Social",
+      "shortVibe": "This group leans toward movies, happy hour, and casual social plans."
     },
     {
       "id": 153,
@@ -6769,8 +6769,8 @@
         81,
         165
       ],
-      "podName": "Movies & Mixed Social",
-      "shortVibe": "This pod blends nights out, entertainment, and casual social plans."
+      "podName": "Movies and Social",
+      "shortVibe": "This group leans toward movies, happy hour, and casual social plans."
     },
     {
       "id": 154,
@@ -6813,8 +6813,8 @@
         85,
         146
       ],
-      "podName": "Games & Hangouts",
-      "shortVibe": "This group is built around playful downtime, shared activities, and easy social nights."
+      "podName": "Games and Hangouts",
+      "shortVibe": "This group is centered on activity nights, games, movies, and casual group hangouts."
     },
     {
       "id": 155,
@@ -6857,8 +6857,8 @@
         4,
         17
       ],
-      "podName": "Sports-Centered Social: League",
-      "shortVibe": "This pod leans into game days, leagues, and outgoing group energy around sports."
+      "podName": "Extroverted Sports Fans",
+      "shortVibe": "This group is the most sports-focused, with strong interest in watching games, happy hour, and rec leagues."
     },
     {
       "id": 156,
@@ -6901,8 +6901,8 @@
         127,
         31
       ],
-      "podName": "Weekend Socializers",
-      "shortVibe": "This group is highly social across the board, especially around happy hours, active weekends, and shared outings."
+      "podName": "Active Social",
+      "shortVibe": "This group is broadly social and active, with strong interest in happy hour, watching games, and outdoor plans."
     },
     {
       "id": 157,
@@ -6945,8 +6945,8 @@
         134,
         59
       ],
-      "podName": "Sports-Centered Social: Game Day",
-      "shortVibe": "This pod leans into game days, leagues, and outgoing group energy around sports."
+      "podName": "Going Out Group",
+      "shortVibe": "This group is more going-out oriented, with strong interest in happy hour, group plans, and watching games."
     },
     {
       "id": 158,
@@ -6989,8 +6989,8 @@
         183,
         56
       ],
-      "podName": "Movies & Mixed Social",
-      "shortVibe": "This pod blends nights out, entertainment, and casual social plans."
+      "podName": "Movies and Social",
+      "shortVibe": "This group leans toward movies, happy hour, and casual social plans."
     },
     {
       "id": 159,
@@ -7033,8 +7033,8 @@
         50,
         128
       ],
-      "podName": "Games & Hangouts",
-      "shortVibe": "This group is built around playful downtime, shared activities, and easy social nights."
+      "podName": "Games and Hangouts",
+      "shortVibe": "This group is centered on activity nights, games, movies, and casual group hangouts."
     },
     {
       "id": 160,
@@ -7077,8 +7077,8 @@
         117,
         158
       ],
-      "podName": "Movies & Mixed Social",
-      "shortVibe": "This pod blends nights out, entertainment, and casual social plans."
+      "podName": "Movies and Social",
+      "shortVibe": "This group leans toward movies, happy hour, and casual social plans."
     },
     {
       "id": 161,
@@ -7121,8 +7121,8 @@
         105,
         107
       ],
-      "podName": "Sports-Centered Social: Game Day",
-      "shortVibe": "This pod leans into game days, leagues, and outgoing group energy around sports."
+      "podName": "Going Out Group",
+      "shortVibe": "This group is more going-out oriented, with strong interest in happy hour, group plans, and watching games."
     },
     {
       "id": 162,
@@ -7165,8 +7165,8 @@
         19,
         129
       ],
-      "podName": "Coffeehouse Connectors",
-      "shortVibe": "This pod mixes strong coffee-chat energy with thoughtful conversation and social plans that still feel easygoing."
+      "podName": "Coffee and Conversation",
+      "shortVibe": "This group leans toward coffee, books, and easy conversation, with some interest in social plans."
     },
     {
       "id": 163,
@@ -7209,8 +7209,8 @@
         65,
         69
       ],
-      "podName": "Coffeehouse Connectors",
-      "shortVibe": "This pod mixes strong coffee-chat energy with thoughtful conversation and social plans that still feel easygoing."
+      "podName": "Coffee and Conversation",
+      "shortVibe": "This group leans toward coffee, books, and easy conversation, with some interest in social plans."
     },
     {
       "id": 164,
@@ -7253,8 +7253,8 @@
         102,
         61
       ],
-      "podName": "Coffeehouse Connectors",
-      "shortVibe": "This pod mixes strong coffee-chat energy with thoughtful conversation and social plans that still feel easygoing."
+      "podName": "Coffee and Conversation",
+      "shortVibe": "This group leans toward coffee, books, and easy conversation, with some interest in social plans."
     },
     {
       "id": 165,
@@ -7297,8 +7297,8 @@
         15,
         81
       ],
-      "podName": "Movies & Mixed Social",
-      "shortVibe": "This pod blends nights out, entertainment, and casual social plans."
+      "podName": "Movies and Social",
+      "shortVibe": "This group leans toward movies, happy hour, and casual social plans."
     },
     {
       "id": 166,
@@ -7341,8 +7341,8 @@
         111,
         137
       ],
-      "podName": "Sports-Centered Social: League",
-      "shortVibe": "This pod leans into game days, leagues, and outgoing group energy around sports."
+      "podName": "Extroverted Sports Fans",
+      "shortVibe": "This group is the most sports-focused, with strong interest in watching games, happy hour, and rec leagues."
     },
     {
       "id": 167,
@@ -7385,8 +7385,8 @@
         166,
         4
       ],
-      "podName": "Sports-Centered Social: League",
-      "shortVibe": "This pod leans into game days, leagues, and outgoing group energy around sports."
+      "podName": "Extroverted Sports Fans",
+      "shortVibe": "This group is the most sports-focused, with strong interest in watching games, happy hour, and rec leagues."
     },
     {
       "id": 168,
@@ -7429,8 +7429,8 @@
         54,
         109
       ],
-      "podName": "Sports-Centered Social: League",
-      "shortVibe": "This pod leans into game days, leagues, and outgoing group energy around sports."
+      "podName": "Extroverted Sports Fans",
+      "shortVibe": "This group is the most sports-focused, with strong interest in watching games, happy hour, and rec leagues."
     },
     {
       "id": 169,
@@ -7473,8 +7473,8 @@
         5,
         46
       ],
-      "podName": "Weekend Socializers",
-      "shortVibe": "This group is highly social across the board, especially around happy hours, active weekends, and shared outings."
+      "podName": "Active Social",
+      "shortVibe": "This group is broadly social and active, with strong interest in happy hour, watching games, and outdoor plans."
     },
     {
       "id": 170,
@@ -7517,8 +7517,8 @@
         83,
         161
       ],
-      "podName": "Sports-Centered Social: Game Day",
-      "shortVibe": "This pod leans into game days, leagues, and outgoing group energy around sports."
+      "podName": "Going Out Group",
+      "shortVibe": "This group is more going-out oriented, with strong interest in happy hour, group plans, and watching games."
     },
     {
       "id": 171,
@@ -7561,8 +7561,8 @@
         146,
         29
       ],
-      "podName": "Games & Hangouts",
-      "shortVibe": "This group is built around playful downtime, shared activities, and easy social nights."
+      "podName": "Games and Hangouts",
+      "shortVibe": "This group is centered on activity nights, games, movies, and casual group hangouts."
     },
     {
       "id": 172,
@@ -7605,8 +7605,8 @@
         58,
         71
       ],
-      "podName": "Coffeehouse Connectors",
-      "shortVibe": "This pod mixes strong coffee-chat energy with thoughtful conversation and social plans that still feel easygoing."
+      "podName": "Coffee and Conversation",
+      "shortVibe": "This group leans toward coffee, books, and easy conversation, with some interest in social plans."
     },
     {
       "id": 173,
@@ -7649,8 +7649,8 @@
         52,
         168
       ],
-      "podName": "Weekend Socializers",
-      "shortVibe": "This group is highly social across the board, especially around happy hours, active weekends, and shared outings."
+      "podName": "Active Social",
+      "shortVibe": "This group is broadly social and active, with strong interest in happy hour, watching games, and outdoor plans."
     },
     {
       "id": 174,
@@ -7693,8 +7693,8 @@
         40,
         52
       ],
-      "podName": "Sports-Centered Social: Game Day",
-      "shortVibe": "This pod leans into game days, leagues, and outgoing group energy around sports."
+      "podName": "Going Out Group",
+      "shortVibe": "This group is more going-out oriented, with strong interest in happy hour, group plans, and watching games."
     },
     {
       "id": 175,
@@ -7737,8 +7737,8 @@
         94,
         12
       ],
-      "podName": "Sports-Centered Social: Game Day",
-      "shortVibe": "This pod leans into game days, leagues, and outgoing group energy around sports."
+      "podName": "Going Out Group",
+      "shortVibe": "This group is more going-out oriented, with strong interest in happy hour, group plans, and watching games."
     },
     {
       "id": 176,
@@ -7781,8 +7781,8 @@
         98,
         99
       ],
-      "podName": "Weekend Socializers",
-      "shortVibe": "This group is highly social across the board, especially around happy hours, active weekends, and shared outings."
+      "podName": "Active Social",
+      "shortVibe": "This group is broadly social and active, with strong interest in happy hour, watching games, and outdoor plans."
     },
     {
       "id": 177,
@@ -7825,8 +7825,8 @@
         43,
         57
       ],
-      "podName": "Sports-Centered Social: Game Day",
-      "shortVibe": "This pod leans into game days, leagues, and outgoing group energy around sports."
+      "podName": "Going Out Group",
+      "shortVibe": "This group is more going-out oriented, with strong interest in happy hour, group plans, and watching games."
     },
     {
       "id": 178,
@@ -7869,8 +7869,8 @@
         158,
         160
       ],
-      "podName": "Sports-Centered Social: League",
-      "shortVibe": "This pod leans into game days, leagues, and outgoing group energy around sports."
+      "podName": "Extroverted Sports Fans",
+      "shortVibe": "This group is the most sports-focused, with strong interest in watching games, happy hour, and rec leagues."
     },
     {
       "id": 179,
@@ -7913,8 +7913,8 @@
         44,
         68
       ],
-      "podName": "Games & Hangouts",
-      "shortVibe": "This group is built around playful downtime, shared activities, and easy social nights."
+      "podName": "Games and Hangouts",
+      "shortVibe": "This group is centered on activity nights, games, movies, and casual group hangouts."
     },
     {
       "id": 180,
@@ -7957,8 +7957,8 @@
         39,
         75
       ],
-      "podName": "Sports-Centered Social: League",
-      "shortVibe": "This pod leans into game days, leagues, and outgoing group energy around sports."
+      "podName": "Extroverted Sports Fans",
+      "shortVibe": "This group is the most sports-focused, with strong interest in watching games, happy hour, and rec leagues."
     },
     {
       "id": 181,
@@ -8001,8 +8001,8 @@
         40,
         83
       ],
-      "podName": "Sports-Centered Social: Game Day",
-      "shortVibe": "This pod leans into game days, leagues, and outgoing group energy around sports."
+      "podName": "Going Out Group",
+      "shortVibe": "This group is more going-out oriented, with strong interest in happy hour, group plans, and watching games."
     },
     {
       "id": 182,
@@ -8045,8 +8045,8 @@
         179,
         66
       ],
-      "podName": "Games & Hangouts",
-      "shortVibe": "This group is built around playful downtime, shared activities, and easy social nights."
+      "podName": "Games and Hangouts",
+      "shortVibe": "This group is centered on activity nights, games, movies, and casual group hangouts."
     },
     {
       "id": 183,
@@ -8089,8 +8089,8 @@
         89,
         153
       ],
-      "podName": "Movies & Mixed Social",
-      "shortVibe": "This pod blends nights out, entertainment, and casual social plans."
+      "podName": "Movies and Social",
+      "shortVibe": "This group leans toward movies, happy hour, and casual social plans."
     },
     {
       "id": 184,
@@ -8133,8 +8133,8 @@
         42,
         79
       ],
-      "podName": "Movies & Mixed Social",
-      "shortVibe": "This pod blends nights out, entertainment, and casual social plans."
+      "podName": "Movies and Social",
+      "shortVibe": "This group leans toward movies, happy hour, and casual social plans."
     },
     {
       "id": 185,
@@ -8177,8 +8177,8 @@
         80,
         63
       ],
-      "podName": "Movies & Mixed Social",
-      "shortVibe": "This pod blends nights out, entertainment, and casual social plans."
+      "podName": "Movies and Social",
+      "shortVibe": "This group leans toward movies, happy hour, and casual social plans."
     },
     {
       "id": 186,
@@ -8221,8 +8221,8 @@
         88,
         63
       ],
-      "podName": "Games & Hangouts",
-      "shortVibe": "This group is built around playful downtime, shared activities, and easy social nights."
+      "podName": "Games and Hangouts",
+      "shortVibe": "This group is centered on activity nights, games, movies, and casual group hangouts."
     },
     {
       "id": 187,
@@ -8265,8 +8265,8 @@
         89,
         125
       ],
-      "podName": "Movies & Mixed Social",
-      "shortVibe": "This pod blends nights out, entertainment, and casual social plans."
+      "podName": "Movies and Social",
+      "shortVibe": "This group leans toward movies, happy hour, and casual social plans."
     },
     {
       "id": 188,
@@ -8309,15 +8309,15 @@
         16,
         34
       ],
-      "podName": "Sports-Centered Social: League",
-      "shortVibe": "This pod leans into game days, leagues, and outgoing group energy around sports."
+      "podName": "Extroverted Sports Fans",
+      "shortVibe": "This group is the most sports-focused, with strong interest in watching games, happy hour, and rec leagues."
     }
   ],
   "clusters": [
     {
       "id": 0,
-      "podName": "Activity Nights & Gaming",
-      "shortVibe": "This pod is anchored by activity nights and gaming as its strongest shared preferences.",
+      "podName": "Activity Nights and Gaming",
+      "shortVibe": "This group is primarily defined by activity nights and gaming.",
       "memberCount": 7,
       "centroidScores": {
         "Hiking, Biking Running": 0.5714,
@@ -8352,8 +8352,8 @@
     },
     {
       "id": 1,
-      "podName": "Coffeehouse Connectors",
-      "shortVibe": "This pod mixes strong coffee-chat energy with thoughtful conversation and social plans that still feel easygoing.",
+      "podName": "Coffee and Conversation",
+      "shortVibe": "This group leans toward coffee, books, and easy conversation, with some interest in social plans.",
       "memberCount": 24,
       "centroidScores": {
         "Hiking, Biking Running": 2.4167,
@@ -8405,8 +8405,8 @@
     },
     {
       "id": 2,
-      "podName": "Movies & Mixed Social",
-      "shortVibe": "This pod blends nights out, entertainment, and casual social plans.",
+      "podName": "Movies and Social",
+      "shortVibe": "This group leans toward movies, happy hour, and casual social plans.",
       "memberCount": 31,
       "centroidScores": {
         "Hiking, Biking Running": 1.4839,
@@ -8465,8 +8465,8 @@
     },
     {
       "id": 3,
-      "podName": "Weekend Socializers",
-      "shortVibe": "This group is highly social across the board, especially around happy hours, active weekends, and shared outings.",
+      "podName": "Active Social",
+      "shortVibe": "This group is broadly social and active, with strong interest in happy hour, watching games, and outdoor plans.",
       "memberCount": 37,
       "centroidScores": {
         "Hiking, Biking Running": 2.7027,
@@ -8531,8 +8531,8 @@
     },
     {
       "id": 4,
-      "podName": "Sports-Centered Social: League",
-      "shortVibe": "This pod leans into game days, leagues, and outgoing group energy around sports.",
+      "podName": "Extroverted Sports Fans",
+      "shortVibe": "This group is the most sports-focused, with strong interest in watching games, happy hour, and rec leagues.",
       "memberCount": 29,
       "centroidScores": {
         "Hiking, Biking Running": 2.3103,
@@ -8589,8 +8589,8 @@
     },
     {
       "id": 5,
-      "podName": "Games & Hangouts",
-      "shortVibe": "This group is built around playful downtime, shared activities, and easy social nights.",
+      "podName": "Games and Hangouts",
+      "shortVibe": "This group is centered on activity nights, games, movies, and casual group hangouts.",
       "memberCount": 23,
       "centroidScores": {
         "Hiking, Biking Running": 2.0,
@@ -8641,8 +8641,8 @@
     },
     {
       "id": 6,
-      "podName": "Sports-Centered Social: Game Day",
-      "shortVibe": "This pod leans into game days, leagues, and outgoing group energy around sports.",
+      "podName": "Going Out Group",
+      "shortVibe": "This group is more going-out oriented, with strong interest in happy hour, group plans, and watching games.",
       "memberCount": 38,
       "centroidScores": {
         "Hiking, Biking Running": 2.3947,
@@ -9059,7 +9059,7 @@
   },
   "metadata": {
     "totalAnalysts": 189,
-    "generatedAt": "2026-04-30T17:46:13.083287+00:00",
+    "generatedAt": "2026-05-04T17:49:39.995246+00:00",
     "sourceWorkbook": "C:\\Users\\12022\\Downloads\\Rosslyn Networking Survey Results - Analyst.xlsx"
   }
 }
